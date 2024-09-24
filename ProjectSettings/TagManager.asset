@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - boxCollider
+  - item
+  - table
+  - deadArea
+  - spawner
+  - nextArea
+  - BiggerPotion
+  - ShrinkPotion
+  - itemTable
+  - BiggerItem
+  - ShrinkItem
+  - CantAcceptPotions
+  - Completed
+  - Lever
+  - ButtonQuit
+  - ButtonSettings
+  - ButtonFreeSpace
+  - StrangePotion
+  - ReadyToExplode
+  - Exploded
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - background
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 1860808091
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: FakeUI
+    uniqueID: 3912162461
+    locked: 0

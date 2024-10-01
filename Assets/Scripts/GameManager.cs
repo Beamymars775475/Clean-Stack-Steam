@@ -12,19 +12,25 @@ public class GameManager : MonoBehaviour
 
     public bool isInventoryOpen;
 
+    [Header("For Description")]
+
     public string currentTextName;
     public string currentTextDescription;
 
     public string currentColor;
-    
-    public bool goNextFloor;
 
+    public bool needImageDark;
+
+
+
+    [Header("Inventory")]
     public bool forceToCloseDescription;
 
     public bool canAccessToInventory;
 
-    public bool needImageDark;
-    
+
+
+    [Header("Level management")]
     public bool isCountDownOn;
 
     public bool isWon;
@@ -37,17 +43,22 @@ public class GameManager : MonoBehaviour
 
     public bool[] levelsState;
 
-    // Faut check
+    public bool goNextFloor;
 
+    // Faut check
+    [Header("Other")]
     public bool FirstLaunch;
 
+
+    [Header("Checks for win (NEED REWORK !!)")]
     public bool waitUntilFirstObject;
 
     public bool isDelivered2;
-
+    
+    [Header("Strange Potion")]
     public bool activeStrangePotion;
 
-
+    [Header("Worlds")]
     public readonly int MONDE1 = 0; // 0
     public readonly int MONDE2 = 11; // 12
     public readonly int MONDE3 = 23; // 24

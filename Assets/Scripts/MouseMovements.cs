@@ -29,6 +29,8 @@ public class MouseMovements : MonoBehaviour
     RaycastHit hit_ray;
     public LayerMask hitLayers2;
 
+    [Header("Other")]
+    
     public MMF_Player feedbacksInventory;
 
     public GameObject inventory;

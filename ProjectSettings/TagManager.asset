@@ -24,6 +24,9 @@ TagManager:
   - StrangePotion
   - ReadyToExplode
   - Exploded
+  - ClonePotion
+  - Cloned(Not More Usable)
+  - Cursor
   layers:
   - Default
   - TransparentFX

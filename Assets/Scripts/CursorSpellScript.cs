@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,11 +24,17 @@ public class CursorSpellScript : MonoBehaviour
 	Vector3 dir;
 	Ray ray;
     RaycastHit hit_ray;
+
+    Vector3 targetPos;
     public LayerMask hitLayers2;
 
-    public MouseMovements mouseMovements;
 
     public Transform spaceForFullItems;
+
+
+    [Header("Clone Potion")]
+
+    public Transform cursor; // Mettre le clone dans les mains
 
 
     private void Awake ()
@@ -175,8 +182,53 @@ public class CursorSpellScript : MonoBehaviour
        }   
 
 
+        else if (rayHit.collider.gameObject.tag != "Cloned(Not More Usable)" && gameObject.tag == "ClonePotion")
+       {
+           MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(9).GetComponent<MMF_Player>(); // Devient Violet
+           feedbacksItem.PlayFeedbacks();
+           rayHit.collider.gameObject.tag = "Cloned(Not More Usable)";
+           rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+           
+
+           SpawnClonedItem(rayHit.collider.gameObject);
+           // GameManager.instance.canAccessToInventory = true;
+
+           Destroy(gameObject);
+       }  
  
 
-
    }
+
+
+    // For spawned items
+    public void SpawnClonedItem(GameObject prefabClone) // == rayHit.collider.gameObject
+    {
+
+        GameObject prefab = Instantiate(prefabClone, new Vector3(prefabClone.transform.position.x, prefabClone.transform.position.y, prefabClone.transform.position.z), Quaternion.identity);
+        Transform prefabTransform = prefab.GetComponent<Transform>();
+
+        Collider2D prefabCollider = prefab.GetComponent<Collider2D>();
+        prefabCollider.isTrigger = true; // Désactiver les collisions pendant le vol
+
+        prefab.tag = "item"; // Remettre l'item par défaut
+
+        GameManager.instance.isInventoryOpen = false;
+        GameManager.instance.forceToCloseDescription = true;
+
+        GameManager.instance.canAccessToInventory = false;
+
+        // Animation
+
+        Vector3 ForceToGoToMouse = Vector3.SmoothDamp(moveThis.position, new Vector3(targetPos.x, 3.75f, 0), ref velocity, timeOffSet); 
+
+        MMF_Player feedbacksItem = prefabTransform.GetChild(10).GetComponent<MMF_Player>(); // Animation item qui flotte
+        feedbacksItem.PlayFeedbacks();
+
+        Debug.Log(GameObject.FindGameObjectsWithTag("Cursor")[0]);
+        GameObject[] cursorForNewItem = GameObject.FindGameObjectsWithTag("Cursor");
+        prefab.transform.SetParent(cursorForNewItem[0].transform); // Mettre dans cursor une fois l'animation finit
+
+    }
+
+
 }

@@ -71,30 +71,26 @@ public class DescriptionOverButtonScript : MonoBehaviour
         textDescription.SetActive(false);
     }
 
-    public void WhenOnUI()
+    public void WhenOnUI(RectTransform gameObjectPointed)
     {
-        StartCoroutine(CooldownForDescription(0.65f));
+        StartCoroutine(CooldownForDescription(0.65f, gameObjectPointed));
         notOnItem = true;
 
     }
 
-    IEnumerator CooldownForDescription(float cooldown)
+    IEnumerator CooldownForDescription(float cooldown, RectTransform gameObjectToGoTo)
     {
         canShowDescription = false;
         yield return new WaitForSeconds(cooldown);
         if(notOnItem == true)
         {
-            Vector2 anchoredPos;
             textNameContent.text = GameManager.instance.currentTextName;
             textDescriptionContent.text = GameManager.instance.currentTextDescription;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(m_parent, Input.mousePosition, m_canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : m_uiCamera, out anchoredPos);
-            m_image.anchoredPosition = anchoredPos;
+            m_image.anchoredPosition = new Vector2(gameObjectToGoTo.anchoredPosition.x+300f, gameObjectToGoTo.anchoredPosition.y+125f);
             gameObject.GetComponent<Image>().enabled = true;
             textName.SetActive(true);
             textDescription.SetActive(true);
         }
-
-
 
         canShowDescription = true;
     }

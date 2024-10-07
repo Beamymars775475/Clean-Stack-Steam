@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using MoreMountains.Feedbacks;
 
 
@@ -97,7 +96,7 @@ public class LevelLoader : MonoBehaviour
         }
     }
 
-    IEnumerator LoadLevel(string levelIndex)
+    IEnumerator LoadLevel(string levelIndex) // levelIndex c'est le niveau qu'on va lancer
     {
         transition.SetTrigger("Start");
         
@@ -122,9 +121,17 @@ public class LevelLoader : MonoBehaviour
                 Debug.Log("Veinti UNOOOO");
                 audio.clip = musicLevels;
                 audio.Play();
+
+                GameManager.instance.isInventoryOpen = true;
+                GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement
             }
         }
 
+        else if(SceneManager.GetActiveScene().name != "LevelSelectorScene" && SceneManager.GetActiveScene().name != "Mainscene" && (levelIndex != "Mainscene" || levelIndex != "LevelSelectorScene"))
+        {
+            GameManager.instance.isInventoryOpen = true;
+            GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement
+        }
 
         GameManager.instance.feedbacksOpen.PlayFeedbacks();
 

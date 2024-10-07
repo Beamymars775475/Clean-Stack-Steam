@@ -24,10 +24,21 @@ public class itemScript : MonoBehaviour
     {
         if(gameObject.tag == "ReadyToExplode" && GameManager.instance.activeStrangePotion)
         {
+            Rigidbody2D gameObjectRb = gameObject.GetComponent<Rigidbody2D>();
+
+            gameObjectRb.mass = gameObjectRb.mass *= 3f; // Par 3 car de base il est a /2 et comme c'est la potion étrange il passe de super petit à super gros
             explosionFeedbacks.PlayFeedbacks();
             explosionFlickerFeedbacks.StopFeedbacks();
             gameObject.tag = "Exploded";
         }
+        if(explosionFlickerFeedbacks != null) // Si il existe
+        {
+            if(explosionFlickerFeedbacks.IsPlaying && GameManager.instance.activeStrangePotion)
+            {
+                gameObject.tag = "ReadyToExplode";
+            }
+        }
+
     }
 
     void OnCollisionEnter2D(Collision2D _col)

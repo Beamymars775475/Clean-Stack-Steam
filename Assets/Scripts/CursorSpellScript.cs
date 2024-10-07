@@ -36,6 +36,10 @@ public class CursorSpellScript : MonoBehaviour
 
     public Transform cursor; // Mettre le clone dans les mains
 
+    void Start()
+    {
+        
+    }
 
     private void Awake ()
     {
@@ -90,8 +94,8 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.tag = "BiggerItem";
            
            GameManager.instance.canAccessToInventory = true;
-
            Destroy(gameObject);
+
        }
        else if (rayHit.collider.gameObject.tag == "item" && gameObject.tag == "ShrinkPotion")
        {
@@ -102,8 +106,8 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.tag = "ShrinkItem";
            
            GameManager.instance.canAccessToInventory = true;
-
            Destroy(gameObject);
+
        }
 
         else if (rayHit.collider.gameObject.tag == "item" && gameObject.tag == "StrangePotion")
@@ -113,12 +117,12 @@ public class CursorSpellScript : MonoBehaviour
            feedbacksItem.PlayFeedbacks();
            MMF_Player feedbacksItemFlicker = rayHit.collider.gameObject.transform.GetChild(8).GetComponent<MMF_Player>(); // Flicker
            feedbacksItemFlicker.PlayFeedbacks();
-           rigidbody2DItem.mass /= 1.75f;
+           rigidbody2DItem.mass /= 2f; // Pour lui c'est par 2 et non 2.5 ou 1.75 car c'est la potion étrange
            rayHit.collider.gameObject.tag = "ReadyToExplode";
            
            GameManager.instance.canAccessToInventory = true;
-
            Destroy(gameObject);
+
        }  
 
         else if (rayHit.collider.gameObject.tag == "BiggerItem" && gameObject.tag == "ShrinkPotion")
@@ -131,8 +135,8 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
            
            GameManager.instance.canAccessToInventory = true;
-
            Destroy(gameObject);
+
        }   
 
 
@@ -144,11 +148,11 @@ public class CursorSpellScript : MonoBehaviour
            feedbacksItem.PlayFeedbacks();
            rigidbody2DItem.mass *= 1.75f;
            rayHit.collider.gameObject.tag = "CantAcceptPotions";
-        rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+           rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
            
            GameManager.instance.canAccessToInventory = true;
-
            Destroy(gameObject);
+
        }   
 
 
@@ -162,8 +166,8 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
            
            GameManager.instance.canAccessToInventory = true;
-
            Destroy(gameObject);
+
        } 
 
 
@@ -177,8 +181,8 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
            
            GameManager.instance.canAccessToInventory = true;
-
            Destroy(gameObject);
+
        }   
 
 
@@ -186,14 +190,18 @@ public class CursorSpellScript : MonoBehaviour
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(9).GetComponent<MMF_Player>(); // Devient Violet
            feedbacksItem.PlayFeedbacks();
-           rayHit.collider.gameObject.tag = "Cloned(Not More Usable)";
-           rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
-           
-
+        
+           SpriteRenderer prefabMaterial = rayHit.collider.gameObject.transform.GetComponent<SpriteRenderer>(); // Prévention de si le flicker change la couleur
+           prefabMaterial.material.SetColor("_Color", Color.white);
            SpawnClonedItem(rayHit.collider.gameObject);
            // GameManager.instance.canAccessToInventory = true;
 
+           rayHit.collider.gameObject.tag = "Cloned(Not More Usable)"; // Quand le clone est fini
+           rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+
            Destroy(gameObject);
+
+
        }  
  
 
@@ -207,10 +215,22 @@ public class CursorSpellScript : MonoBehaviour
         GameObject prefab = Instantiate(prefabClone, new Vector3(prefabClone.transform.position.x, prefabClone.transform.position.y, prefabClone.transform.position.z), Quaternion.identity);
         Transform prefabTransform = prefab.GetComponent<Transform>();
 
+        Rigidbody2D prefabRigid = prefab.GetComponent<Rigidbody2D>();
+
         Collider2D prefabCollider = prefab.GetComponent<Collider2D>();
+
+
         prefabCollider.isTrigger = true; // Désactiver les collisions pendant le vol
 
         prefab.tag = "item"; // Remettre l'item par défaut
+
+        if(prefabClone.tag == "ReadyToExplode") // Si flicker de l'enfant actif
+        {
+            prefab.tag = "ReadyToExplode";
+            MMF_Player feedbacksItemFlicker = prefabTransform.GetChild(8).GetComponent<MMF_Player>(); // Animation item qui flotte
+            feedbacksItemFlicker.PlayFeedbacks();
+
+        }
 
         GameManager.instance.isInventoryOpen = false;
         GameManager.instance.forceToCloseDescription = true;
@@ -218,7 +238,7 @@ public class CursorSpellScript : MonoBehaviour
         GameManager.instance.canAccessToInventory = false;
 
         // Animation
-
+        prefabRigid.gravityScale = 0;
         Vector3 ForceToGoToMouse = Vector3.SmoothDamp(moveThis.position, new Vector3(targetPos.x, 3.75f, 0), ref velocity, timeOffSet); 
 
         MMF_Player feedbacksItem = prefabTransform.GetChild(10).GetComponent<MMF_Player>(); // Animation item qui flotte
@@ -230,5 +250,5 @@ public class CursorSpellScript : MonoBehaviour
 
     }
 
-
+    
 }

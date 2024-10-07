@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,12 +17,12 @@ public class ButtonSpawnItem : MonoBehaviour
 
     public MMF_Player feedbacksInventory;
 
-    [Header("Feedbacks when Description (Showing/Hiding content)")]
+    [Header("Feedbacks when Description (Showing/Hiding content) | ONLY FOR ITEMS -> NOT POTIONS")]
 
     public MMF_Player feedbacksContentShow;
     public MMF_Player feedbacksContentHide;
 
-    public Texture2D sizeOfThePicture;
+    public GameObject gbForShowingContent;
 
     public RectTransform imageContentSize;
 
@@ -42,13 +43,14 @@ public class ButtonSpawnItem : MonoBehaviour
 
     void Start()
     {
-        // Mettre à jour la taille de la preview
-        if((itemPrefab.tag != "BiggerPotion" || itemPrefab.tag != "ShrinkPotion" || itemPrefab.tag != "StrangePotion" || itemPrefab.tag != "ClonePotion"))
-        {
-            imageContentSize.sizeDelta = new Vector2(sizeOfThePicture.width*1.35f, sizeOfThePicture.height*1.35f); // *1.35 pour aggrandi un peu
-        }
-        
 
+
+        // Mettre à jour la taille de la preview
+        if((itemPrefab.tag != "BiggerPotion" || itemPrefab.tag != "ShrinkPotion" || itemPrefab.tag != "StrangePotion" || itemPrefab.tag != "ClonePotion") && gameObject.transform.childCount != 0)
+        {
+            Image sizeOfThePicture = gbForShowingContent.GetComponent<Image>(); // Texture de l'item
+            imageContentSize.sizeDelta = new Vector2(sizeOfThePicture.sprite.texture.width*1.35f, sizeOfThePicture.sprite.texture.height*1.35f); // *1.35 pour aggrandi un peu
+        }
     }
 
 
@@ -87,16 +89,17 @@ public class ButtonSpawnItem : MonoBehaviour
 
     public void CatchAObject()
     {
-        if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable" ) && isDelivered == false)
+        if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable" ) && GameManager.instance.isInventoryOpen == true && isDelivered == false)
         {
             Debug.Log("a");
             GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             Transform prefabTransform = prefab.GetComponent<Transform>();
             prefabTransform.SetParent(cursor);
             feedbacksInventory.PlayFeedbacks();
+            GameManager.instance.animationInventoryIsDone = false; // L'animation commence
             GameManager.instance.isInventoryOpen = false;
             GameManager.instance.forceToCloseDescription = true;
-            isDelivered = true;
+            isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
 
             GameManager.instance.canAccessToInventory = false;
 
@@ -115,6 +118,7 @@ public class ButtonSpawnItem : MonoBehaviour
             Transform prefabTransform = prefab.GetComponent<Transform>();
             prefabTransform.SetParent(cursor);
             feedbacksInventory.PlayFeedbacks();
+            GameManager.instance.animationInventoryIsDone = false; // L'animation commence
             GameManager.instance.isInventoryOpen = false;
             GameManager.instance.forceToCloseDescription = true;
 

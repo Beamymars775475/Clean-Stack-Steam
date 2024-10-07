@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [Header("Inventory")]
     public bool forceToCloseDescription;
 
+    public bool animationInventoryIsDone;
     public bool canAccessToInventory;
 
 

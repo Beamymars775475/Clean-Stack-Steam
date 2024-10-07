@@ -57,7 +57,7 @@ public class SimpleMouseMovements : MonoBehaviour
 
                 moveThis.transform.position = ForceToGoToMouse; 
             }
-            if(mouse.y<-3.5f && GameManager.instance.isInventoryOpen == false && inventory.transform.childCount > 1)
+            if(mouse.y<-3.5f && GameManager.instance.isInventoryOpen == false && inventory.transform.childCount > 1) // Pour ouvrir l'inventaire
             {
                 GameManager.instance.isInventoryOpen = true;
                 feedbacksInventory.PlayFeedbacks();

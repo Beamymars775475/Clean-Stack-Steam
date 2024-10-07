@@ -29,6 +29,8 @@ public class DescriptionOverButtonScript : MonoBehaviour
 
     public MMF_Player feedbacksBottle;
 
+    public Coroutine animationState;
+
 
 
 
@@ -63,17 +65,18 @@ public class DescriptionOverButtonScript : MonoBehaviour
         
     }
 
-    public void WhenExitingUI()
-    {
+    public void WhenExitingUI(BaseEventData eventData)
+    { 
+        StopCoroutine(animationState);
         gameObject.GetComponent<Image>().enabled = false;
         notOnItem = false;
         textName.SetActive(false);
         textDescription.SetActive(false);
     }
 
-    public void WhenOnUI(RectTransform gameObjectPointed)
+    public void WhenOnUI(BaseEventData eventData, RectTransform gameObjectPointed)
     {
-        StartCoroutine(CooldownForDescription(0.65f, gameObjectPointed));
+        animationState = StartCoroutine(CooldownForDescription(0.65f, gameObjectPointed));
         notOnItem = true;
 
     }
@@ -81,12 +84,23 @@ public class DescriptionOverButtonScript : MonoBehaviour
     IEnumerator CooldownForDescription(float cooldown, RectTransform gameObjectToGoTo)
     {
         canShowDescription = false;
+
+
         yield return new WaitForSeconds(cooldown);
-        if(notOnItem == true)
+        if(notOnItem == true && GameManager.instance.isInventoryOpen)
         {
             textNameContent.text = GameManager.instance.currentTextName;
             textDescriptionContent.text = GameManager.instance.currentTextDescription;
-            m_image.anchoredPosition = new Vector2(gameObjectToGoTo.anchoredPosition.x+300f, gameObjectToGoTo.anchoredPosition.y+125f);
+
+            if(gameObjectToGoTo.childCount != 0) // Pour les items
+            {
+                m_image.anchoredPosition = new Vector2(gameObjectToGoTo.anchoredPosition.x+300f, gameObjectToGoTo.anchoredPosition.y+115f);
+            }
+            else // Pour les potions 
+            {
+                m_image.anchoredPosition = new Vector2(gameObjectToGoTo.anchoredPosition.x+250f, gameObjectToGoTo.anchoredPosition.y+100f);
+            }
+
             gameObject.GetComponent<Image>().enabled = true;
             textName.SetActive(true);
             textDescription.SetActive(true);

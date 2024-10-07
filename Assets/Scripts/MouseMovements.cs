@@ -51,7 +51,7 @@ public class MouseMovements : MonoBehaviour
         Ray castPointmouse = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hitMouse;
         
-        if (gameObject.transform.childCount != 0 && (gameObject.transform.GetChild(0).tag == "item" || gameObject.transform.GetChild(0).tag == "itemTable")) 
+        if (gameObject.transform.childCount != 0 && (gameObject.transform.GetChild(0).tag == "item" || gameObject.transform.GetChild(0).tag == "itemTable" || gameObject.transform.GetChild(0).tag == "ReadyToExplode")) // ReadyToExplode for clones who have Strange potion effect 
         {
             moveThis = gameObject.transform.GetChild(0);
             moveThisRigidbody = moveThis.GetComponent<Rigidbody2D>();
@@ -97,7 +97,6 @@ public class MouseMovements : MonoBehaviour
                 moveThisCollider.isTrigger = false;
                 moveThis.SetParent(itemsThrowed);
                 GameManager.instance.canAccessToInventory = true;
-
                 if(moveThis.tag == "itemTable")
                 {
                     moveThis.SetParent(Tables);
@@ -105,7 +104,8 @@ public class MouseMovements : MonoBehaviour
             }
         }
 
-        if(mouse.y<115f && GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 1 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false)
+        // Pour ouvrir l'inventaire
+        if(mouse.y<115f && GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 1 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
         {
             GameManager.instance.isInventoryOpen = true;
             feedbacksInventory.PlayFeedbacks();
@@ -143,4 +143,11 @@ public class MouseMovements : MonoBehaviour
         } // Mettre ça dans un autre script pour faire plus propre
 
     }
+
+
+    public void OnceAnimationFinishYouCanOpenInventory()
+    {
+        GameManager.instance.animationInventoryIsDone = true;
+    }
+    
 }

@@ -89,8 +89,30 @@ public class DescriptionOverButtonScript : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         if(notOnItem == true && GameManager.instance.isInventoryOpen)
         {
+            ButtonSpawnItem buttonSpawnItemBox = gameObjectToGoTo.GetComponentInChildren<ButtonSpawnItem>(); // Pour avoir l'index
+
+
             textNameContent.text = GameManager.instance.currentTextName;
-            textDescriptionContent.text = GameManager.instance.currentTextDescription;
+
+
+            if(GameManager.instance.AlreadyUsedItem[buttonSpawnItemBox.itemscript.itemID] == true) // Si on connaît l'item
+            {
+                textDescriptionContent.text = GameManager.instance.currentTextDescription;
+            }
+            else // Si on connait pas l'item
+            {
+                textDescriptionContent.text = "????????????";
+            }
+
+            if(GameManager.instance.modeHard) // Mode Hard
+            {
+                textNameContent.text = "????";
+                textDescriptionContent.text = "????????????";
+            }
+                
+
+
+
 
             if(gameObjectToGoTo.childCount != 0) // Pour les items
             {

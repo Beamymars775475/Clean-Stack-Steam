@@ -48,8 +48,6 @@ public class MainMenuLever : MonoBehaviour
 
    public void OnClick(InputAction.CallbackContext context)
    {
-
-
         if (!context.started) return;
 
         var rayHit = Physics2D.GetRayIntersection(_mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue()));
@@ -83,7 +81,7 @@ public class MainMenuLever : MonoBehaviour
 
         if(rayHit.collider.gameObject.tag == "ButtonFreeSpace")
         {
-            Debug.Log("FreeSpace");
+            Debug.Log("Bestiary");
         }
 
 

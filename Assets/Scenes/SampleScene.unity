@@ -245,8 +245,7 @@ MonoBehaviour:
   typewriterStartsAutomatically: 0
   animationLoop: 0
   timeScale: 0
-  _text: '<rainb><bounce>Tadaaa </bounce></rainb>, I present to you: the world most
-    <shake> generic </shake> pencil!'
+  _text: 'Tadaaa , I present to you: the world most  generic  pencil !'
   useDynamicScaling: 1
   referenceFontSize: 10
   isResettingTimeOnNewText: 1
@@ -257,9 +256,9 @@ MonoBehaviour:
   styleSheet: {fileID: 0}
   databaseActions: {fileID: 11400000, guid: adccd9abce2b3aa41b5cf43cdd42eb59, type: 2}
   defaultAppearancesTags:
-  - size
+  - horiexp d = 10
   defaultDisappearancesTags:
-  - fade
+  - horiexp
   defaultBehaviorsTags: []
   defaultTagsMode: 0
 --- !u!114 &159699054
@@ -282,8 +281,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<rainb><bounce>Tadaaa </bounce></rainb>, I present to you: the world most
-    <shake> generic </shake> pencil !'
+  m_text: 'Tadaaa , I present to you: the world most  generic  pencil !'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 880047f0b019e024b8701ef530d9a0d6, type: 2}
   m_sharedMaterial: {fileID: 8239637365195172756, guid: 880047f0b019e024b8701ef530d9a0d6, type: 2}
@@ -2255,6 +2253,7 @@ MonoBehaviour:
   waitUntilFirstObject: 0
   isDelivered2: 0
   activeStrangePotion: 0
+  AlreadyUsedItem: 
   feedbacksOpen: {fileID: 0}
   feedbacksClose: {fileID: 0}
 --- !u!4 &580560499
@@ -4552,20 +4551,20 @@ MonoBehaviour:
   typewriterStartsAutomatically: 0
   animationLoop: 0
   timeScale: 0
-  _text: 
+  _text: 'Pencil :'
   useDynamicScaling: 1
   referenceFontSize: 10
   isResettingTimeOnNewText: 1
   useDefaultDatabases: 1
-  databaseBehaviors: {fileID: 0}
-  databaseAppearances: {fileID: 0}
+  databaseBehaviors: {fileID: 11400000, guid: ae92c9d6c6e1a2042b280d9212629c2c, type: 2}
+  databaseAppearances: {fileID: 11400000, guid: 37dc94e29041eaa4c91d274a3749b4e0, type: 2}
   useDefaultStyleSheet: 1
   styleSheet: {fileID: 0}
-  databaseActions: {fileID: 0}
+  databaseActions: {fileID: 11400000, guid: adccd9abce2b3aa41b5cf43cdd42eb59, type: 2}
   defaultAppearancesTags:
-  - size
+  - fade d = 100
   defaultDisappearancesTags:
-  - fade
+  - horiexp
   defaultBehaviorsTags: []
   defaultTagsMode: 0
 --- !u!1 &1786170843
@@ -6282,6 +6281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c678222ea70da9143bd515b6462f0a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemID: 0
   txtName: 'Banana :'
   txtDescription: <rot>Banana.</rot>
   explosionFeedbacks: {fileID: 406232221}

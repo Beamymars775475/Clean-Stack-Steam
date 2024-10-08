@@ -6,6 +6,11 @@ using UnityEngine;
 public class itemScript : MonoBehaviour
 {
     
+    [Header("ID")]
+    public int itemID;
+
+    [Header("Other")]
+
     public string txtName;
     public string txtDescription;
 
@@ -15,6 +20,8 @@ public class itemScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.instance.AlreadyUsedItem[itemID] = true;
+
         txtName = "Banana :";
         txtDescription = "<rot> Banana. </rot>";
     }

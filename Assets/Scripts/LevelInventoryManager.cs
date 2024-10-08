@@ -39,10 +39,23 @@ public class LevelInventoryManager : MonoBehaviour
     public int indexSpawningItems;
 
 
-    
-    // Start is called before the first frame update
+    void InvItemsShuffle(GameObject[] gbs)
+    {
+        // Knuth shuffle algorithm :: courtesy of Wikipedia :)
+        for (int t = 0; t < gbs.Length; t++ )
+        {
+            GameObject tmp = gbs[t];
+            int r = Random.Range(t, gbs.Length);
+            gbs[t] = gbs[r];
+            gbs[r] = tmp;
+        }
+    }
+
     void Start()
     {
+        InvItemsShuffle(listOfItemsOfTheLevel);
+        InvItemsShuffle(listOfPotionOfTheLevel);
+        
         indexSpawningItems = 0;
         foreach (GameObject gbItemPrefab in listOfItemsOfTheLevel)
         {

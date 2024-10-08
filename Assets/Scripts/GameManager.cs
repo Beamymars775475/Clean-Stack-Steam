@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     public bool needImageDark;
 
 
-
     [Header("Inventory")]
     public bool forceToCloseDescription;
 
@@ -68,10 +67,17 @@ public class GameManager : MonoBehaviour
     public readonly int MONDE6 = 51; // 52
     public readonly int MONDE7 = 59; // 60  
 
+    [Header("Bestiary")]
+
+    public bool[] AlreadyUsedItem;
+
 // Compter tout les True de complete pour unlock les niveaux 4, 5 et 6 puis 7 quand tout fini
 
     public MMF_Player feedbacksOpen; // Anim du son
     public MMF_Player feedbacksClose;
+
+
+    public bool modeHard;
 
 
     void Start()
@@ -80,7 +86,11 @@ public class GameManager : MonoBehaviour
         goNextFloor = false;
         currentLevel = 1;
 
+
+        // Faudra Save
         levelsState = new bool[65];
+
+        AlreadyUsedItem = new bool[10];
 
         
     }

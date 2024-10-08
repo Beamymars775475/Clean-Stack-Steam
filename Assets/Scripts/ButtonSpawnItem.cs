@@ -26,6 +26,13 @@ public class ButtonSpawnItem : MonoBehaviour
 
     public RectTransform imageContentSize;
 
+
+
+
+    public Sprite saveOfContentTexture;
+    public Sprite whenNewItemReplaceTextureWithThat;
+
+
     [Header("Other")]
     public Transform cursor;
     public GameObject itemThrowed;
@@ -43,13 +50,14 @@ public class ButtonSpawnItem : MonoBehaviour
 
     void Start()
     {
+        Image itemPrefabActualImage = gbForShowingContent.GetComponent<Image>();
+        saveOfContentTexture = itemPrefabActualImage.sprite;
 
 
         // Mettre à jour la taille de la preview
         if((itemPrefab.tag != "BiggerPotion" || itemPrefab.tag != "ShrinkPotion" || itemPrefab.tag != "StrangePotion" || itemPrefab.tag != "ClonePotion") && gameObject.transform.childCount != 0)
         {
-            Image sizeOfThePicture = gbForShowingContent.GetComponent<Image>(); // Texture de l'item
-            imageContentSize.sizeDelta = new Vector2(sizeOfThePicture.sprite.texture.width*1.35f, sizeOfThePicture.sprite.texture.height*1.35f); // *1.35 pour aggrandi un peu
+            imageContentSize.sizeDelta = new Vector2(itemPrefabActualImage.sprite.texture.width*1.35f, itemPrefabActualImage.sprite.texture.height*1.35f); // *1.35 pour aggrandi un peu
         }
     }
 
@@ -173,7 +181,22 @@ public class ButtonSpawnItem : MonoBehaviour
             feedbacksContentHide.StopFeedbacks();
         }
 
+
+        Image itemPrefabActualTexture = gbForShowingContent.GetComponent<Image>();
+        if(GameManager.instance.AlreadyUsedItem[itemscript.itemID] == true)
+        {
+            itemPrefabActualTexture.sprite = saveOfContentTexture;
+            imageContentSize.sizeDelta = new Vector2(itemPrefabActualTexture.sprite.texture.width*1.35f, itemPrefabActualTexture.sprite.texture.height*1.35f);
+        }
+        else
+        {
+            itemPrefabActualTexture.sprite = whenNewItemReplaceTextureWithThat;
+            imageContentSize.sizeDelta = new Vector2(itemPrefabActualTexture.sprite.texture.width*1.35f, itemPrefabActualTexture.sprite.texture.height*1.35f);
+        }
+
         feedbacksContentShow.PlayFeedbacks();
+
+        
         
     }
     public void HidingContentIfPossible() // Ajouter condition de quand ç'est possible

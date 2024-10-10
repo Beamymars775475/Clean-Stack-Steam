@@ -35,7 +35,9 @@ public class MouseMovements : MonoBehaviour
 
     public GameObject inventory;
 
-    public Transform Tables;
+    public Transform tables; // Pour les tables
+
+    public Transform spaceForFullItems; // Pour les clones
 
 
 
@@ -99,7 +101,11 @@ public class MouseMovements : MonoBehaviour
                 GameManager.instance.canAccessToInventory = true;
                 if(moveThis.tag == "itemTable")
                 {
-                    moveThis.SetParent(Tables);
+                    moveThis.SetParent(tables);
+                }
+                else if(moveThis.tag == "ReadyToExplode")
+                {
+                    moveThis.SetParent(spaceForFullItems);
                 }
             }
         }

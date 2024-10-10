@@ -46,17 +46,21 @@ public class ButtonSpawnItem : MonoBehaviour
 
     public bool isDelivered;
 
+
+    public int typeOfBox; // 0 : Basic --- 1 : Table --- 2 : Hard | NOT FOR POTIONS
+
     
 
     void Start()
     {
-        Image itemPrefabActualImage = gbForShowingContent.GetComponent<Image>();
-        saveOfContentTexture = itemPrefabActualImage.sprite;
 
-
-        // Mettre à jour la taille de la preview
+        // Mettre à jour la taille de la preview et save l'image de base
         if((itemPrefab.tag != "BiggerPotion" || itemPrefab.tag != "ShrinkPotion" || itemPrefab.tag != "StrangePotion" || itemPrefab.tag != "ClonePotion") && gameObject.transform.childCount != 0)
         {
+            Image itemPrefabActualImage = gbForShowingContent.GetComponent<Image>();
+            saveOfContentTexture = itemPrefabActualImage.sprite;
+
+
             imageContentSize.sizeDelta = new Vector2(itemPrefabActualImage.sprite.texture.width*1.35f, itemPrefabActualImage.sprite.texture.height*1.35f); // *1.35 pour aggrandi un peu
         }
     }
@@ -67,25 +71,30 @@ public class ButtonSpawnItem : MonoBehaviour
         if(itemPrefab.tag == "BiggerPotion" && itemThrowed.transform.childCount <= 0)
         {
             itemscript.txtName = "<color=#DD3737><wave>Red Potion</wave></color>";
-            itemscript.txtDescription = "You can use this potion on a object to trigger <wave>weird</wave> things ! ";
+            itemscript.txtDescription = "You can't use this potion at the moment.";
         }
 
         else if(itemPrefab.tag == "ShrinkPotion" && itemThrowed.transform.childCount <= 0)
         {
             itemscript.txtName = "<color=#0097FF><wave>Blue Potion</wave></color>";
-            itemscript.txtDescription = "You can use this potion on a object to trigger <wave>weird</wave> things ! ";
+            itemscript.txtDescription = "You can't use this potion at the moment.";
         }
 
         else if(itemPrefab.tag == "StrangePotion" && itemThrowed.transform.childCount <= 0)
         {
             itemscript.txtName = "<color=#1b9115><wave>Green Potion</wave></color>";
-            itemscript.txtDescription = "You can use this potion on a object to trigger <wave>weird</wave> things ! ";
+            itemscript.txtDescription = "You can't use this potion at the moment.";
         }
 
         else if(itemPrefab.tag == "ClonePotion" && itemThrowed.transform.childCount <= 0)
         {
             itemscript.txtName = "<color=#8100FF><wave>Purple Potion</wave></color>";
-            itemscript.txtDescription = "You can use this potion on a object to trigger <wave>weird</wave> things ! ";
+            itemscript.txtDescription = "You can't use this potion at the moment.";
+        }
+        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion") && itemThrowed.transform.childCount > 0)
+        {
+            Debug.Log(itemPrefab.tag);
+            itemscript.txtDescription = "You can use this potion on a object but <shake a=2>DON'T</shake> drink it.";
         }
 
         if(canBeDestroy && isLoadingAnimation == false)
@@ -163,7 +172,9 @@ public class ButtonSpawnItem : MonoBehaviour
     {
         if(isLoadingAnimation == false)
         {
+            animator.StopPlayback();
             isLoadingAnimation = true;
+
             animator.SetTrigger("StartAnimBox");
             yield return new WaitForSeconds(cooldown);
 
@@ -183,7 +194,7 @@ public class ButtonSpawnItem : MonoBehaviour
 
 
         Image itemPrefabActualTexture = gbForShowingContent.GetComponent<Image>();
-        if(GameManager.instance.AlreadyUsedItem[itemscript.itemID] == true)
+        if(GameManager.instance.AlreadyUsedItem[itemscript.itemID] == true && GameManager.instance.modeHard == false)
         {
             itemPrefabActualTexture.sprite = saveOfContentTexture;
             imageContentSize.sizeDelta = new Vector2(itemPrefabActualTexture.sprite.texture.width*1.35f, itemPrefabActualTexture.sprite.texture.height*1.35f);
@@ -196,9 +207,8 @@ public class ButtonSpawnItem : MonoBehaviour
 
         feedbacksContentShow.PlayFeedbacks();
 
-        
-        
     }
+
     public void HidingContentIfPossible() // Ajouter condition de quand ç'est possible
     {
         if(feedbacksContentShow.IsPlaying)

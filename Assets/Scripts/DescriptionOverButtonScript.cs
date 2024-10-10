@@ -94,20 +94,18 @@ public class DescriptionOverButtonScript : MonoBehaviour
 
             textNameContent.text = GameManager.instance.currentTextName;
 
-
-            if(GameManager.instance.AlreadyUsedItem[buttonSpawnItemBox.itemscript.itemID] == true) // Si on connaît l'item
+            if(GameManager.instance.modeHard) // Mode Hard
+            {
+                textNameContent.text = "<shake>????</shake>";
+                textDescriptionContent.text = "<incr>????????????????????????????????????????????????????????????????????????????????????</incr>";
+            }
+            else if(GameManager.instance.AlreadyUsedItem[buttonSpawnItemBox.itemscript.itemID] == true) // Si on connaît l'item
             {
                 textDescriptionContent.text = GameManager.instance.currentTextDescription;
             }
-            else // Si on connait pas l'item
+            else // Connaît pas encore l'item mais pas non plsu en hardcore
             {
-                textDescriptionContent.text = "????????????";
-            }
-
-            if(GameManager.instance.modeHard) // Mode Hard
-            {
-                textNameContent.text = "????";
-                textDescriptionContent.text = "????????????";
+                textDescriptionContent.text = "<incr>??????????????</incr>";                
             }
                 
 

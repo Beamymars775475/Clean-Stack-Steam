@@ -28,15 +28,26 @@ public class LevelInventoryManager : MonoBehaviour
 
 
     [Header("-----Level Inventory Manager-----")]
+
+    [Header("---Type of boxes---")]
     public GameObject classicBox;
+    public GameObject blueBox;
+    public GameObject hardBox;
     public GameObject classicPotion;
     public GameObject[] listOfItemsOfTheLevel;
     public GameObject[] listOfPotionOfTheLevel;
 
     public GameObject inventoryParent;
 
+    [Header("-----Hard mode : Textures-----")]
+
+    public Sprite hardModTextureBox;
+    public Sprite hardModTexturePotion;
+
+
 
     public int indexSpawningItems;
+
 
 
     void InvItemsShuffle(GameObject[] gbs)
@@ -57,11 +68,25 @@ public class LevelInventoryManager : MonoBehaviour
         InvItemsShuffle(listOfPotionOfTheLevel);
         
         indexSpawningItems = 0;
-        foreach (GameObject gbItemPrefab in listOfItemsOfTheLevel)
+        foreach (GameObject gbItemPrefab in listOfItemsOfTheLevel) // BOITE
         {
 
-            Debug.Log("Bou!!!");
-            GameObject newPrefab = Instantiate(classicBox);
+            Debug.Log(gbItemPrefab.name + " created"); // Affichage dans la console
+
+            GameObject newPrefab = null;
+            if(GameManager.instance.modeHard)
+            {
+                newPrefab = Instantiate(hardBox);
+            }
+            else if(gbItemPrefab.tag == "itemTable")
+            {
+                newPrefab = Instantiate(blueBox);
+            }
+            else
+            {
+                newPrefab = Instantiate(classicBox);
+            }
+            
 
             newPrefab.transform.SetParent(inventoryParent.transform);
             newPrefab.transform.SetAsFirstSibling(); // Pour mettre la description devant les items
@@ -75,10 +100,20 @@ public class LevelInventoryManager : MonoBehaviour
             gbShowingContentTexture.sprite = newTexture.sprite; // Appliquer
 
 
+
+            // Changer la texture uniquement si hardmode
+            Image oldTexture = newPrefab.GetComponent<Image>();
+            if(GameManager.instance.modeHard)
+            {
+                oldTexture.sprite = hardModTextureBox;
+            }
+
+
             // Prefab infos
             ButtonSpawnItem buttonSpawnItemPrefab = newPrefab.GetComponent<ButtonSpawnItem>();
             buttonSpawnItemPrefab.itemPrefab = gbItemPrefab;
             buttonSpawnItemPrefab.feedbacksInventory = feedbacksInventory;
+
 
             // Feedbacks when opening (closing)
             RectTransform rectTransformPrefab = newPrefab.GetComponentInChildren<RectTransform>();
@@ -97,7 +132,7 @@ public class LevelInventoryManager : MonoBehaviour
 
 
             EventTrigger evTrig = newPrefab.GetComponent<EventTrigger>();
-            EventTrigger.Entry enterEvent = new EventTrigger.Entry()
+            EventTrigger.Entry enterEvent = new EventTrigger.Entry() // Animattion preview entrée
             {
                 eventID = EventTriggerType.PointerEnter
             };
@@ -106,7 +141,7 @@ public class LevelInventoryManager : MonoBehaviour
             
 
 
-            EventTrigger.Entry exitEvent = new EventTrigger.Entry()
+            EventTrigger.Entry exitEvent = new EventTrigger.Entry() // Animattion preview sortie
             {
                 eventID = EventTriggerType.PointerExit
             };
@@ -124,16 +159,16 @@ public class LevelInventoryManager : MonoBehaviour
             buttonSpawnItemPrefab.cursor = cursor;
             buttonSpawnItemPrefab.itemThrowed = itemThrowed;
             buttonSpawnItemPrefab.feedbacksBox = feedbacksBox;
-            buttonSpawnItemPrefab.animator = newPrefab.GetComponent<Animator>(); // Il a pas d'animator, à check
+            buttonSpawnItemPrefab.animator = newPrefab.GetComponent<Animator>();
 
 
             indexSpawningItems++; // Pour le calcul de la position on incrémente de 1
         }
         
         indexSpawningItems = 0;
-        foreach (GameObject gbPotionPrefab in listOfPotionOfTheLevel)
+        foreach (GameObject gbPotionPrefab in listOfPotionOfTheLevel) // POTION
         {
-            Debug.Log("Bou!!!");
+            Debug.Log(gbPotionPrefab.name + " created"); // Affichage dans la console
             GameObject newPrefab = Instantiate(classicPotion);
 
             newPrefab.transform.SetParent(inventoryParent.transform);
@@ -154,7 +189,15 @@ public class LevelInventoryManager : MonoBehaviour
             Image oldTexture = newPrefab.GetComponent<Image>();
             SpriteRenderer newTexture = gbPotionPrefab.GetComponent<SpriteRenderer>(); // Prendre la gueule de la preview
             oldTexture.color = Color.white;
-            oldTexture.sprite = newTexture.sprite; // Appliquer
+            if(GameManager.instance.modeHard)
+            {
+                oldTexture.sprite = hardModTexturePotion;
+            }
+            else
+            {
+                oldTexture.sprite = newTexture.sprite;
+            }
+
 
 
 
@@ -179,7 +222,7 @@ public class LevelInventoryManager : MonoBehaviour
             };
             enterEvent.callback.AddListener((eventData) => descriptionOverButtonScript.WhenOnUI((BaseEventData)eventData, rectTransformPrefab));
             evTrig.triggers.Add(enterEvent);
-            
+
 
 
             EventTrigger.Entry exitEvent = new EventTrigger.Entry()
@@ -194,6 +237,7 @@ public class LevelInventoryManager : MonoBehaviour
 
             itemScript newItemPrefabContentItemScript = gbPotionPrefab.GetComponent<itemScript>(); // Le script du contenu de la boîte
             buttonSpawnItemPrefab.itemscript = newItemPrefabContentItemScript;
+
 
 
             // Other

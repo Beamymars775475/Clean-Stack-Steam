@@ -20,7 +20,7 @@ public class LevelLoader : MonoBehaviour
 
     void Update()
     {
-        if(GameManager.instance.goNextFloor == true)
+        if(GameManager.instance.goNextFloor == true) // A voir
         {
             LoadNextLevel();
             GameManager.instance.goNextFloor = false;
@@ -70,7 +70,7 @@ public class LevelLoader : MonoBehaviour
     public void LoadMenu()
     {
         StartCoroutine(LoadLevel("Mainscene"));
-        GameManager.instance.isInventoryOpen = true;
+        GameManager.instance.isInventoryOpen = true; // ?
     }
 
     public void LoadSameScene()
@@ -96,6 +96,11 @@ public class LevelLoader : MonoBehaviour
         }
     }
 
+    public void LoadThisSceneWithAnimation(string nameOfScene)
+    {
+        StartCoroutine(LoadLevel(nameOfScene));
+    }
+
     IEnumerator LoadLevel(string levelIndex) // levelIndex c'est le niveau qu'on va lancer
     {
         transition.SetTrigger("Start");
@@ -106,7 +111,7 @@ public class LevelLoader : MonoBehaviour
 
 
         AudioSource audio = GameManager.instance.GetComponent<AudioSource>();
-        if((SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "LevelSelectorScene") && (levelIndex == "Mainscene" || levelIndex == "LevelSelectorScene")) // Pas d'anim entre ces 2 scènes
+        if(SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "LevelSelectorScene" && (levelIndex == "Mainscene" || levelIndex == "LevelSelectorScene") || levelIndex == "BestiaryScene") // Pas d'anim entre ces 2 scènes
         {
             if(audio.clip != musicMain)
             {

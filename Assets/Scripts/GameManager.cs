@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour
     public string currentTextName;
     public string currentTextDescription;
 
-    public string currentColor;
-
     public bool needImageDark;
 
 
@@ -70,6 +68,10 @@ public class GameManager : MonoBehaviour
     [Header("Bestiary")]
 
     public bool[] AlreadyUsedItem;
+
+    [Header("Dialogues")]
+
+    public bool isInDialogueWithMonster;
 
 // Compter tout les True de complete pour unlock les niveaux 4, 5 et 6 puis 7 quand tout fini
 

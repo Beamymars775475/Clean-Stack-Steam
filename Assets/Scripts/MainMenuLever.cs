@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.SceneManagement;
 
 public class MainMenuLever : MonoBehaviour
 {
@@ -16,6 +16,8 @@ public class MainMenuLever : MonoBehaviour
     public bool needToSpawnButtons;
 
     public SmallAnimationMainMenuScript mainMenuSpawners;
+
+    public LevelLoader levelLoader;
 
     
     void Start()
@@ -76,12 +78,12 @@ public class MainMenuLever : MonoBehaviour
 
         if(rayHit.collider.gameObject.tag == "ButtonSettings")
         {
-            Debug.Log("Settings");
+            levelLoader.LoadThisSceneWithAnimation("SettingsScene");
         }
 
         if(rayHit.collider.gameObject.tag == "ButtonFreeSpace")
         {
-            Debug.Log("Bestiary");
+            levelLoader.LoadThisSceneWithAnimation("BestiaryScene");
         }
 
 

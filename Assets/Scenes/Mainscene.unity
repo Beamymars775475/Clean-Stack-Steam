@@ -615,6 +615,7 @@ MonoBehaviour:
   shelfForButtonsMenu: {fileID: 1539530580}
   needToSpawnButtons: 0
   mainMenuSpawners: {fileID: 622145256}
+  levelLoader: {fileID: 255899960}
 --- !u!114 &386583415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3045,22 +3046,25 @@ MonoBehaviour:
   currentTextName: 
   currentTextDescription: 
   currentColor: 
-  goNextFloor: 0
-  forceToCloseDescription: 0
-  canAccessToInventory: 0
   needImageDark: 0
+  forceToCloseDescription: 0
+  animationInventoryIsDone: 0
+  canAccessToInventory: 0
   isCountDownOn: 0
   isWon: 0
   currentLevel: 0
   isGameOver: 0
   isNeedToStuckUI: 0
   levelsState: 
+  goNextFloor: 0
   FirstLaunch: 0
   waitUntilFirstObject: 0
   isDelivered2: 0
   activeStrangePotion: 0
+  AlreadyUsedItem: 
   feedbacksOpen: {fileID: 3746660561735912784}
   feedbacksClose: {fileID: 3840088424792921730}
+  modeHard: 0
 --- !u!4 &1842494504
 Transform:
   m_ObjectHideFlags: 0

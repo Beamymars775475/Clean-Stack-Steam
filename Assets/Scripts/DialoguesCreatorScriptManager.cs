@@ -88,7 +88,7 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
     {
 
 
-
+        canPlayerCloseDialogue = false;
         GameManager.instance.isInDialogueWithMonster = true;
         moveCreatorToScreenFeedbacks1.PlayFeedbacks();
 
@@ -96,12 +96,6 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
         {
             shadow.SetActive(true);
         }
-
-        // Setup
-        typewriterByCharacterMainText.StartShowingText();
-        typewriterByCharacterMainText.waitForNormalChars = 0.04f;
-        typewriterByCharacterMainText.waitLong = 0.6f;
-        typewriterByCharacterMainText.waitMiddle = 0.2f;
 
 
     }
@@ -113,7 +107,14 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
 
         soundsPerChar = 2;
 
+        // Setup
+        typewriterByCharacterMainText.StartShowingText();
+        typewriterByCharacterMainText.waitForNormalChars = 0.04f;
+        typewriterByCharacterMainText.waitLong = 0.6f;
+        typewriterByCharacterMainText.waitMiddle = 0.2f;
+
         WriteNextDialogue();
+
     }
 
 

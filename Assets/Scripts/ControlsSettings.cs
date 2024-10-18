@@ -5,17 +5,37 @@ using UnityEngine;
 
 public class ControlsSettings : MonoBehaviour
 {
-    private int stateControls = 2; // 0->Space 1->Click 2->Mouse Over (Default)
+    [Header("Controls")]
 
-    public GameObject buttonSelectorViewer;
+    public GameObject buttonSelectorViewerControlPreferences;
+    public Transform[] differentPos1;
 
-    public Transform[] differentPos;
+    public TextMeshProUGUI textToChangeControlPreferences;
 
-    public TextMeshProUGUI textToChange;
+    [Header("Inventory Apparence")]
+
+    public GameObject buttonSelectorViewerInv;
+
+    public Transform[] differentPos2;
+
+    public TextMeshProUGUI textToChangeInv;
 
     void Start()
     {
-        buttonSelectorViewer.transform.position = differentPos[stateControls].position;
+        buttonSelectorViewerControlPreferences.transform.position = differentPos1[GameManager.instance.controlsPreference].position;
+
+        if(GameManager.instance.isTransparencyNeeded == true)
+        {
+            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
+            textToChangeInv.text = "On";
+        }
+        else
+        {
+            buttonSelectorViewerInv.transform.position = differentPos2[1].position;
+            textToChangeInv.text = "Off";
+        }
+
+
     }
 
 
@@ -24,25 +44,46 @@ public class ControlsSettings : MonoBehaviour
         
     }
 
-    public void ClickOnSelector()
+    public void ClickOnSelectorControls() // Bouton du haut
     {
-        if (stateControls == 0)
+        if (GameManager.instance.controlsPreference == 0)
         {
-            stateControls = 1;
-            textToChange.text = "Click";
+            GameManager.instance.controlsPreference = 1;
+            textToChangeControlPreferences.text = "Click";
         }
-        else if(stateControls == 1)
+        else if(GameManager.instance.controlsPreference == 1)
         {
-            stateControls = 2;
-            textToChange.text = "Mouse Over";
+            GameManager.instance.controlsPreference = 2;
+            textToChangeControlPreferences.text = "MouseOver";
         }
         else
         {
-            stateControls = 0;
-            textToChange.text = "Space";
+            GameManager.instance.controlsPreference = 0;
+            textToChangeControlPreferences.text = "Space";
         }
-        buttonSelectorViewer.transform.position = differentPos[stateControls].position;
+        buttonSelectorViewerControlPreferences.transform.position = differentPos1[GameManager.instance.controlsPreference].position;
+    }
 
+    public void ClickOnSelectorInvTransparency() // Bouton du bas
+    {
+        if (GameManager.instance.isTransparencyNeeded == true)
+        {
+            GameManager.instance.isTransparencyNeeded = false;
+            textToChangeInv.text = "Off";
+        }
+        else
+        {
+            GameManager.instance.isTransparencyNeeded = true;
+            textToChangeInv.text = "On";
+        }
 
+        if(GameManager.instance.isTransparencyNeeded == true)
+        {
+            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
+        }
+        else
+        {
+            buttonSelectorViewerInv.transform.position = differentPos2[1].position;
+        }
     }
 }

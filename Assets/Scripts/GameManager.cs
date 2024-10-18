@@ -78,6 +78,11 @@ public class GameManager : MonoBehaviour
     public MMF_Player feedbacksOpen; // Anim du son
     public MMF_Player feedbacksClose;
 
+    [Header("Preferences")]
+
+    public int controlsPreference = 2; // 0->Space 1->Click 2->Mouse Over (Default)
+    public bool isTransparencyNeeded;
+
 
     public bool modeHard;
 

@@ -45,7 +45,7 @@ public class LevelInventoryManager : MonoBehaviour
     public Sprite hardModTextureBox;
     public Sprite hardModTexturePotion;
 
-    [Header("Bestiary Scene")]
+    [Header("Bestiary Scene (NOT NEEDED)")]
 
     public BestiaryItemManager bestiaryItemManager;
 
@@ -54,6 +54,10 @@ public class LevelInventoryManager : MonoBehaviour
     public Transform placeToPutFullItems;
 
     public int indexSpawningItems;
+
+    [Header("Preferences")]
+
+    public Image inv; // To change Transparency
 
 
 
@@ -71,6 +75,12 @@ public class LevelInventoryManager : MonoBehaviour
 
     void Start()
     {
+        if(GameManager.instance.isTransparencyNeeded)
+        {
+            inv.color = new Color(inv.color.r, inv.color.g, inv.color.b, 0.90f);
+            Debug.Log(inv.color);
+        }
+
         InvItemsShuffle(listOfItemsOfTheLevel);
         InvItemsShuffle(listOfPotionOfTheLevel);
         

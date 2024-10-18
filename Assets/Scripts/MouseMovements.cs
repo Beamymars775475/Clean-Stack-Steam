@@ -5,6 +5,7 @@ using MoreMountains.Feedbacks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class MouseMovements : MonoBehaviour
 {
@@ -38,7 +39,6 @@ public class MouseMovements : MonoBehaviour
     public Transform tables; // Pour les tables
 
     public Transform spaceForFullItems; // Pour les clones
-
 
     void Start()
     {
@@ -109,12 +109,16 @@ public class MouseMovements : MonoBehaviour
             }
         }
 
-        // Pour ouvrir l'inventaire
-        if(mouse.y<115f && GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 1 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+        // Pour ouvrir l'inventaire -> SI MODE 3
+        if((GameManager.instance == mouse.y<115f && GameManager.instance.controlsPreference == 2) || (Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 1))
         {
-            GameManager.instance.isInventoryOpen = true;
-            feedbacksInventory.PlayFeedbacks();
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 1 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            {
+                GameManager.instance.isInventoryOpen = true;
+                feedbacksInventory.PlayFeedbacks();
+            }
         }
+
 
 
         if(inventory.transform.childCount < 2 && GameManager.instance.isCountDownOn == false && gameObject.transform.childCount == 0) // Condition de Win
@@ -155,4 +159,16 @@ public class MouseMovements : MonoBehaviour
         GameManager.instance.animationInventoryIsDone = true;
     }
     
+
+    public void OnClick() // When preference click on Inventory
+   {
+       if(GameManager.instance.controlsPreference == 0)
+       {
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 1 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            {
+                GameManager.instance.isInventoryOpen = true;
+                feedbacksInventory.PlayFeedbacks();
+            }
+       }
+   }
 }

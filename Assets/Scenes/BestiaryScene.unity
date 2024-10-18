@@ -1237,7 +1237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1951,6 +1951,8 @@ MonoBehaviour:
   isInDialogueWithMonster: 0
   feedbacksOpen: {fileID: 0}
   feedbacksClose: {fileID: 0}
+  controlsPreference: 2
+  isTransparencyNeeded: 0
   modeHard: 0
 --- !u!4 &580560499
 Transform:
@@ -4269,6 +4271,7 @@ MonoBehaviour:
   bestiaryItemManager: {fileID: 2001068115}
   placeToPutFullItems: {fileID: 647508200}
   indexSpawningItems: 0
+  inv: {fileID: 0}
 --- !u!4 &1472979739
 Transform:
   m_ObjectHideFlags: 0

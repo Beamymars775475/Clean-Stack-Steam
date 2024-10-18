@@ -27,6 +27,7 @@ TagManager:
   - ClonePotion
   - Cloned(Not More Usable)
   - Cursor
+  - Inventory
   layers:
   - Default
   - TransparentFX

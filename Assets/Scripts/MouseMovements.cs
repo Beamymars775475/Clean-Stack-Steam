@@ -40,7 +40,6 @@ public class MouseMovements : MonoBehaviour
     public Transform spaceForFullItems; // Pour les clones
 
 
-
     void Start()
     {
         feedbacksInventory.PlayFeedbacks();

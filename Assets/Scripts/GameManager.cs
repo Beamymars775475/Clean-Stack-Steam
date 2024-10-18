@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         // Faudra Save
         levelsState = new bool[65];
 
-        AlreadyUsedItem = new bool[10];
+        AlreadyUsedItem = new bool[35];
 
         
     }

@@ -4,6 +4,7 @@ using MoreMountains.Feedbacks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ButtonSpawnItem : MonoBehaviour
 {
@@ -49,6 +50,9 @@ public class ButtonSpawnItem : MonoBehaviour
 
     public int typeOfBox; // 0 : Basic --- 1 : Table --- 2 : Hard | NOT FOR POTIONS
 
+    [Header("Bestiary Scene")]
+    public BestiaryItemManager bestiaryItemManager;
+
     
 
     void Start()
@@ -93,20 +97,20 @@ public class ButtonSpawnItem : MonoBehaviour
         }
         else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion") && itemThrowed.transform.childCount > 0)
         {
-            Debug.Log(itemPrefab.tag);
             itemscript.txtDescription = "You can use this potion on a object but <shake a=2>DON'T</shake> drink it.";
         }
 
-        if(canBeDestroy && isLoadingAnimation == false)
+        if((canBeDestroy && isLoadingAnimation == false))
         {
             Destroy(gameObject);
         }
+
 
     }
 
     public void CatchAObject()
     {
-        if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable" ) && GameManager.instance.isInventoryOpen == true && isDelivered == false)
+        if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable" ) && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
         {
             Debug.Log("a");
             GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -116,7 +120,21 @@ public class ButtonSpawnItem : MonoBehaviour
             GameManager.instance.animationInventoryIsDone = false; // L'animation commence
             GameManager.instance.isInventoryOpen = false;
             GameManager.instance.forceToCloseDescription = true;
-            isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
+            
+            if(SceneManager.GetActiveScene().name != "BestiaryScene")
+            {
+                isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
+            }
+
+
+            if(bestiaryItemManager != null)
+            {
+                itemScript prefabItemScript = prefab.GetComponent<itemScript>();
+                prefabItemScript.bestiaryItemManager = bestiaryItemManager;
+
+                bestiaryItemManager.limitItemsAmount++;
+                bestiaryItemManager.UpdateLimit();
+            }
 
             GameManager.instance.canAccessToInventory = false;
 
@@ -129,7 +147,7 @@ public class ButtonSpawnItem : MonoBehaviour
         }
 
         // Permet de sortir les potions de l'inventaire
-        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion") && itemThrowed.transform.childCount > 0)
+        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion") && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
         {
             GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             Transform prefabTransform = prefab.GetComponent<Transform>();
@@ -139,11 +157,25 @@ public class ButtonSpawnItem : MonoBehaviour
             GameManager.instance.isInventoryOpen = false;
             GameManager.instance.forceToCloseDescription = true;
 
-            isDelivered = true;
+            if(SceneManager.GetActiveScene().name != "BestiaryScene")
+            {
+                isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
+            }
+
+            if(bestiaryItemManager != null)
+            {
+                itemScript prefabItemScript = prefab.GetComponent<itemScript>();
+                prefabItemScript.bestiaryItemManager = bestiaryItemManager;
+            }
+
 
             GameManager.instance.canAccessToInventory = false;
 
-            Destroy(gameObject);
+            if(SceneManager.GetActiveScene().name != "BestiaryScene")
+            {
+                Destroy(gameObject);
+            }
+
 
 
         }
@@ -176,10 +208,19 @@ public class ButtonSpawnItem : MonoBehaviour
             isLoadingAnimation = true;
 
             animator.SetTrigger("StartAnimBox");
+
             yield return new WaitForSeconds(cooldown);
 
             isLoadingAnimation = false;
-            canBeDestroy = true;
+
+            if(SceneManager.GetActiveScene().name != "BestiaryScene")
+            {
+                canBeDestroy = true;
+            }
+            else
+            {
+                animator.SetTrigger("StartBackIdleState");
+            }
         }
     }
 
@@ -218,4 +259,5 @@ public class ButtonSpawnItem : MonoBehaviour
 
         feedbacksContentHide.PlayFeedbacks();
     }
+
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class itemScript : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class itemScript : MonoBehaviour
 
     public MMF_Player explosionFeedbacks;
     public MMF_Player explosionFlickerFeedbacks;
+
+
+    [Header("Bestiary Scene")]
+    public BestiaryItemManager bestiaryItemManager;
+
+    public bool touchedGroundOnce; // Son pour avoir toucher le sol !!!
 
     // Start is called before the first frame update
     void Start()
@@ -50,9 +57,28 @@ public class itemScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D _col)
     {
-        if(_col.gameObject.tag == "deadArea" && (gameObject.tag == "item" || gameObject.tag == "CantAcceptPotions"))
+        // All variations of states of item
+        if(_col.gameObject.tag == "deadArea" && (gameObject.tag == "item" || gameObject.tag == "Shrinkitem" || gameObject.tag == "BiggerItem" || gameObject.tag == "ReadyToExplode" || gameObject.tag == "Exploded" || gameObject.tag == "Cloned(Not More Usable)" || gameObject.tag == "CantAcceptPotions")) 
         {
-            GameManager.instance.isGameOver = true;
+            if(bestiaryItemManager == null)
+            {
+                GameManager.instance.isGameOver = true;
+            }
+            else
+            {
+                if(bestiaryItemManager.deleteItemsOnGround == true)
+                {
+                    Destroy(gameObject); // Meilleur effet ?
+                    bestiaryItemManager.limitItemsAmount--;
+                    bestiaryItemManager.UpdateLimit();
+                }
+                else
+                {
+                    // Son ?
+                }
+
+            }
+            
         }
 
         if(_col.gameObject.tag == "nextArea" && (gameObject.tag == "item" || gameObject.tag == "CantAcceptPotions"))

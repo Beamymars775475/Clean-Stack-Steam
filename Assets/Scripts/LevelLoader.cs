@@ -109,9 +109,8 @@ public class LevelLoader : MonoBehaviour
 
         yield return new WaitForSeconds (transitionTime);
 
-
         AudioSource audio = GameManager.instance.GetComponent<AudioSource>();
-        if(SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "LevelSelectorScene" && (levelIndex == "Mainscene" || levelIndex == "LevelSelectorScene") || levelIndex == "BestiaryScene") // Pas d'anim entre ces 2 scènes
+        if(SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "LevelSelectorScene" && (levelIndex == "Mainscene" || levelIndex == "LevelSelectorScene")) // Pas d'anim entre ces 2 scènes
         {
             if(audio.clip != musicMain)
             {
@@ -133,6 +132,13 @@ public class LevelLoader : MonoBehaviour
         }
 
         else if(SceneManager.GetActiveScene().name != "LevelSelectorScene" && SceneManager.GetActiveScene().name != "Mainscene" && (levelIndex != "Mainscene" || levelIndex != "LevelSelectorScene"))
+        {
+            GameManager.instance.isInventoryOpen = true;
+            GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement
+        }
+
+
+        else if(SceneManager.GetActiveScene().name == "Mainscene" && levelIndex == "BestiaryScene")
         {
             GameManager.instance.isInventoryOpen = true;
             GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement

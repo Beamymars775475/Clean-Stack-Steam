@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IDataPersistence
 {
 
     public static GameManager instance {get; private set;}
@@ -82,8 +82,6 @@ public class GameManager : MonoBehaviour
 
     public int controlsPreference = 2; // 0->Space 1->Click 2->Mouse Over (Default)
     public bool isTransparencyNeeded;
-
-
     public bool modeHard;
 
 
@@ -92,14 +90,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         goNextFloor = false;
         currentLevel = 1;
-
-
-        // Faudra Save
-        levelsState = new bool[65];
-
-        AlreadyUsedItem = new bool[35];
-
-        
     }
 
 
@@ -121,5 +111,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
+
+    // ----------------- SAVE DATA -----------------
+
+    public void LoadData(GameData data)
+    {
+        AlreadyUsedItem = data.itemDiscovered;
+        levelsState = data.levelsDone;
+        modeHard = data.isHardMode;
+        controlsPreference = data.controlsChoice;
+        isTransparencyNeeded = data.isInvTransparent;
+        
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.itemDiscovered = AlreadyUsedItem;
+        data.levelsDone = levelsState;
+        data.isHardMode = modeHard;
+        data.controlsChoice = controlsPreference;
+        data.isInvTransparent = isTransparencyNeeded;
+    } 
 }

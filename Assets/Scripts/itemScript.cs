@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using MoreMountains.Feedbacks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +10,7 @@ public class itemScript : MonoBehaviour
 {
     
     [Header("ID")]
+
     public int itemID;
 
     [Header("Other")]
@@ -22,12 +25,17 @@ public class itemScript : MonoBehaviour
     [Header("Bestiary Scene")]
     public BestiaryItemManager bestiaryItemManager;
 
+    private bool needToDie;
+
     public bool touchedGroundOnce; // Son pour avoir toucher le sol !!!
 
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.instance.AlreadyUsedItem[itemID] = true;
+        if(SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "BestiaryScene" && SceneManager.GetActiveScene().name != "LevelSelectorScene")
+        {
+            GameManager.instance.AlreadyUsedItem[itemID] = true;
+        }
 
         txtName = "Banana :";
         txtDescription = "<rot> Banana. </rot>";
@@ -53,6 +61,13 @@ public class itemScript : MonoBehaviour
             }
         }
 
+        if(needToDie && bestiaryItemManager.deleteItemsOnGround == true)
+        {
+            Destroy(gameObject); // Meilleur effet ?
+            bestiaryItemManager.limitItemsAmount--;
+            bestiaryItemManager.UpdateLimit();
+        }
+
     }
 
     void OnCollisionEnter2D(Collision2D _col)
@@ -66,17 +81,7 @@ public class itemScript : MonoBehaviour
             }
             else
             {
-                if(bestiaryItemManager.deleteItemsOnGround == true)
-                {
-                    Destroy(gameObject); // Meilleur effet ?
-                    bestiaryItemManager.limitItemsAmount--;
-                    bestiaryItemManager.UpdateLimit();
-                }
-                else
-                {
-                    // Son ?
-                }
-
+                needToDie = true; // Il mourra la prochaine fois que le bouton mort est activé
             }
             
         }

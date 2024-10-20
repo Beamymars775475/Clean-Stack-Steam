@@ -75,7 +75,6 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadSameScene()
     {
-        Debug.Log("A");
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().name));
     }
 
@@ -110,19 +109,23 @@ public class LevelLoader : MonoBehaviour
         yield return new WaitForSeconds (transitionTime);
 
         AudioSource audio = GameManager.instance.GetComponent<AudioSource>();
-        if(SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "LevelSelectorScene" && (levelIndex == "Mainscene" || levelIndex == "LevelSelectorScene")) // Pas d'anim entre ces 2 scènes
+        if(levelIndex == "Mainscene" || levelIndex == "LevelSelectorScene" || levelIndex == "BestiaryScene" || levelIndex == "SettingsScene") // Pas de changement de son entre ces 2 scènes
         {
+            if(levelIndex == "BestiaryScene")
+            {
+                GameManager.instance.isInventoryOpen = true;
+                GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement                  
+            }
             if(audio.clip != musicMain)
             {
                 audio.clip = musicMain;
                 audio.Play();
             }
         }
-        else if(SceneManager.GetActiveScene().name == "LevelSelectorScene" && (levelIndex != "Mainscene" || levelIndex != "LevelSelectorScene"))
+        else if(SceneManager.GetActiveScene().name == "LevelSelectorScene" && levelIndex != "Mainscene")
         {
             if(audio.clip != musicLevels)
             {
-                Debug.Log("Veinti UNOOOO");
                 audio.clip = musicLevels;
                 audio.Play();
 
@@ -131,14 +134,7 @@ public class LevelLoader : MonoBehaviour
             }
         }
 
-        else if(SceneManager.GetActiveScene().name != "LevelSelectorScene" && SceneManager.GetActiveScene().name != "Mainscene" && (levelIndex != "Mainscene" || levelIndex != "LevelSelectorScene"))
-        {
-            GameManager.instance.isInventoryOpen = true;
-            GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement
-        }
-
-
-        else if(SceneManager.GetActiveScene().name == "Mainscene" && levelIndex == "BestiaryScene")
+        else if(levelIndex != "Mainscene" || levelIndex != "LevelSelectorScene" || levelIndex != "SettingsScene" )
         {
             GameManager.instance.isInventoryOpen = true;
             GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement
@@ -156,5 +152,10 @@ public class LevelLoader : MonoBehaviour
 
     }
 
+
+    public void GoBackToMainsceneFromBestiaryOrSettings()
+    {
+        StartCoroutine(LoadLevel("Mainscene"));
+    }
 
 }

@@ -86,4 +86,10 @@ public class ControlsSettings : MonoBehaviour
             buttonSelectorViewerInv.transform.position = differentPos2[1].position;
         }
     }
+
+
+    public void ClickOnDeleteData()
+    {
+        DataPersistenceManager.instance.ResetGame();
+    }
 }

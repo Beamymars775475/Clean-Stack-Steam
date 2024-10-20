@@ -2688,7 +2688,7 @@ MonoBehaviour:
   isInDialogueWithMonster: 0
   feedbacksOpen: {fileID: 0}
   feedbacksClose: {fileID: 0}
-  controlsPreference: 0
+  controlsPreference: 2
   isTransparencyNeeded: 0
   modeHard: 0
 --- !u!4 &580560499

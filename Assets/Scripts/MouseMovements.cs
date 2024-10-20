@@ -52,7 +52,7 @@ public class MouseMovements : MonoBehaviour
         Ray castPointmouse = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hitMouse;
         
-        if (gameObject.transform.childCount != 0 && (gameObject.transform.GetChild(0).tag == "item" || gameObject.transform.GetChild(0).tag == "itemTable" || gameObject.transform.GetChild(0).tag == "ReadyToExplode")) // ReadyToExplode for clones who have Strange potion effect 
+        if (gameObject.transform.childCount != 0 && (gameObject.transform.GetChild(0).tag == "item" || gameObject.transform.GetChild(0).tag == "itemTable" || gameObject.transform.GetChild(0).tag == "ReadyToExplode" || gameObject.transform.GetChild(0).tag == "BiggerItem" || gameObject.transform.GetChild(0).tag == "ShrinkItem")) // ReadyToExplode for clones who have Strange potion effect 
         {
             moveThis = gameObject.transform.GetChild(0);
             moveThisRigidbody = moveThis.GetComponent<Rigidbody2D>();
@@ -112,7 +112,7 @@ public class MouseMovements : MonoBehaviour
         // Pour ouvrir l'inventaire -> SI MODE 3
         if((GameManager.instance == mouse.y<115f && GameManager.instance.controlsPreference == 2) || (Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 1))
         {
-            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 1 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 2 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
             {
                 GameManager.instance.isInventoryOpen = true;
                 feedbacksInventory.PlayFeedbacks();
@@ -121,7 +121,7 @@ public class MouseMovements : MonoBehaviour
 
 
 
-        if(inventory.transform.childCount < 2 && GameManager.instance.isCountDownOn == false && gameObject.transform.childCount == 0) // Condition de Win
+        if(inventory.transform.childCount <= 2 && GameManager.instance.isCountDownOn == false && gameObject.transform.childCount == 0) // Condition de Win
         {
             StartCoroutine(CountDownUntilWin(5f));
         }

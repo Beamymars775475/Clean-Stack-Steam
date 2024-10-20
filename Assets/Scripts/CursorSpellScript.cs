@@ -186,7 +186,7 @@ public class CursorSpellScript : MonoBehaviour
        }   
 
 
-        else if (rayHit.collider.gameObject.tag != "Cloned(Not More Usable)" && gameObject.tag == "ClonePotion")
+        else if (rayHit.collider.gameObject.tag != "Cloned(Not More Usable)" && rayHit.collider.gameObject.tag != "CantAcceptPotions" && gameObject.tag == "ClonePotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(9).GetComponent<MMF_Player>(); // Devient Violet
            feedbacksItem.PlayFeedbacks();
@@ -222,7 +222,7 @@ public class CursorSpellScript : MonoBehaviour
 
         prefabCollider.isTrigger = true; // Désactiver les collisions pendant le vol
 
-        prefab.tag = "item"; // Remettre l'item par défaut
+        prefab.tag = prefabClone.tag; // Remettre l'item par défaut
 
         if(prefabClone.tag == "ReadyToExplode") // Si flicker de l'enfant actif
         {
@@ -244,11 +244,13 @@ public class CursorSpellScript : MonoBehaviour
         MMF_Player feedbacksItem = prefabTransform.GetChild(10).GetComponent<MMF_Player>(); // Animation item qui flotte
         feedbacksItem.PlayFeedbacks();
 
-        Debug.Log(GameObject.FindGameObjectsWithTag("Cursor")[0]);
-        GameObject[] cursorForNewItem = GameObject.FindGameObjectsWithTag("Cursor");
-        prefab.transform.SetParent(cursorForNewItem[0].transform); // Mettre dans cursor une fois l'animation finit
+        itemScript prefabItemScript = prefab.GetComponentInChildren<itemScript>();
+
+        prefabItemScript.WhenCloningDoneGoCursorParent();
+        //GameObject[] cursorForNewItem = GameObject.FindGameObjectsWithTag("Cursor"); // -> MAINTENANT ON FAIT DANS ITEMSCRIPT UNE FOIS FEEDBACK FINIT
+        //prefab.transform.SetParent(cursorForNewItem[0].transform); // Mettre dans cursor une fois l'animation finit
 
     }
 
-    
+
 }

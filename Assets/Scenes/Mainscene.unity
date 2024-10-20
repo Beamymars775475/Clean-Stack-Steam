@@ -238,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initializeDataIfNull: 1
   fileName: save.clgame
-  useEncryption: 0
+  useEncryption: 1
 --- !u!4 &236694280
 Transform:
   m_ObjectHideFlags: 0
@@ -2859,7 +2859,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1769651382}
   - component: {fileID: 1769651381}
-  - component: {fileID: 1769651380}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -2867,19 +2866,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &1769651380
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1769651379}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.6617916, y: 2.4602673, z: 0.2}
-  m_Center: {x: 0.83089554, y: 0.0042199558, z: 0}
 --- !u!212 &1769651381
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2941,7 +2927,7 @@ Transform:
   m_GameObject: {fileID: 1769651379}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.03, y: 4.2908, z: 0}
-  m_LocalScale: {x: 4, y: 4.5, z: 1}
+  m_LocalScale: {x: 4, y: 4.525, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1941003995}

@@ -407,7 +407,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1516092844}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelLoader, Assembly-CSharp
         m_MethodName: LoadMenu
         m_Mode: 1
@@ -1069,8 +1069,22 @@ PrefabInstance:
       propertyPath: m_TagString
       value: CantAcceptPotions
       objectReference: {fileID: 0}
+    - target: {fileID: 7267964343758079247, guid: 43a6bf71f77d8984bbb80e5698b5daae, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43a6bf71f77d8984bbb80e5698b5daae, type: 3}
+--- !u!224 &323315099 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7267964343758079247, guid: 43a6bf71f77d8984bbb80e5698b5daae, type: 3}
+  m_PrefabInstance: {fileID: 323315098}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &323315100 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7267964343758079246, guid: 43a6bf71f77d8984bbb80e5698b5daae, type: 3}
+  m_PrefabInstance: {fileID: 323315098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &343187088
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1184,7 @@ RectTransform:
   - {fileID: 181082966}
   - {fileID: 858340989}
   - {fileID: 865117391}
-  - {fileID: 1516092843}
+  - {fileID: 323315099}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2534,7 +2548,8 @@ MonoBehaviour:
     m_Bits: 0
   feedbacksInventory: {fileID: 1717868596}
   inventory: {fileID: 353457221}
-  Tables: {fileID: 1939732119}
+  tables: {fileID: 0}
+  spaceForFullItems: {fileID: 0}
 --- !u!4 &557383196
 Transform:
   m_ObjectHideFlags: 0
@@ -2582,19 +2597,28 @@ MonoBehaviour:
   isInventoryOpen: 0
   currentTextName: 
   currentTextDescription: 
-  currentColor: 
-  goNextFloor: 0
-  forceToCloseDescription: 0
-  canAccessToInventory: 0
   needImageDark: 0
+  forceToCloseDescription: 0
+  animationInventoryIsDone: 0
+  canAccessToInventory: 0
   isCountDownOn: 0
   isWon: 0
   currentLevel: 0
   isGameOver: 0
   isNeedToStuckUI: 0
+  levelsState: 
+  goNextFloor: 0
   FirstLaunch: 0
   waitUntilFirstObject: 0
   isDelivered2: 0
+  activeStrangePotion: 0
+  AlreadyUsedItem: 
+  isInDialogueWithMonster: 0
+  feedbacksOpen: {fileID: 0}
+  feedbacksClose: {fileID: 0}
+  controlsPreference: 2
+  isTransparencyNeeded: 0
+  modeHard: 0
 --- !u!4 &580560499
 Transform:
   m_ObjectHideFlags: 0
@@ -3314,9 +3338,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1516092844}
+      - m_Target: {fileID: 323315100}
         m_TargetAssemblyTypeName: LevelLoader, Assembly-CSharp
-        m_MethodName: LoadSameScene
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3449,7 +3473,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1516092844}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelLoader, Assembly-CSharp
         m_MethodName: NextScene
         m_Mode: 1
@@ -3678,22 +3702,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!224 &1516092843 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6150960723272535097, guid: 43a6bf71f77d8984bbb80e5698b5daae, type: 3}
-  m_PrefabInstance: {fileID: 323315098}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1516092844 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6150960723272535094, guid: 43a6bf71f77d8984bbb80e5698b5daae, type: 3}
-  m_PrefabInstance: {fileID: 323315098}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94b2a5a9810f3094abc56f79e7671676, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1589911831
 GameObject:
   m_ObjectHideFlags: 0
@@ -4709,15 +4717,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 3213121218807982025, guid: 234aeb96795ed044182b8fca3bdbfac9, type: 3}
-  cursor: {fileID: 557383196}
-  feedbacksInventory: {fileID: 313139079}
   itemscript: {fileID: 3213121218807982028, guid: 234aeb96795ed044182b8fca3bdbfac9, type: 3}
+  feedbacksInventory: {fileID: 313139079}
+  feedbacksContentShow: {fileID: 0}
+  feedbacksContentHide: {fileID: 0}
+  gbForShowingContent: {fileID: 0}
+  imageContentSize: {fileID: 0}
+  saveOfContentTexture: {fileID: 0}
+  whenNewItemReplaceTextureWithThat: {fileID: 0}
+  cursor: {fileID: 557383196}
   itemThrowed: {fileID: 13035032}
   feedbacksBox: {fileID: 4291955024713725515}
   animator: {fileID: 1924215379}
   isLoadingAnimation: 0
   canBeDestroy: 0
   isDelivered: 0
+  typeOfBox: 0
+  bestiaryItemManager: {fileID: 0}
 --- !u!114 &1924215382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5106,15 +5122,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 9191888268265316309, guid: ea6093d08511c964595b5a6c44da464f, type: 3}
-  cursor: {fileID: 557383196}
-  feedbacksInventory: {fileID: 313139079}
   itemscript: {fileID: 664775784302092249, guid: ea6093d08511c964595b5a6c44da464f, type: 3}
+  feedbacksInventory: {fileID: 313139079}
+  feedbacksContentShow: {fileID: 0}
+  feedbacksContentHide: {fileID: 0}
+  gbForShowingContent: {fileID: 0}
+  imageContentSize: {fileID: 0}
+  saveOfContentTexture: {fileID: 0}
+  whenNewItemReplaceTextureWithThat: {fileID: 0}
+  cursor: {fileID: 557383196}
   itemThrowed: {fileID: 13035032}
   feedbacksBox: {fileID: 4291955024713725515}
   animator: {fileID: 1992359887}
   isLoadingAnimation: 0
   canBeDestroy: 0
   isDelivered: 0
+  typeOfBox: 0
+  bestiaryItemManager: {fileID: 0}
 --- !u!114 &1992359890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5535,15 +5559,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 906074590753793326, guid: f21a8d7e095816a4ebeecef77a710231, type: 3}
-  cursor: {fileID: 557383196}
-  feedbacksInventory: {fileID: 313139079}
   itemscript: {fileID: 906074590753793312, guid: f21a8d7e095816a4ebeecef77a710231, type: 3}
+  feedbacksInventory: {fileID: 313139079}
+  feedbacksContentShow: {fileID: 0}
+  feedbacksContentHide: {fileID: 0}
+  gbForShowingContent: {fileID: 0}
+  imageContentSize: {fileID: 0}
+  saveOfContentTexture: {fileID: 0}
+  whenNewItemReplaceTextureWithThat: {fileID: 0}
+  cursor: {fileID: 557383196}
   itemThrowed: {fileID: 13035032}
   feedbacksBox: {fileID: 4291955024713725515}
   animator: {fileID: 2120992440}
   isLoadingAnimation: 0
   canBeDestroy: 0
   isDelivered: 0
+  typeOfBox: 0
+  bestiaryItemManager: {fileID: 0}
 --- !u!114 &2120992443
 MonoBehaviour:
   m_ObjectHideFlags: 0

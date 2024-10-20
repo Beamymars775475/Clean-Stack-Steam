@@ -110,12 +110,31 @@ public class ButtonSpawnItem : MonoBehaviour
 
     public void CatchAObject()
     {
-        if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable" ) && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
+
+        bool isGoodForStrangePotionoOrNo = false;
+        foreach (Transform child in itemThrowed.transform)
         {
-            Debug.Log("a");
+            if(child.tag == "item") // Oui ya un item sur lequel appliqué
+            {
+                isGoodForStrangePotionoOrNo = true;
+            }
+        }
+
+        if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable") && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
+        {
             GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             Transform prefabTransform = prefab.GetComponent<Transform>();
             prefabTransform.SetParent(cursor);
+
+            
+            if(itemPrefab.tag != "itemTable")
+            {
+                MMF_Player feedbackClone = prefab.transform.GetChild(10).GetComponent<MMF_Player>(); // Need to fill destination
+                MMF_DestinationTransform feedbackCloneDestionationFeedback = feedbackClone.GetFeedbackOfType<MMF_DestinationTransform>();
+                feedbackCloneDestionationFeedback.Destination = cursor;
+            }
+
+            
             feedbacksInventory.PlayFeedbacks();
             GameManager.instance.animationInventoryIsDone = false; // L'animation commence
             GameManager.instance.isInventoryOpen = false;
@@ -126,10 +145,12 @@ public class ButtonSpawnItem : MonoBehaviour
                 isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
             }
 
+            itemScript prefabItemScript = prefab.GetComponent<itemScript>();
+            prefabItemScript.cursor = cursor; // Pour le clonning
 
             if(bestiaryItemManager != null)
             {
-                itemScript prefabItemScript = prefab.GetComponent<itemScript>();
+
                 prefabItemScript.bestiaryItemManager = bestiaryItemManager;
 
                 bestiaryItemManager.limitItemsAmount++;
@@ -147,8 +168,9 @@ public class ButtonSpawnItem : MonoBehaviour
         }
 
         // Permet de sortir les potions de l'inventaire
-        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion") && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
+        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "ClonePotion" || (itemPrefab.tag == "StrangePotion" && isGoodForStrangePotionoOrNo)) && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
         {
+
             GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             Transform prefabTransform = prefab.GetComponent<Transform>();
             prefabTransform.SetParent(cursor);
@@ -178,6 +200,10 @@ public class ButtonSpawnItem : MonoBehaviour
 
 
 
+        }
+        else if(itemPrefab.tag == "StrangePotion" && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
+        {
+  
         }
 
 

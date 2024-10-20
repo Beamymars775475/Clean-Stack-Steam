@@ -4091,6 +4091,9 @@ MonoBehaviour:
   - {fileID: 1195567686}
   - {fileID: 1572244301}
   textToChangeInv: {fileID: 278903546}
+  isNeedToInvisible: 0
+  modeHard: 0
+  controlsPref: 0
 --- !u!1 &879661170
 GameObject:
   m_ObjectHideFlags: 0
@@ -4225,6 +4228,9 @@ MonoBehaviour:
   showVolumeMaster: {fileID: 734457136}
   showVolumeMusic: {fileID: 823175806}
   showVolumeSound: {fileID: 1386969611}
+  sliderMain: {fileID: 2006955237}
+  sliderMusic: {fileID: 1861876466}
+  sliderSound: {fileID: 1430704735}
   gra: 0
 --- !u!1 &1029816209
 GameObject:
@@ -7496,6 +7502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolutionDropdown: {fileID: 1114142964}
+  toggleFullScreen: {fileID: 2029016682}
 --- !u!1 &2006955235
 GameObject:
   m_ObjectHideFlags: 0

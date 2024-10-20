@@ -67,11 +67,14 @@ public class DescriptionOverButtonScript : MonoBehaviour
 
     public void WhenExitingUI(BaseEventData eventData)
     { 
-        StopCoroutine(animationState);
-        gameObject.GetComponent<Image>().enabled = false;
-        notOnItem = false;
-        textName.SetActive(false);
-        textDescription.SetActive(false);
+        if(gameObject != null)
+        {
+            StopCoroutine(animationState);
+            gameObject.GetComponent<Image>().enabled = false;
+            notOnItem = false;
+            textName.SetActive(false);
+            textDescription.SetActive(false);
+        }
     }
 
     public void WhenOnUI(BaseEventData eventData, RectTransform gameObjectPointed)

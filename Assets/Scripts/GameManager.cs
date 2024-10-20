@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public bool modeHard;
 
 
+
     void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -119,9 +120,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         AlreadyUsedItem = data.itemDiscovered;
         levelsState = data.levelsDone;
-        modeHard = data.isHardMode;
-        controlsPreference = data.controlsChoice;
-        isTransparencyNeeded = data.isInvTransparent;
         
     }
 
@@ -129,8 +127,5 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         data.itemDiscovered = AlreadyUsedItem;
         data.levelsDone = levelsState;
-        data.isHardMode = modeHard;
-        data.controlsChoice = controlsPreference;
-        data.isInvTransparent = isTransparencyNeeded;
     } 
 }

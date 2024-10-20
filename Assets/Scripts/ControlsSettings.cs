@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ControlsSettings : MonoBehaviour
+public class ControlsSettings : MonoBehaviour, IDataPersistence
 {
     [Header("Controls")]
 
@@ -20,76 +20,129 @@ public class ControlsSettings : MonoBehaviour
 
     public TextMeshProUGUI textToChangeInv;
 
-    void Start()
-    {
-        buttonSelectorViewerControlPreferences.transform.position = differentPos1[GameManager.instance.controlsPreference].position;
+    public bool isNeedToInvisible;
 
-        if(GameManager.instance.isTransparencyNeeded == true)
-        {
-            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
-            textToChangeInv.text = "On";
-        }
-        else
-        {
-            buttonSelectorViewerInv.transform.position = differentPos2[1].position;
-            textToChangeInv.text = "Off";
-        }
+    public bool modeHard;
 
+    public int controlsPref;  // 0->Space 1->Click 2->Mouse Over (Default)
 
-    }
+    
 
-
-    void Update()
-    {
-        
-    }
 
     public void ClickOnSelectorControls() // Bouton du haut
     {
-        if (GameManager.instance.controlsPreference == 0)
+        if (controlsPref == 0)
         {
-            GameManager.instance.controlsPreference = 1;
+            controlsPref = 1;
+            GameManager.instance.controlsPreference = controlsPref;
             textToChangeControlPreferences.text = "Click";
         }
-        else if(GameManager.instance.controlsPreference == 1)
+        else if(controlsPref == 1)
         {
-            GameManager.instance.controlsPreference = 2;
+            controlsPref = 2;
+            GameManager.instance.controlsPreference = controlsPref;
             textToChangeControlPreferences.text = "MouseOver";
         }
         else
         {
-            GameManager.instance.controlsPreference = 0;
+            controlsPref = 0;
+            GameManager.instance.controlsPreference = controlsPref;
             textToChangeControlPreferences.text = "Space";
         }
-        buttonSelectorViewerControlPreferences.transform.position = differentPos1[GameManager.instance.controlsPreference].position;
+        buttonSelectorViewerControlPreferences.transform.position = differentPos1[controlsPref].position;
     }
 
     public void ClickOnSelectorInvTransparency() // Bouton du bas
     {
-        if (GameManager.instance.isTransparencyNeeded == true)
+        if (isNeedToInvisible == true)
         {
-            GameManager.instance.isTransparencyNeeded = false;
+            isNeedToInvisible = false;
             textToChangeInv.text = "Off";
-        }
-        else
-        {
-            GameManager.instance.isTransparencyNeeded = true;
-            textToChangeInv.text = "On";
-        }
-
-        if(GameManager.instance.isTransparencyNeeded == true)
-        {
-            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
-        }
-        else
-        {
             buttonSelectorViewerInv.transform.position = differentPos2[1].position;
         }
+        else
+        {
+            isNeedToInvisible = true;
+            textToChangeInv.text = "On";
+            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
+        }
+        GameManager.instance.isTransparencyNeeded = isNeedToInvisible;
     }
-
 
     public void ClickOnDeleteData()
     {
         DataPersistenceManager.instance.ResetGame();
     }
+
+    public void LoadData(GameData data)
+    {
+        modeHard = data.isHardMode;
+        // need to work on it
+
+
+        controlsPref = data.controlsChoice;
+        if (controlsPref == 0)
+        {
+            textToChangeControlPreferences.text = "Space";
+        }
+        else if(controlsPref == 1)
+        {
+            textToChangeControlPreferences.text = "Click";
+        }
+        else
+        {
+            textToChangeControlPreferences.text = "MouseOver";
+        }
+        buttonSelectorViewerControlPreferences.transform.position = differentPos1[controlsPref].position;
+
+
+        isNeedToInvisible = data.isInvTransparent;
+        if (isNeedToInvisible == true)
+        {
+            textToChangeInv.text = "On";
+            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
+        }
+        else
+        {
+            textToChangeInv.text = "Off";
+            buttonSelectorViewerInv.transform.position = differentPos2[1].position;
+        }
+    }
+
+    public void SaveData(GameData data)
+    {
+        data.isHardMode = modeHard;
+
+
+
+
+        data.controlsChoice = controlsPref;
+        if (controlsPref == 0)
+        {
+            textToChangeControlPreferences.text = "Space";
+        }
+        else if(controlsPref == 1)
+        {
+            textToChangeControlPreferences.text = "Click";
+        }
+        else
+        {
+            textToChangeControlPreferences.text = "MouseOver";
+        }
+
+
+
+
+        data.isInvTransparent = isNeedToInvisible;
+        if (isNeedToInvisible == true)
+        {
+            textToChangeInv.text = "On";
+
+        }
+        else
+        {
+            textToChangeInv.text = "Off";
+
+        }
+    } 
 }

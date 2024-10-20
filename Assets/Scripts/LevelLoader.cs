@@ -56,12 +56,16 @@ public class LevelLoader : MonoBehaviour
             {
                 StartCoroutine(LoadLevel(nameOfButton));
             }
-            Debug.Log(sceneOfButton-2);
         } 
+
+        else if(SceneManager.GetActiveScene().name != "LevelSelectorScene")
+        {
+            StartCoroutine(LoadLevel("RedLevel" + SceneManager.GetActiveScene().buildIndex));  // FAUT CHANGER SA PROCHAIN TRUC
+        }
 
         else
         {
-            Debug.Log("Euhh Bebou tu es fou ou quoi ??");
+            Debug.LogError("Tu veux aller dans les backrooms ?");
         }
 
     }
@@ -78,7 +82,7 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().name));
     }
 
-    public void NextScene()
+    public void NextScene() // il fait tout le taff
     {
         if(GameManager.instance.isWon)
         {
@@ -92,6 +96,16 @@ public class LevelLoader : MonoBehaviour
 
 
             GameManager.instance.activeStrangePotion = false;
+        }
+        else
+        {
+            GameManager.instance.isNeedToStuckUI = false;
+            GameManager.instance.isInventoryOpen = false;
+            GameManager.instance.waitUntilFirstObject = true;
+            GameManager.instance.isCountDownOn = false;
+
+
+            GameManager.instance.activeStrangePotion = false;           
         }
     }
 

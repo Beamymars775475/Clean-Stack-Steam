@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,6 +29,10 @@ public class itemScript : MonoBehaviour
     private bool needToDie;
 
     public bool touchedGroundOnce; // Son pour avoir toucher le sol !!!
+
+    [Header("If animation cloning")]
+
+    public Transform cursor;
 
     // Start is called before the first frame update
     void Start()
@@ -90,6 +95,17 @@ public class itemScript : MonoBehaviour
         {
             GameManager.instance.goNextFloor = true;
         }
+    }
+
+    public void WhenCloningDoneGoCursorParent()
+    {
+        StartCoroutine(CooldownCloning(1f));
+    }
+
+    IEnumerator CooldownCloning(float cooldown)
+    {
+        yield return new WaitForSeconds(cooldown);
+        gameObject.transform.SetParent(cursor); // Mettre dans cursor une fois l'animation finit
     }
 
 }

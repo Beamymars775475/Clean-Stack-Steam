@@ -3819,9 +3819,13 @@ MonoBehaviour:
   classicPotion: {fileID: 70531056705893594, guid: 2816474290ce37b42b3440b903faf738, type: 3}
   listOfItemsOfTheLevel:
   - {fileID: 189433031594350348, guid: 645c827640dac6445ba73dd7e33442e2, type: 3}
-  - {fileID: 8274714305541809609, guid: 4135ec73fae762244b07dda6f8cf7e94, type: 3}
+  - {fileID: 189433031594350348, guid: 645c827640dac6445ba73dd7e33442e2, type: 3}
+  - {fileID: 189433031594350348, guid: 645c827640dac6445ba73dd7e33442e2, type: 3}
+  - {fileID: 8515941255444398911, guid: 82ad5fe5a6c72e849a69573bb1b7e2d5, type: 3}
   listOfPotionOfTheLevel:
-  - {fileID: 5882754163051156517, guid: c215c946e4fea424eb27d1bcd688d8b2, type: 3}
+  - {fileID: 2917813283756119339, guid: 9d5ba3649556d35469d33d65214ca6c9, type: 3}
+  - {fileID: 2917813283756119339, guid: 9d5ba3649556d35469d33d65214ca6c9, type: 3}
+  - {fileID: 2917813283756119339, guid: 9d5ba3649556d35469d33d65214ca6c9, type: 3}
   - {fileID: 2257142160767260538, guid: 4502e8099a1bbec48953b815fc00832f, type: 3}
   inventoryParent: {fileID: 353457221}
   hardModTextureBox: {fileID: 21300000, guid: 1677d207c348ca54b877814941861896, type: 3}

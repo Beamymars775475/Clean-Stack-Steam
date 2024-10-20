@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
-public class AudioSettingsManager : MonoBehaviour
+using UnityEngine.UI;
+public class AudioSettingsManager : MonoBehaviour, IDataPersistence
 {
     public AudioMixer scrollBarsFeedbacks;
 
@@ -14,8 +16,13 @@ public class AudioSettingsManager : MonoBehaviour
 
     public TextMeshProUGUI showVolumeSound;
 
+    public Scrollbar sliderMain;
+
+    public Scrollbar sliderMusic;
+
+    public Scrollbar sliderSound;
+
     public int gra;
-    
 
     // Start is called before the first frame update
     void Start()
@@ -69,6 +76,24 @@ public class AudioSettingsManager : MonoBehaviour
     }
 
 
+    public void LoadData(GameData data)
+    {
+        scrollBarsFeedbacks.SetFloat("MasterVolume", data.volumeMain); 
+        sliderMain.value = (data.volumeMain+55)/55;
+        scrollBarsFeedbacks.SetFloat("MusicVolume", data.volumeMusic); 
+        sliderMusic.value = (data.volumeMusic+35)/55;
+        scrollBarsFeedbacks.SetFloat("SfxVolume", data.volumeSound); 
+        sliderSound.value = (data.volumeSound+35)/55;
+    }
 
+    public void SaveData(GameData data)
+    {
+        scrollBarsFeedbacks.GetFloat("MasterVolume", out data.volumeMain); 
+        sliderMain.value = (data.volumeMain+55)/55;
+        scrollBarsFeedbacks.GetFloat("MusicVolume", out data.volumeMusic); 
+        sliderMusic.value = (data.volumeMusic+35)/55;
+        scrollBarsFeedbacks.GetFloat("SfxVolume", out data.volumeSound); 
+        sliderSound.value = (data.volumeSound+35)/55;
+    } 
 
 }

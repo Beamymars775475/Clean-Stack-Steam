@@ -3914,12 +3914,16 @@ MonoBehaviour:
   hardBox: {fileID: 5151394563129062674, guid: c450eb5f5341c3b4694f8a0e8074efdf, type: 3}
   classicPotion: {fileID: 70531056705893594, guid: 2816474290ce37b42b3440b903faf738, type: 3}
   listOfItemsOfTheLevel:
-  - {fileID: 5343162396580064063, guid: f4cda866153ff2f4e824f093d8d6d885, type: 3}
-  - {fileID: 9191888268265316309, guid: ea6093d08511c964595b5a6c44da464f, type: 3}
-  - {fileID: 395924991295963144, guid: cfbcd208d177d764ebfaa4e5ee19e31a, type: 3}
-  - {fileID: 395924991295963144, guid: cfbcd208d177d764ebfaa4e5ee19e31a, type: 3}
-  - {fileID: 395924991295963144, guid: cfbcd208d177d764ebfaa4e5ee19e31a, type: 3}
-  - {fileID: 8515941255444398911, guid: 82ad5fe5a6c72e849a69573bb1b7e2d5, type: 3}
+  - {fileID: 189433031594350348, guid: 645c827640dac6445ba73dd7e33442e2, type: 3}
+  - {fileID: 354070534962082548, guid: 92bad4541331f9742ab2ddc9ba7b9e80, type: 3}
+  - {fileID: 3280408873293189785, guid: fcfc55330f4b6a64b87d3543d27b1643, type: 3}
+  - {fileID: 2088677154342097576, guid: c229a2f88fa9fb7489998395aed15791, type: 3}
+  - {fileID: 6189676128008740593, guid: fa656778957fb8d4ea17bc9c1f9006bb, type: 3}
+  - {fileID: 6767652197530563147, guid: 3c2b0a8230e7b4e45a7a794e2f2bd75c, type: 3}
+  - {fileID: 6793726238022391652, guid: 428fc0e34d3dff24cba1b5ca4182c9e0, type: 3}
+  - {fileID: 3974790494285210614, guid: 3475e303f56f64c4ead4819fad7bcfc9, type: 3}
+  - {fileID: 847907309705083775, guid: 54093c7f62d4e45428268707f1379283, type: 3}
+  - {fileID: 8274714305541809609, guid: 4135ec73fae762244b07dda6f8cf7e94, type: 3}
   listOfPotionOfTheLevel:
   - {fileID: 5882754163051156517, guid: c215c946e4fea424eb27d1bcd688d8b2, type: 3}
   - {fileID: 2257142160767260538, guid: 4502e8099a1bbec48953b815fc00832f, type: 3}
@@ -5438,7 +5442,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 763, y: 480}
+  m_AnchoredPosition: {x: 763, y: 624}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1960629464

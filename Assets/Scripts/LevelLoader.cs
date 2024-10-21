@@ -99,13 +99,14 @@ public class LevelLoader : MonoBehaviour
         }
         else
         {
+            GameManager.instance.isWon = false;
             GameManager.instance.isNeedToStuckUI = false;
             GameManager.instance.isInventoryOpen = false;
             GameManager.instance.waitUntilFirstObject = true;
             GameManager.instance.isCountDownOn = false;
 
 
-            GameManager.instance.activeStrangePotion = false;           
+            GameManager.instance.activeStrangePotion = false;        
         }
     }
 
@@ -154,6 +155,10 @@ public class LevelLoader : MonoBehaviour
             GameManager.instance.canAccessToInventory = true; // Setup l'inv au début pour qu'il s'ouvre correctement
         }
 
+
+
+
+
         GameManager.instance.feedbacksOpen.PlayFeedbacks();
 
         SceneManager.LoadScene(levelIndex);
@@ -164,6 +169,8 @@ public class LevelLoader : MonoBehaviour
 
         GameManager.instance.activeStrangePotion = false;
 
+        GameManager.instance.isWon = false;
+        GameManager.instance.isCountDownOn = false;
     }
 
 

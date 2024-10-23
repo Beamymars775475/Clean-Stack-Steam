@@ -18,11 +18,23 @@ public class BestiaryItemManager : MonoBehaviour
     public Transform stockItemsThatCanBePotion;
 
     public Transform stockItems;
+
+    public Transform[] differentPos;
+
+    [Header("Detonation System")] // Potions only
+
+    public bool isAbleToToggleDetonation;
+
+
+
+
+
     void Start()
     {
+        isAbleToToggleDetonation = true;
         if(deleteItemsOnGround == false)
         {
-            hidderPos.position = new Vector3(hidderPos.position.x+120f, hidderPos.position.y, hidderPos.position.z);
+            hidderPos.position = differentPos[1].position;
         }
     }
 
@@ -36,12 +48,12 @@ public class BestiaryItemManager : MonoBehaviour
     {
         if(deleteItemsOnGround == false)
         {
-            hidderPos.position = new Vector3(hidderPos.position.x-120f, hidderPos.position.y, hidderPos.position.z);
+            hidderPos.position = differentPos[0].position;
         }
 
         else
         {
-            hidderPos.position = new Vector3(hidderPos.position.x+120f, hidderPos.position.y, hidderPos.position.z);
+            hidderPos.position = differentPos[1].position;
         }
 
         deleteItemsOnGround = !deleteItemsOnGround;
@@ -68,4 +80,23 @@ public class BestiaryItemManager : MonoBehaviour
             UpdateLimit();
         }
     }
+
+    public void DetonateForGreenItems()
+    {
+        StartCoroutine(cooldownForDetonation(0.2f));
+    }
+
+    IEnumerator cooldownForDetonation(float cooldown)
+    {
+        if(isAbleToToggleDetonation == true)
+        {
+            isAbleToToggleDetonation = false;
+            GameManager.instance.activeStrangePotion = true;
+            yield return new WaitForSeconds(cooldown);
+            GameManager.instance.activeStrangePotion = false;
+            isAbleToToggleDetonation = true;
+        }
+    }
+
+
 }

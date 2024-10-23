@@ -37,6 +37,7 @@ public class ResolutionSettingsManager : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
+        
         Screen.fullScreen = data.isFullScreen;
         toggleFullScreen.isOn = data.isFullScreen;
 

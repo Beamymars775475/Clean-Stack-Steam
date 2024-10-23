@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
+using Unity.VisualScripting;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour, IDataPersistence
 {
@@ -56,6 +58,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [Header("Strange Potion")]
     public bool activeStrangePotion;
 
+    [Header("Clone Potion")]
+    public bool isInCloningProcess;
+
     [Header("Worlds")]
     public readonly int MONDE1 = 0; // 0
     public readonly int MONDE2 = 11; // 12
@@ -65,6 +70,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public readonly int MONDE6 = 51; // 52
     public readonly int MONDE7 = 59; // 60  
 
+    // Compter tout les True de complete pour unlock les niveaux 4, 5 et 6 puis 7 quand tout fini
+
     [Header("Bestiary")]
 
     public bool[] AlreadyUsedItem;
@@ -73,7 +80,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public bool isInDialogueWithMonster;
 
-// Compter tout les True de complete pour unlock les niveaux 4, 5 et 6 puis 7 quand tout fini
+
 
     public MMF_Player feedbacksOpen; // Anim du son
     public MMF_Player feedbacksClose;
@@ -84,6 +91,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public bool isTransparencyNeeded;
     public bool modeHard;
 
+    public delegate void OnSoftlockStrangePotion();
+    public static event OnSoftlockStrangePotion LaunchDialogue; // Potion full de strange potion et pas possible de les placer
 
 
     void Start()
@@ -128,4 +137,18 @@ public class GameManager : MonoBehaviour, IDataPersistence
         data.itemDiscovered = AlreadyUsedItem;
         data.levelsDone = levelsState;
     } 
+
+
+    public void TriggerEvent()
+    {
+        // Si quelque chose est abonné à l'événement, on le déclenche
+        if(LaunchDialogue != null)
+        {
+            LaunchDialogue.Invoke();
+        }
+    }
+
+
+    void TriggerOnSoftlockStrangePotion()
+    {}
 }

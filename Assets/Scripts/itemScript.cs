@@ -37,6 +37,14 @@ public class itemScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(bestiaryItemManager != null)
+        {
+            bestiaryItemManager.limitItemsAmount++;
+            bestiaryItemManager.UpdateLimit();;
+        }
+
+
+
         if(SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "BestiaryScene" && SceneManager.GetActiveScene().name != "LevelSelectorScene")
         {
             GameManager.instance.AlreadyUsedItem[itemID] = true;
@@ -65,26 +73,29 @@ public class itemScript : MonoBehaviour
                 gameObject.tag = "ReadyToExplode";
             }
         }
-
-        if(needToDie && bestiaryItemManager.deleteItemsOnGround == true)
+        if(bestiaryItemManager != null)
         {
-            Destroy(gameObject); // Meilleur effet ?
-            bestiaryItemManager.limitItemsAmount--;
-            bestiaryItemManager.UpdateLimit();
+            if(needToDie && bestiaryItemManager.deleteItemsOnGround == true)
+            {
+                Destroy(gameObject); // Meilleur effet ?
+                bestiaryItemManager.limitItemsAmount--;
+                bestiaryItemManager.UpdateLimit();
+            }
         }
+
 
     }
 
     void OnCollisionEnter2D(Collision2D _col)
     {
         // All variations of states of item
-        if(_col.gameObject.tag == "deadArea" && (gameObject.tag == "item" || gameObject.tag == "Shrinkitem" || gameObject.tag == "BiggerItem" || gameObject.tag == "ReadyToExplode" || gameObject.tag == "Exploded" || gameObject.tag == "Cloned(Not More Usable)" || gameObject.tag == "CantAcceptPotions")) 
+        if(_col.gameObject.tag == "deadArea" && (gameObject.tag == "item" || gameObject.tag == "itemTable" || gameObject.tag == "ShrinkItem" || gameObject.tag == "BiggerItem" || gameObject.tag == "ReadyToExplode" || gameObject.tag == "Exploded" || gameObject.tag == "Cloned(Not More Usable)" || gameObject.tag == "CantAcceptPotions")) 
         {
-            if(bestiaryItemManager == null)
+            if(bestiaryItemManager == null && gameObject.tag != "itemTable") // Pour les niveaux normaux
             {
                 GameManager.instance.isGameOver = true;
             }
-            else
+            else if(bestiaryItemManager != null)
             {
                 needToDie = true; // Il mourra la prochaine fois que le bouton mort est activé
             }
@@ -104,8 +115,10 @@ public class itemScript : MonoBehaviour
 
     IEnumerator CooldownCloning(float cooldown)
     {
+        GameManager.instance.isInCloningProcess = true;
         yield return new WaitForSeconds(cooldown);
         gameObject.transform.SetParent(cursor); // Mettre dans cursor une fois l'animation finit
+        GameManager.instance.isInCloningProcess = false;
     }
 
 }

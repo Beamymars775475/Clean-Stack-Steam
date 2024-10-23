@@ -53,11 +53,24 @@ public class ButtonSpawnItem : MonoBehaviour
     [Header("Bestiary Scene")]
     public BestiaryItemManager bestiaryItemManager;
 
+    [Header("To clone strange potion")]
+
+    public GameObject placeWhereItemsStocked;
+
+
     
 
     void Start()
     {
 
+        float aspectRatio = (float)Screen.width / (float)Screen.height;
+        // Utilisez l'aspectRatio pour ajuster la taille de l'item
+        RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
+        Sprite spriteGb = gameObject.GetComponent<Sprite>();
+        rectTransform.localScale = Vector3.one;
+
+
+ 
         // Mettre à jour la taille de la preview et save l'image de base
         if((itemPrefab.tag != "BiggerPotion" || itemPrefab.tag != "ShrinkPotion" || itemPrefab.tag != "StrangePotion" || itemPrefab.tag != "ClonePotion") && gameObject.transform.childCount != 0)
         {
@@ -110,102 +123,118 @@ public class ButtonSpawnItem : MonoBehaviour
 
     public void CatchAObject()
     {
-
-        bool isGoodForStrangePotionoOrNo = false;
-        foreach (Transform child in itemThrowed.transform)
+        if(GameManager.instance.isGameOver == false)
         {
-            if(child.tag == "item") // Oui ya un item sur lequel appliqué
+            bool isGoodForStrangePotionoOrNo = false;
+            foreach (Transform child in itemThrowed.transform)
             {
-                isGoodForStrangePotionoOrNo = true;
-            }
-        }
-
-        if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable") && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
-        {
-            GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            Transform prefabTransform = prefab.GetComponent<Transform>();
-            prefabTransform.SetParent(cursor);
-
-            
-            if(itemPrefab.tag != "itemTable")
-            {
-                MMF_Player feedbackClone = prefab.transform.GetChild(10).GetComponent<MMF_Player>(); // Need to fill destination
-                MMF_DestinationTransform feedbackCloneDestionationFeedback = feedbackClone.GetFeedbackOfType<MMF_DestinationTransform>();
-                feedbackCloneDestionationFeedback.Destination = cursor;
+                if(child.tag == "item") // Oui ya un item sur lequel appliqué
+                {
+                    isGoodForStrangePotionoOrNo = true;
+                }
             }
 
-            
-            feedbacksInventory.PlayFeedbacks();
-            GameManager.instance.animationInventoryIsDone = false; // L'animation commence
-            GameManager.instance.isInventoryOpen = false;
-            GameManager.instance.forceToCloseDescription = true;
-            
-            if(SceneManager.GetActiveScene().name != "BestiaryScene")
+            if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable") && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
             {
-                isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
-            }
+                GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                Transform prefabTransform = prefab.GetComponent<Transform>();
+                prefabTransform.SetParent(cursor);
 
-            itemScript prefabItemScript = prefab.GetComponent<itemScript>();
-            prefabItemScript.cursor = cursor; // Pour le clonning
+                
+                if(itemPrefab.tag != "itemTable")
+                {
+                    MMF_Player feedbackClone = prefab.transform.GetChild(10).GetComponent<MMF_Player>(); // Need to fill destination
+                    MMF_DestinationTransform feedbackCloneDestionationFeedback = feedbackClone.GetFeedbackOfType<MMF_DestinationTransform>();
+                    feedbackCloneDestionationFeedback.Destination = cursor;
+                }
 
-            if(bestiaryItemManager != null)
-            {
+                
+                feedbacksInventory.PlayFeedbacks();
+                GameManager.instance.animationInventoryIsDone = false; // L'animation commence
+                GameManager.instance.isInventoryOpen = false;
+                GameManager.instance.forceToCloseDescription = true;
+                
+                if(SceneManager.GetActiveScene().name != "BestiaryScene")
+                {
+                    isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
+                }
 
-                prefabItemScript.bestiaryItemManager = bestiaryItemManager;
-
-                bestiaryItemManager.limitItemsAmount++;
-                bestiaryItemManager.UpdateLimit();
-            }
-
-            GameManager.instance.canAccessToInventory = false;
-
-            
-
-            feedbacksBox.PlayFeedbacks();
-            
-            StartCoroutine(WaitAnimation(0.80f));
-            
-        }
-
-        // Permet de sortir les potions de l'inventaire
-        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "ClonePotion" || (itemPrefab.tag == "StrangePotion" && isGoodForStrangePotionoOrNo)) && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
-        {
-
-            GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            Transform prefabTransform = prefab.GetComponent<Transform>();
-            prefabTransform.SetParent(cursor);
-            feedbacksInventory.PlayFeedbacks();
-            GameManager.instance.animationInventoryIsDone = false; // L'animation commence
-            GameManager.instance.isInventoryOpen = false;
-            GameManager.instance.forceToCloseDescription = true;
-
-            if(SceneManager.GetActiveScene().name != "BestiaryScene")
-            {
-                isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
-            }
-
-            if(bestiaryItemManager != null)
-            {
                 itemScript prefabItemScript = prefab.GetComponent<itemScript>();
-                prefabItemScript.bestiaryItemManager = bestiaryItemManager;
+                prefabItemScript.cursor = cursor; // Pour le clonning
+
+                if(bestiaryItemManager != null)
+                {
+                    prefabItemScript.bestiaryItemManager = bestiaryItemManager;
+                }
+
+                GameManager.instance.canAccessToInventory = false;
+
+                
+
+                feedbacksBox.PlayFeedbacks();
+                
+                StartCoroutine(WaitAnimation(0.80f));
+                
             }
 
-
-            GameManager.instance.canAccessToInventory = false;
-
-            if(SceneManager.GetActiveScene().name != "BestiaryScene")
+            // Permet de sortir les potions de l'inventaire
+            else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "ClonePotion" || (itemPrefab.tag == "StrangePotion" && isGoodForStrangePotionoOrNo)) && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
             {
-                Destroy(gameObject);
+
+                GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                Transform prefabTransform = prefab.GetComponent<Transform>();
+                prefabTransform.SetParent(cursor);
+                feedbacksInventory.PlayFeedbacks();
+                GameManager.instance.animationInventoryIsDone = false; // L'animation commence
+                GameManager.instance.isInventoryOpen = false;
+                GameManager.instance.forceToCloseDescription = true;
+
+                if(SceneManager.GetActiveScene().name != "BestiaryScene")
+                {
+                    isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
+                }
+
+                if(bestiaryItemManager != null)
+                {
+                    itemScript prefabItemScript = prefab.GetComponent<itemScript>();
+                    prefabItemScript.bestiaryItemManager = bestiaryItemManager;
+                }
+
+
+                GameManager.instance.canAccessToInventory = false;
+
+                if(SceneManager.GetActiveScene().name != "BestiaryScene")
+                {
+                    Destroy(gameObject);
+                }
+
+
+
+            }
+            int countNumberOfStrangePotion = 0;
+            foreach(Transform child in gameObject.transform.parent)
+            {
+                ButtonSpawnItem childItemScript = child.GetComponent<ButtonSpawnItem>();
+                if(childItemScript != null)
+                {
+                    if(childItemScript.itemPrefab.name == "StrangePotion")
+                    {
+                        countNumberOfStrangePotion += 1;
+                    }
+                }
+
+            }
+
+            Debug.Log(gameObject.transform.parent.childCount);
+            Debug.Log(countNumberOfStrangePotion+2);
+            if(isGoodForStrangePotionoOrNo == false && gameObject.transform.parent.childCount == countNumberOfStrangePotion+2) // 2 feedbacks et countNumberOfStrangePotion pour le nombre de potion verte
+            {
+                Debug.Log("YEHAHHHHH");
+                GameManager.instance.TriggerEvent();
             }
 
 
-
         }
-        else if(itemPrefab.tag == "StrangePotion" && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
-        {
-  
-        }
-
 
 
     }

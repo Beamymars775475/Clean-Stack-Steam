@@ -40,6 +40,8 @@ public class MouseMovements : MonoBehaviour
 
     public Transform spaceForFullItems; // Pour les clones
 
+    public RectTransform canvaRect; // Calculate size bottom detector
+
     void Start()
     {
         feedbacksInventory.PlayFeedbacks();
@@ -88,7 +90,7 @@ public class MouseMovements : MonoBehaviour
 
         if(gameObject.transform.GetChild(0).tag != "itemTable")
         {
-            moveThis.Rotate(new Vector3(0, 0, Input.mouseScrollDelta.y*Time.deltaTime*3500));
+            moveThis.Rotate(new Vector3(0, 0, Input.mouseScrollDelta.y*Time.deltaTime*800));
         }
         
 
@@ -109,21 +111,20 @@ public class MouseMovements : MonoBehaviour
             }
         }
 
-        // Pour ouvrir l'inventaire -> SI MODE 3
-        if((GameManager.instance == mouse.y<115f && GameManager.instance.controlsPreference == 2) || (Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 1))
+
+
+        if(inventory.transform.childCount <= 2 && GameManager.instance.isCountDownOn == false && gameObject.transform.childCount == 0 && GameManager.instance.isInCloningProcess == false) // Condition de Win
+        {
+            StartCoroutine(CountDownUntilWin(5f));
+        }
+
+        if(Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 0) // Pour space
         {
             if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 2 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
             {
                 GameManager.instance.isInventoryOpen = true;
                 feedbacksInventory.PlayFeedbacks();
             }
-        }
-
-
-
-        if(inventory.transform.childCount <= 2 && GameManager.instance.isCountDownOn == false && gameObject.transform.childCount == 0) // Condition de Win
-        {
-            StartCoroutine(CountDownUntilWin(5f));
         }
 
   
@@ -162,13 +163,26 @@ public class MouseMovements : MonoBehaviour
 
     public void OnClick() // When preference click on Inventory
    {
-       if(GameManager.instance.controlsPreference == 0)
+       if(GameManager.instance.controlsPreference == 1)
        {
-            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 1 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 2 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
             {
                 GameManager.instance.isInventoryOpen = true;
                 feedbacksInventory.PlayFeedbacks();
             }
        }
+   }
+
+   public void OnEnterInventory()
+   {
+
+        if(GameManager.instance.controlsPreference == 2)
+        {
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 2 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            {
+                GameManager.instance.isInventoryOpen = true;
+                feedbacksInventory.PlayFeedbacks();
+            }
+        }    
    }
 }

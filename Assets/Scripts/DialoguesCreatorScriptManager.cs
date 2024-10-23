@@ -6,6 +6,9 @@ using MoreMountains.Feedbacks;
 using Febucci.UI;
 using TMPro;
 
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 public class DialoguesCreatorScriptManager : MonoBehaviour
 {
 
@@ -49,11 +52,30 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
     private TypewriterByCharacter continueTextWritingSpeedManager;
 
 
+
+    public bool needToAnnounceLooseAtTheEnd;
+
+
     void Start()
     {
+        GameManager.LaunchDialogue += OnSoftlockStrangePotion; // Abonnement
+
+
         shadow.SetActive(false);
         DialoguesBubble.SetActive(false);
         continueText.SetActive(false);
+
+        if(SceneManager.GetActiveScene().name == "RedLevel3")
+        {
+            linesOfCreator = new string[3];
+            linesOfCreator[0] = "The <color=#1b9115>green potion</color> . . . This one is pretty annoying im not gonna lie.";
+            linesOfCreator[1] = "The developer of the game was <size=140%>SO <waitfor=0.3> LAZY</size> that he made it only working on <color=#d68a06><bounce>blank items.</bounce></color>";
+            linesOfCreator[2] = "Eh, At least it has a silly effect, I'll let you find out what it does.";
+
+            StartCoroutine(StartDialogue(true, 0.35f));
+        }
+
+
     }
 
     void Update()
@@ -82,23 +104,10 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
             moveCreatorOutOfScreenFeedbacks1.PlayFeedbacks();
             DialoguesBubble.SetActive(false);
         }
-    }
-
-    public void StartDialogue(bool needShadow)
-    {
-
-
-        canPlayerCloseDialogue = false;
-        GameManager.instance.isInDialogueWithMonster = true;
-        moveCreatorToScreenFeedbacks1.PlayFeedbacks();
-
-        if(needShadow)
-        {
-            shadow.SetActive(true);
-        }
 
 
     }
+
 
     public void AnimationShowingUpCharacterDone() // Start a new dialogue
     {
@@ -161,6 +170,12 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
 
     public void finishedDialogue()
     {
+        if(needToAnnounceLooseAtTheEnd)
+        {
+            needToAnnounceLooseAtTheEnd = false;
+            GameManager.instance.isGameOver = true;
+        }
+
         shadow.SetActive(false);
     }
 
@@ -184,5 +199,39 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
         }
     }
 
+
+    IEnumerator StartDialogue(bool needShadow, float cooldown)
+    {
+        
+        yield return new WaitForSeconds(cooldown);
+
+        canPlayerCloseDialogue = false;
+        GameManager.instance.isInDialogueWithMonster = true;
+        moveCreatorToScreenFeedbacks1.PlayFeedbacks();
+
+        shadow.SetActive(true);
+        Image shadowImg = shadow.GetComponent<Image>();
+        if(needShadow)
+        {
+            shadowImg.color = new Color(0, 0, 0, 0.65f);
+        }
+        else
+        {
+            shadowImg.color = new Color(0, 0, 0, 0.01f);
+        }
+    }
+
+    void OnSoftlockStrangePotion()
+    {
+        linesOfCreator = new string[5];
+        linesOfCreator[0] = "You... <size=120%>YOU JUST BROKE THE GAME!!!</size>";
+        linesOfCreator[1] = "I just told you that the <color=#1b9115>green potion</color> needs to be used on BLANK items.";
+        linesOfCreator[2] = "<size=70%>Ugh, if im stuck with someone that much dumb its gonna take so long to reach the -</size>";
+        linesOfCreator[3] = "Oops! I was talking about the last guy that played the game <size=80%>not you...</size>";
+        linesOfCreator[4] = "So, I will give you the chance to retry the level once more so don't break everything <size=110%>AGAIN</size>, <waitfor=0.5> please.";
+
+        needToAnnounceLooseAtTheEnd = true;
+        StartCoroutine(StartDialogue(true, 1f));
+    }
 
 }

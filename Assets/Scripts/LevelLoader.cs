@@ -16,7 +16,10 @@ public class LevelLoader : MonoBehaviour
     public AudioClip musicLevels;
 
 
+    public void Start()
+    {
 
+    }
 
     void Update()
     {
@@ -30,6 +33,7 @@ public class LevelLoader : MonoBehaviour
     
     public void LoadNextLevel()
     {
+
         if(SceneManager.GetActiveScene().name == "Mainscene")
         {
             StartCoroutine(LoadLevel("LevelSelectorScene"));

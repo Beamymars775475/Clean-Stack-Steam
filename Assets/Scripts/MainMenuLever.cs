@@ -73,7 +73,7 @@ public class MainMenuLever : MonoBehaviour
 
         if(rayHit.collider.gameObject.tag == "ButtonQuit")
         {
-            Debug.Log("Quit");
+            Application.Quit();
         }
 
         if(rayHit.collider.gameObject.tag == "ButtonSettings")

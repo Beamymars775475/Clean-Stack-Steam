@@ -134,6 +134,15 @@ public class ButtonSpawnItem : MonoBehaviour
                 }
             }
 
+            bool isGoodForBiggerAndShrinkPotionoOrNo = false;
+            foreach (Transform child in itemThrowed.transform)
+            {
+                if(child.tag == "item" || child.tag == "BiggerItem" || child.tag == "ShrinkItem") // Oui ya un item sur lequel appliqué
+                {
+                    isGoodForBiggerAndShrinkPotionoOrNo = true;
+                }
+            }
+
             if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable") && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
             {
                 GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -178,7 +187,7 @@ public class ButtonSpawnItem : MonoBehaviour
             }
 
             // Permet de sortir les potions de l'inventaire
-            else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "ClonePotion" || (itemPrefab.tag == "StrangePotion" && isGoodForStrangePotionoOrNo)) && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
+            else if(((itemPrefab.tag == "BiggerPotion" && isGoodForBiggerAndShrinkPotionoOrNo) || (itemPrefab.tag == "ShrinkPotion" && isGoodForBiggerAndShrinkPotionoOrNo) || itemPrefab.tag == "ClonePotion" || (itemPrefab.tag == "StrangePotion" && isGoodForStrangePotionoOrNo)) && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
             {
 
                 GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -229,7 +238,6 @@ public class ButtonSpawnItem : MonoBehaviour
             Debug.Log(countNumberOfStrangePotion+2);
             if(isGoodForStrangePotionoOrNo == false && gameObject.transform.parent.childCount == countNumberOfStrangePotion+2) // 2 feedbacks et countNumberOfStrangePotion pour le nombre de potion verte
             {
-                Debug.Log("YEHAHHHHH");
                 GameManager.instance.TriggerEvent();
             }
 

@@ -9,6 +9,7 @@ public class ResolutionSettingsManager : MonoBehaviour, IDataPersistence
 {
 
     Resolution[] resolutions;
+    List<int> resolutionsGoodRatioIndexList = new List<int>();
 
     public TMP_Dropdown resolutionDropdown;
 
@@ -18,10 +19,6 @@ public class ResolutionSettingsManager : MonoBehaviour, IDataPersistence
 
     public int indexReso;
 
-    void Awake()
-    {
-        resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }). Distinct().ToArray();
-    }
 
     public void SetFullscreen(bool isFullscreen)
     {
@@ -31,14 +28,16 @@ public class ResolutionSettingsManager : MonoBehaviour, IDataPersistence
     public void SetResolution(int resolutionIndex)
     {
         indexReso = resolutionIndex;
-        Resolution resolution = resolutions[resolutionIndex];
+        Resolution resolution = resolutions[resolutionsGoodRatioIndexList[resolutionIndex]]; // resolutionsGoodRatioIndexList donne le vrai Index
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
     public void LoadData(GameData data)
     {
-        
-        Screen.fullScreen = data.isFullScreen;
+
+
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, data.isFullScreen);
+        Debug.Log(data.isFullScreen);
         toggleFullScreen.isOn = data.isFullScreen;
 
 
@@ -49,23 +48,24 @@ public class ResolutionSettingsManager : MonoBehaviour, IDataPersistence
         resolutionDropdown.ClearOptions();
             
         List<string> options = new List<string>();
-            
+        resolutionsGoodRatioIndexList = new List<int>();
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + "x" + resolutions[i].height;
-            options.Add(option);
-
-
-            if(resolutions[i].width == Screen.width && resolutions[i].height == Screen.height && data.firstTimeSetupResolution == true)
+            if((float)resolutions[i].width/resolutions[i].height > 1.7f && (float)resolutions[i].width/resolutions[i].height < 1.8f)
             {
-                data.firstTimeSetupResolution = false;
-                indexReso = i;
-                Debug.Log("ZAWOUMBA");
+                string option = resolutions[i].width + "x" + resolutions[i].height;
+                options.Add(option);
+                resolutionsGoodRatioIndexList.Add(i);
             }
+
         } 
 
-        
+        if(indexReso == -1)
+        {
+            indexReso = resolutionsGoodRatioIndexList.Count-1;
+        }
+
         SetResolution(indexReso);
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = indexReso;
@@ -77,10 +77,8 @@ public class ResolutionSettingsManager : MonoBehaviour, IDataPersistence
     {
         data.isFullScreen = Screen.fullScreen;
         toggleFullScreen.isOn = Screen.fullScreen;
-        Debug.Log(indexReso);
         data.resolutionToUse = indexReso;
         resolutionDropdown.value = indexReso;
-        resolutionDropdown.RefreshShownValue();
     } 
 
 }

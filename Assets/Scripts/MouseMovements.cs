@@ -40,7 +40,7 @@ public class MouseMovements : MonoBehaviour
 
     public Transform spaceForFullItems; // Pour les clones
 
-    public RectTransform canvaRect; // Calculate size bottom detector
+
 
     void Start()
     {
@@ -76,8 +76,6 @@ public class MouseMovements : MonoBehaviour
 
                 ray = new Ray(moveThis.transform.position, dir * rayLength);
 
-                Debug.DrawRay(moveThis.transform.position, ray.direction, Color.green);
-
                 if (!Physics.Raycast(ray, out hit_ray, Mathf.Infinity, hitLayers2))
                 {
                     Vector3 ForceToGoToMouse = Vector3.SmoothDamp(moveThis.position, new Vector3(targetPos.x, 3.75f, 0), ref velocity, timeOffSet); 
@@ -88,10 +86,10 @@ public class MouseMovements : MonoBehaviour
 
             }   
 
-        if(gameObject.transform.GetChild(0).tag != "itemTable")
-        {
-            moveThis.Rotate(new Vector3(0, 0, Input.mouseScrollDelta.y*Time.deltaTime*800));
-        }
+            if(gameObject.transform.GetChild(0).tag != "itemTable")
+            {
+                moveThis.Rotate(new Vector3(0, 0, Input.mouseScrollDelta.y*Time.deltaTime*800));
+            }
         
 
             if (Input.GetMouseButtonDown(0))
@@ -126,7 +124,6 @@ public class MouseMovements : MonoBehaviour
                 feedbacksInventory.PlayFeedbacks();
             }
         }
-
   
     }
 

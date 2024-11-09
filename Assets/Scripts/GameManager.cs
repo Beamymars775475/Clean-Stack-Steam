@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using MoreMountains.Feedbacks;
 using Unity.VisualScripting;
 using UnityEngine.Events;
+using UnityEngine.Audio;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, IDataPersistence
 {
@@ -91,6 +94,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public bool isTransparencyNeeded;
     public bool modeHard;
 
+    [Header("Sounds")]
+    public AudioMixer scrollBars;
+
     public delegate void OnSoftlockStrangePotion();
     public static event OnSoftlockStrangePotion LaunchDialogue; // Potion full de strange potion et pas possible de les placer
 
@@ -129,7 +135,37 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         AlreadyUsedItem = data.itemDiscovered;
         levelsState = data.levelsDone;
-        
+
+        if(scrollBars != null)
+        {
+            scrollBars.SetFloat("MasterVolume", data.volumeMain); 
+            scrollBars.SetFloat("MusicVolume", data.volumeMusic); 
+            scrollBars.SetFloat("SfxVolume", data.volumeSound); 
+        }
+
+        Resolution[] resolutions = Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
+                
+        List<string> options = new List<string>();
+        List<int> resolutionsGoodRatioIndexList = new List<int>();
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            if((float)resolutions[i].width/resolutions[i].height > 1.7f && (float)resolutions[i].width/resolutions[i].height < 1.8f)
+            {
+                resolutionsGoodRatioIndexList.Add(i);
+            }
+        } 
+
+        if(data.resolutionToUse == -1)
+        {
+            Resolution resolution = resolutions[resolutionsGoodRatioIndexList[resolutionsGoodRatioIndexList.Count-1]]; // resolutionsGoodRatioIndexList donne le vrai Index
+            Screen.SetResolution(resolution.width, resolution.height, data.isFullScreen);  
+        }
+        else
+        {
+            Resolution resolution = resolutions[resolutionsGoodRatioIndexList[data.resolutionToUse]]; // resolutionsGoodRatioIndexList donne le vrai Index
+            Screen.SetResolution(resolution.width, resolution.height, data.isFullScreen);  
+        }
+
     }
 
     public void SaveData(GameData data)
@@ -148,7 +184,4 @@ public class GameManager : MonoBehaviour, IDataPersistence
         }
     }
 
-
-    void TriggerOnSoftlockStrangePotion()
-    {}
 }

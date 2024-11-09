@@ -28,6 +28,8 @@ TagManager:
   - Cloned(Not More Usable)
   - Cursor
   - Inventory
+  - Box
+  - BoxPotion
   layers:
   - Default
   - TransparentFX

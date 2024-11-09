@@ -28,9 +28,8 @@ public class AudioSettingsManager : MonoBehaviour, IDataPersistence
     void Start()
     {   
         showVolumeMaster.text = "100%";
-        showVolumeMusic.text = "70%";
-        showVolumeSound.text = "70%";
-
+        showVolumeMusic.text = "63%";
+        showVolumeSound.text = "63%";
     }
 
     public void SetMasterVolume(float volume)
@@ -89,11 +88,8 @@ public class AudioSettingsManager : MonoBehaviour, IDataPersistence
     public void SaveData(GameData data)
     {
         scrollBarsFeedbacks.GetFloat("MasterVolume", out data.volumeMain); 
-        sliderMain.value = (data.volumeMain+55)/55;
         scrollBarsFeedbacks.GetFloat("MusicVolume", out data.volumeMusic); 
-        sliderMusic.value = (data.volumeMusic+35)/55;
         scrollBarsFeedbacks.GetFloat("SfxVolume", out data.volumeSound); 
-        sliderSound.value = (data.volumeSound+35)/55;
     } 
 
 }

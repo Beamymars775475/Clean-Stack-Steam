@@ -35,8 +35,6 @@ public class GameData
 
     public bool isItFirstTime;
 
-    public bool firstTimeSetupResolution;
-
 
     // the values defined in this constructor will be the default values
     // the game starts with when there's no data to load
@@ -54,10 +52,9 @@ public class GameData
         this.volumeMusic = 0;
         this.volumeSound = 0;
 
-        this.resolutionToUse = 0;
+        this.resolutionToUse = -1;
         this.isFullScreen = true;
 
         this.isItFirstTime = true;
-        this.firstTimeSetupResolution = true;
     }
 }

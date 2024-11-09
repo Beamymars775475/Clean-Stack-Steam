@@ -36,6 +36,10 @@ public class CursorSpellScript : MonoBehaviour
 
     public Transform cursor; // Mettre le clone dans les mains
 
+    [Header("Glowing")]
+
+    public itemScript itemScriptLastObjectSaved;
+
     void Start()
     {
         
@@ -72,6 +76,61 @@ public class CursorSpellScript : MonoBehaviour
 
             }   
 
+        // Glowing Effect
+        RaycastHit2D hitSomething = Physics2D.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
+        if(hitSomething)
+        {
+            if(hitSomething.collider.gameObject != null && itemScriptLastObjectSaved != null)
+            {
+                if(hitSomething.collider.gameObject != itemScriptLastObjectSaved.gameObject)
+                {
+                    itemScriptLastObjectSaved.isGlowing = false;
+                    itemScriptLastObjectSaved.SwitcherGlowing();
+                }
+            }
+
+
+            // Si la potion est compatible avec l'item touché
+            if((hitSomething.collider.gameObject.tag == "item" && (gameObject.tag == "BiggerPotion" || gameObject.tag == "ShrinkPotion" || gameObject.tag == "StrangePotion"))
+            || (hitSomething.collider.gameObject.tag == "BiggerItem" || hitSomething.collider.gameObject.tag == "ShrinkItem") && (gameObject.tag == "BiggerPotion" || gameObject.tag == "ShrinkPotion")
+            || (hitSomething.collider.gameObject.tag != "Cloned(Not More Usable)" && hitSomething.collider.gameObject.tag != "CantAcceptPotions" && gameObject.tag == "ClonePotion"))
+            {
+
+                itemScript itemScriptObjectOnMouse = hitSomething.collider.gameObject.GetComponent<itemScript>();
+
+                if(itemScriptLastObjectSaved != itemScriptObjectOnMouse)
+                {
+                    itemScriptLastObjectSaved = itemScriptObjectOnMouse;
+                }
+                if(itemScriptLastObjectSaved != null)
+                {
+                    itemScriptLastObjectSaved.isGlowing = true;
+                    itemScriptObjectOnMouse.SwitcherGlowing();
+                }
+                
+            }
+            // Si la potion n'est pas compatible avec un item
+            else
+            {
+                if(itemScriptLastObjectSaved != null)
+                {
+                    itemScriptLastObjectSaved.isGlowing = false;
+                    itemScriptLastObjectSaved.SwitcherGlowing();
+                }
+                    
+            }
+        }
+        // Si la souris ne pointe plus l'object faut le mettre à jour
+        else
+        {
+            if(itemScriptLastObjectSaved != null)
+            {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+            }
+                
+        }
+
 
     }
 
@@ -94,6 +153,12 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.tag = "BiggerItem";
            
            GameManager.instance.canAccessToInventory = true;
+           // Stop glowing effect
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
            Destroy(gameObject);
 
        }
@@ -106,6 +171,12 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.tag = "ShrinkItem";
            
            GameManager.instance.canAccessToInventory = true;
+           // Stop glowing effect
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
            Destroy(gameObject);
 
        }
@@ -121,6 +192,12 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.tag = "ReadyToExplode";
            
            GameManager.instance.canAccessToInventory = true;
+           // Stop glowing effect
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
            Destroy(gameObject);
 
        }  
@@ -133,7 +210,12 @@ public class CursorSpellScript : MonoBehaviour
            rigidbody2DItem.mass /= 1.75f;
            rayHit.collider.gameObject.tag = "CantAcceptPotions";
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
-           
+           // Stop glowing effect
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
            GameManager.instance.canAccessToInventory = true;
            Destroy(gameObject);
 
@@ -151,6 +233,12 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
            
            GameManager.instance.canAccessToInventory = true;
+           // Stop glowing effect
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
            Destroy(gameObject);
 
        }   
@@ -166,6 +254,12 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
            
            GameManager.instance.canAccessToInventory = true;
+           // Stop glowing effect
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
            Destroy(gameObject);
 
        } 
@@ -181,6 +275,12 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
            
            GameManager.instance.canAccessToInventory = true;
+           // Stop glowing effect
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
            Destroy(gameObject);
 
        }   
@@ -188,6 +288,13 @@ public class CursorSpellScript : MonoBehaviour
 
         else if (rayHit.collider.gameObject.tag != "Cloned(Not More Usable)" && rayHit.collider.gameObject.tag != "CantAcceptPotions" && gameObject.tag == "ClonePotion")
        {
+           // Stop glowing effect (early for Clone potion because of the prefab)
+           if(itemScriptLastObjectSaved != null)
+           {
+                itemScriptLastObjectSaved.isGlowing = false;
+                itemScriptLastObjectSaved.SwitcherGlowing();
+           }
+           Debug.Log(rayHit.collider.gameObject.name);
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(9).GetComponent<MMF_Player>(); // Devient Violet
            feedbacksItem.PlayFeedbacks();
         
@@ -200,8 +307,6 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
 
            Destroy(gameObject);
-
-
        }  
  
 

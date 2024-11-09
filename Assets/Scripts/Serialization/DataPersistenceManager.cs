@@ -114,20 +114,6 @@ public class DataPersistenceManager : MonoBehaviour
     {
         NewGame();
 
-        // start a new game if the data is null and we're configured to initialize data for debugging purposes
-        if (this.gameData == null && initializeDataIfNull) 
-        {
-            NewGame();
-        }
-
-        // if no data can be loaded, don't continue
-        if (this.gameData == null) 
-        {
-            Debug.Log("No data was found. A New Game needs to be started before data can be loaded.");
-            return;
-        }
-
-        // push the loaded data to all other scripts that need it
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects) 
         {
             dataPersistenceObj.LoadData(gameData);

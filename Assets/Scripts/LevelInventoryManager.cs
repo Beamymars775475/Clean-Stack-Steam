@@ -147,15 +147,31 @@ public class LevelInventoryManager : MonoBehaviour
 
 
                 // Position
-                if(indexSpawningItems % 2 == 0)
+                if(SceneManager.GetActiveScene().name != "BestiaryScene")
                 {
-                    rectTransformPrefab.anchoredPosition = new Vector2((-675f+((975/listOfItemsOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-100f, 55f));
+                    if(indexSpawningItems % 2 == 0)
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((-675f+((975/listOfItemsOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-100f, 55f));
+                    }
+                    else
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((-675f+((975/listOfItemsOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-200f, -50f));
+                    }
+                    // Formule pour calculer la position : co de base + (longueur de la ligne pour spawn/le nombre d'objet) * l'index
                 }
                 else
                 {
-                    rectTransformPrefab.anchoredPosition = new Vector2((-675f+((975/listOfItemsOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-200f, -50f));
+                    if(indexSpawningItems % 2 == 0)
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((-775f+((1325/listOfItemsOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-100f, 55f));
+                    }
+                    else
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((-775f+((1325/listOfItemsOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-200f, -50f));
+                    }
+                    // Formule pour calculer la position : co de base + (longueur de la ligne pour spawn/le nombre d'objet) * l'index
                 }
-                // Formule pour calculer la position : co de base + (longueur de la ligne pour spawn/le nombre d'objet) * l'index
+
 
 
                 EventTrigger evTrig = newPrefab.GetComponent<EventTrigger>();
@@ -236,17 +252,32 @@ public class LevelInventoryManager : MonoBehaviour
 
 
 
-                
-                // Position
-                if(indexSpawningItems % 2 == 0)
+                if(SceneManager.GetActiveScene().name != "BestiaryScene")
                 {
-                    rectTransformPrefab.anchoredPosition = new Vector2((300f+((440/listOfPotionOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-100f, 55f));
+                    // Position
+                    if(indexSpawningItems % 2 == 0)
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((300f+((440/listOfPotionOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-100f, 55f));
+                    }
+                    else
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((300f+((440/listOfPotionOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-200f, -50f));
+                    }
+                    // Formule pour calculer la position : co de base + (longueur de la ligne pour spawn/le nombre d'objet) * l'index
                 }
                 else
                 {
-                    rectTransformPrefab.anchoredPosition = new Vector2((300f+((440/listOfPotionOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-200f, -50f));
+                    // Position
+                    if(indexSpawningItems % 2 == 0)
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((550+((300/listOfPotionOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-100f, 55f));
+                    }
+                    else
+                    {
+                        rectTransformPrefab.anchoredPosition = new Vector2((550f+((300/listOfPotionOfTheLevel.Length) * indexSpawningItems))+Random.Range(-15f, 15f), Random.Range(-200f, -50f));
+                    }
+                    // Formule pour calculer la position : co de base + (longueur de la ligne pour spawn/le nombre d'objet) * l'index
                 }
-                // Formule pour calculer la position : co de base + (longueur de la ligne pour spawn/le nombre d'objet) * l'index
 
 
 

@@ -6,6 +6,9 @@ using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using AllIn1SpriteShader;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class itemScript : MonoBehaviour
 {
@@ -33,6 +36,10 @@ public class itemScript : MonoBehaviour
     [Header("If animation cloning")]
 
     public Transform cursor;
+
+    [Header("Glowing")]
+
+    public bool isGlowing;
 
     // Start is called before the first frame update
     void Start()
@@ -119,6 +126,20 @@ public class itemScript : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         gameObject.transform.SetParent(cursor); // Mettre dans cursor une fois l'animation finit
         GameManager.instance.isInCloningProcess = false;
+    }
+
+    public void SwitcherGlowing() // Need to be switched outside of the method
+    {
+        SpriteRenderer gbShader = gameObject.GetComponent<SpriteRenderer>();
+        if(isGlowing == true)
+        {
+            gbShader.material.EnableKeyword("OUTBASE_ON");
+        }
+        else
+        {
+            gbShader.material.DisableKeyword("OUTBASE_ON");
+        }
+        
     }
 
 }

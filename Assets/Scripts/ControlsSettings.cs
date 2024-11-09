@@ -81,6 +81,7 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
 
 
         controlsPref = data.controlsChoice;
+        GameManager.instance.controlsPreference = data.controlsChoice;
         if (controlsPref == 0)
         {
             textToChangeControlPreferences.text = "Space";
@@ -97,6 +98,7 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
 
 
         isNeedToInvisible = data.isInvTransparent;
+        GameManager.instance.isTransparencyNeeded = isNeedToInvisible;
         if (isNeedToInvisible == true)
         {
             textToChangeInv.text = "On";

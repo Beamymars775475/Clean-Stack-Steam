@@ -1652,7 +1652,6 @@ MonoBehaviour:
   inventory: {fileID: 353457221}
   tables: {fileID: 2133652593}
   spaceForFullItems: {fileID: 0}
-  canvaRect: {fileID: 343187092}
 --- !u!4 &557383196
 Transform:
   m_ObjectHideFlags: 0
@@ -6004,6 +6003,15 @@ MonoBehaviour:
   bestiaryItemManager: {fileID: 0}
   touchedGroundOnce: 0
   cursor: {fileID: 0}
+  isGlowing: 0
+  isClear: 0
+  isShrinkOnce: 0
+  isBiggerOnce: 0
+  isFullOfPotions: 0
+  isCloned: 0
+  isStrange: 0
+  isExplodedFromStrange: 0
+  isReady: 0
 --- !u!1 &1666696870366807590
 GameObject:
   m_ObjectHideFlags: 0
@@ -10354,7 +10362,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.3333334, y: 1.3333334}
+    oldSize: {x: 1.4166666, y: 1.4166666}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -10623,6 +10631,7 @@ MonoBehaviour:
   controlsPreference: 2
   isTransparencyNeeded: 0
   modeHard: 0
+  scrollBars: {fileID: 0}
 --- !u!1 &6793414590157949373
 GameObject:
   m_ObjectHideFlags: 0

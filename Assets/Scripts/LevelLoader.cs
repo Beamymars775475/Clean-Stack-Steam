@@ -56,7 +56,7 @@ public class LevelLoader : MonoBehaviour
                 StartCoroutine(LoadLevel("YellowLevel1")); 
             }
         
-            else if(GameManager.instance.levelsState[sceneOfButton-3] == true) // -3 car on cherche celui d'avant
+            else if(GameManager.instance.levelsState[sceneOfButton-3] != 0) // -3 car on cherche celui d'avant
             {
                 StartCoroutine(LoadLevel(nameOfButton));
             }

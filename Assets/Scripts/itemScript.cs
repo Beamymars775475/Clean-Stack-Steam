@@ -41,9 +41,21 @@ public class itemScript : MonoBehaviour
 
     public bool isGlowing;
 
+    [Header("State")]
+    public bool isClear;
+    public bool isShrinkOnce;
+    public bool isBiggerOnce;
+    public bool isFullOfPotions;
+    public bool isCloned;
+    public bool isStrange;
+    public bool isExplodedFromStrange;
+    public bool isReady;
+
     // Start is called before the first frame update
     void Start()
     {
+        isClear = true; 
+        
         if(bestiaryItemManager != null)
         {
             bestiaryItemManager.limitItemsAmount++;
@@ -64,20 +76,22 @@ public class itemScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gameObject.tag == "ReadyToExplode" && GameManager.instance.activeStrangePotion)
+        if(isStrange && GameManager.instance.activeStrangePotion)
         {
             Rigidbody2D gameObjectRb = gameObject.GetComponent<Rigidbody2D>();
 
             gameObjectRb.mass = gameObjectRb.mass *= 3f; // Par 3 car de base il est a /2 et comme c'est la potion étrange il passe de super petit à super gros
             explosionFeedbacks.PlayFeedbacks();
             explosionFlickerFeedbacks.StopFeedbacks();
-            gameObject.tag = "Exploded";
+            // CHANGE STATE
+            isExplodedFromStrange = true;
         }
         if(explosionFlickerFeedbacks != null) // Si il existe
         {
             if(explosionFlickerFeedbacks.IsPlaying && GameManager.instance.activeStrangePotion)
             {
-                gameObject.tag = "ReadyToExplode";
+                // CHANGE STATE
+                isStrange = true;
             }
         }
         if(bestiaryItemManager != null)
@@ -96,7 +110,7 @@ public class itemScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D _col)
     {
         // All variations of states of item
-        if(_col.gameObject.tag == "deadArea" && (gameObject.tag == "item" || gameObject.tag == "itemTable" || gameObject.tag == "ShrinkItem" || gameObject.tag == "BiggerItem" || gameObject.tag == "ReadyToExplode" || gameObject.tag == "Exploded" || gameObject.tag == "Cloned(Not More Usable)" || gameObject.tag == "CantAcceptPotions")) 
+        if(_col.gameObject.tag == "deadArea" && gameObject.tag == "item") 
         {
             if(bestiaryItemManager == null && gameObject.tag != "itemTable") // Pour les niveaux normaux
             {
@@ -109,7 +123,7 @@ public class itemScript : MonoBehaviour
             
         }
 
-        if(_col.gameObject.tag == "nextArea" && (gameObject.tag == "item" || gameObject.tag == "CantAcceptPotions"))
+        if(_col.gameObject.tag == "nextArea" && isClear)
         {
             GameManager.instance.goNextFloor = true;
         }

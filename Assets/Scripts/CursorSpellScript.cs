@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -143,14 +144,22 @@ public class CursorSpellScript : MonoBehaviour
 
        if (!rayHit.collider) return;
 
+        
 
-       if (rayHit.collider.gameObject.tag == "item" && gameObject.tag == "BiggerPotion")
+       itemScript itemHitItemScript = rayHit.collider.gameObject.GetComponent<itemScript>();
+
+       if (itemHitItemScript == null || rayHit.collider.gameObject.tag == "itemTable") return; // les items qui peuvent pas être potionés
+
+       if (itemHitItemScript.isClear && gameObject.tag == "BiggerPotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(0).GetComponent<MMF_Player>();
            Rigidbody2D rigidbody2DItem = rayHit.collider.gameObject.GetComponentInChildren<Rigidbody2D>();
            feedbacksItem.PlayFeedbacks();
            rigidbody2DItem.mass *= 2.5f;
-           rayHit.collider.gameObject.tag = "BiggerItem";
+
+           // MODIFY STATE
+           itemHitItemScript.isBiggerOnce = true;
+           itemHitItemScript.isClear = false;
            
            GameManager.instance.canAccessToInventory = true;
            // Stop glowing effect
@@ -162,13 +171,17 @@ public class CursorSpellScript : MonoBehaviour
            Destroy(gameObject);
 
        }
-       else if (rayHit.collider.gameObject.tag == "item" && gameObject.tag == "ShrinkPotion")
+       else if (itemHitItemScript.isClear && gameObject.tag == "ShrinkPotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(1).GetComponent<MMF_Player>();
            Rigidbody2D rigidbody2DItem = rayHit.collider.gameObject.GetComponentInChildren<Rigidbody2D>();
            feedbacksItem.PlayFeedbacks();
            rigidbody2DItem.mass /= 2.5f;
            rayHit.collider.gameObject.tag = "ShrinkItem";
+
+           // MODIFY STATE
+           itemHitItemScript.isShrinkOnce = true;
+           itemHitItemScript.isClear = false;
            
            GameManager.instance.canAccessToInventory = true;
            // Stop glowing effect
@@ -181,7 +194,7 @@ public class CursorSpellScript : MonoBehaviour
 
        }
 
-        else if (rayHit.collider.gameObject.tag == "item" && gameObject.tag == "StrangePotion")
+        else if (itemHitItemScript.isClear && gameObject.tag == "StrangePotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(6).GetComponent<MMF_Player>();
            Rigidbody2D rigidbody2DItem = rayHit.collider.gameObject.GetComponentInChildren<Rigidbody2D>();
@@ -190,6 +203,10 @@ public class CursorSpellScript : MonoBehaviour
            feedbacksItemFlicker.PlayFeedbacks();
            rigidbody2DItem.mass /= 2f; // Pour lui c'est par 2 et non 2.5 ou 1.75 car c'est la potion étrange
            rayHit.collider.gameObject.tag = "ReadyToExplode";
+
+           // MODIFY STATE
+           itemHitItemScript.isStrange = true;
+           itemHitItemScript.isClear = false;
            
            GameManager.instance.canAccessToInventory = true;
            // Stop glowing effect
@@ -202,7 +219,7 @@ public class CursorSpellScript : MonoBehaviour
 
        }  
 
-        else if (rayHit.collider.gameObject.tag == "BiggerItem" && gameObject.tag == "ShrinkPotion")
+        else if (itemHitItemScript.isBiggerOnce && gameObject.tag == "ShrinkPotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(2).GetComponent<MMF_Player>();
            Rigidbody2D rigidbody2DItem = rayHit.collider.gameObject.GetComponentInChildren<Rigidbody2D>();
@@ -210,6 +227,12 @@ public class CursorSpellScript : MonoBehaviour
            rigidbody2DItem.mass /= 1.75f;
            rayHit.collider.gameObject.tag = "CantAcceptPotions";
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+
+           // MODIFY STATE
+           itemHitItemScript.isFullOfPotions = true;
+           itemHitItemScript.isBiggerOnce = false;
+
+
            // Stop glowing effect
            if(itemScriptLastObjectSaved != null)
            {
@@ -223,7 +246,7 @@ public class CursorSpellScript : MonoBehaviour
 
 
 
-        else if (rayHit.collider.gameObject.tag == "ShrinkItem" && gameObject.tag == "BiggerPotion")
+        else if (itemHitItemScript.isShrinkOnce && gameObject.tag == "BiggerPotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(3).GetComponent<MMF_Player>();
            Rigidbody2D rigidbody2DItem = rayHit.collider.gameObject.GetComponentInChildren<Rigidbody2D>();
@@ -231,6 +254,10 @@ public class CursorSpellScript : MonoBehaviour
            rigidbody2DItem.mass *= 1.75f;
            rayHit.collider.gameObject.tag = "CantAcceptPotions";
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+
+           // MODIFY STATE
+           itemHitItemScript.isFullOfPotions = true;
+           itemHitItemScript.isShrinkOnce = false;
            
            GameManager.instance.canAccessToInventory = true;
            // Stop glowing effect
@@ -244,7 +271,7 @@ public class CursorSpellScript : MonoBehaviour
        }   
 
 
-        else if (rayHit.collider.gameObject.tag == "BiggerItem" && gameObject.tag == "BiggerPotion")
+        else if (itemHitItemScript.isBiggerOnce  && gameObject.tag == "BiggerPotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(4).GetComponent<MMF_Player>();
            Rigidbody2D rigidbody2DItem = rayHit.collider.gameObject.GetComponentInChildren<Rigidbody2D>();
@@ -252,6 +279,10 @@ public class CursorSpellScript : MonoBehaviour
            rigidbody2DItem.mass *= 1.75f;
            rayHit.collider.gameObject.tag = "CantAcceptPotions";
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+
+           // MODIFY STATE
+           itemHitItemScript.isFullOfPotions = true;
+           itemHitItemScript.isBiggerOnce = false;
            
            GameManager.instance.canAccessToInventory = true;
            // Stop glowing effect
@@ -265,7 +296,7 @@ public class CursorSpellScript : MonoBehaviour
        } 
 
 
-        else if (rayHit.collider.gameObject.tag == "ShrinkItem" && gameObject.tag == "ShrinkPotion")
+        else if (itemHitItemScript.isShrinkOnce && gameObject.tag == "ShrinkPotion")
        {
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(5).GetComponent<MMF_Player>();
            Rigidbody2D rigidbody2DItem = rayHit.collider.gameObject.GetComponentInChildren<Rigidbody2D>();
@@ -273,6 +304,10 @@ public class CursorSpellScript : MonoBehaviour
            rigidbody2DItem.mass /= 1.75f;
            rayHit.collider.gameObject.tag = "CantAcceptPotions";
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+
+           // MODIFY STATE
+           itemHitItemScript.isFullOfPotions = true;
+           itemHitItemScript.isShrinkOnce = false;
            
            GameManager.instance.canAccessToInventory = true;
            // Stop glowing effect
@@ -294,7 +329,6 @@ public class CursorSpellScript : MonoBehaviour
                 itemScriptLastObjectSaved.isGlowing = false;
                 itemScriptLastObjectSaved.SwitcherGlowing();
            }
-           Debug.Log(rayHit.collider.gameObject.name);
            MMF_Player feedbacksItem = rayHit.collider.gameObject.transform.GetChild(9).GetComponent<MMF_Player>(); // Devient Violet
            feedbacksItem.PlayFeedbacks();
         
@@ -305,6 +339,9 @@ public class CursorSpellScript : MonoBehaviour
 
            rayHit.collider.gameObject.tag = "Cloned(Not More Usable)"; // Quand le clone est fini
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
+
+           // MODIFY STATE
+           itemHitItemScript.isCloned = true;
 
            Destroy(gameObject);
        }  

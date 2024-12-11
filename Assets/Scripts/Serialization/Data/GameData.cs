@@ -8,7 +8,7 @@ public class GameData
 {
     public bool[] itemDiscovered;
 
-    public bool[] levelsDone;
+    public int[] levelsDone;
 
     [Header("Controls and more")]
     public bool isHardMode;
@@ -42,7 +42,7 @@ public class GameData
     public GameData() 
     {
         this.itemDiscovered = new bool[35];
-        this.levelsDone = new bool[65];
+        this.levelsDone = new int[65];
 
         this.isHardMode = false;
         this.controlsChoice = 2;

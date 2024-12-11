@@ -144,7 +144,7 @@ public class MouseMovements : MonoBehaviour
             GameManager.instance.isWon = true;
 
 
-            GameManager.instance.levelsState[SceneManager.GetActiveScene().buildIndex-2] = true; // Update de la valeur dans le Level Selector // -2 Car MainScene et Level Selector
+            GameManager.instance.levelsState[SceneManager.GetActiveScene().buildIndex-2] = 1; // Update de la valeur dans le Level Selector // -2 Car MainScene et Level Selector
 
 
         } // Mettre ça dans un autre script pour faire plus propre

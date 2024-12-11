@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public bool isNeedToStuckUI;
 
-    public bool[] levelsState;
+    public int[] levelsState; // 0 - Pas fait | 1 - Fait | 2 - Hardcore
 
     public bool goNextFloor;
 

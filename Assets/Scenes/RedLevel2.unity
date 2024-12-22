@@ -1644,16 +1644,15 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 64
-  timeOffSet: 0
   itemsThrowed: {fileID: 13035033}
   hitLayers2:
     serializedVersion: 2
     m_Bits: 0
+  itemScriptLastObjectSaved: {fileID: 0}
   feedbacksInventory: {fileID: 1717868596}
   inventory: {fileID: 353457221}
   tables: {fileID: 2133652593}
   spaceForFullItems: {fileID: 0}
-  canvaRect: {fileID: 343187092}
 --- !u!4 &557383196
 Transform:
   m_ObjectHideFlags: 0
@@ -2881,7 +2880,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6c1f6f735876091469f43f34f0d929d0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 923cf4bd81ead9748b2954dce2d589da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3460,7 +3459,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &934199661
 MonoBehaviour:
@@ -3482,6 +3481,37 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!1 &1239705902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1239705903}
+  m_Layer: 0
+  m_Name: ItemsThrowed (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1239705903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239705902}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.0141973, y: -1.5067166, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1304347927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3491,7 +3521,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6793414591459937444, guid: 9e01afd8515aaa746b69637215a141bf, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6793414591459937444, guid: 9e01afd8515aaa746b69637215a141bf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3736,8 +3766,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1472979739}
   - component: {fileID: 1472979738}
+  - component: {fileID: 1472979740}
   m_Layer: 0
-  m_Name: LevelInvManager
+  m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3781,7 +3812,7 @@ MonoBehaviour:
   hardModTextureBox: {fileID: 21300000, guid: 1677d207c348ca54b877814941861896, type: 3}
   hardModTexturePotion: {fileID: 21300000, guid: a19ceb4783c2e8145b2c575a98b37861, type: 3}
   bestiaryItemManager: {fileID: 0}
-  placeToPutFullItems: {fileID: 0}
+  placeToPutFullItems: {fileID: 1239705903}
   indexSpawningItems: 0
   inv: {fileID: 353457223}
 --- !u!4 &1472979739
@@ -3797,8 +3828,24 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1472979740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472979737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a63259e8d414842b850bb6a65d5ec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouse: {fileID: 557383193}
+  inventory: {fileID: 353457221}
+  placeToPutItems: {fileID: 13035033}
+  placeToPutFullItems: {fileID: 1239705903}
 --- !u!1 &1589052118
 GameObject:
   m_ObjectHideFlags: 0
@@ -3905,7 +3952,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1589911834
 MonoBehaviour:
@@ -5309,7 +5356,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2133652592
 GameObject:
@@ -5341,7 +5388,7 @@ Transform:
   m_Children:
   - {fileID: 833986538}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &354872736061575040
 RectTransform:
@@ -6337,6 +6384,19 @@ MonoBehaviour:
   bestiaryItemManager: {fileID: 0}
   touchedGroundOnce: 0
   cursor: {fileID: 0}
+  isGlowing: 0
+  isClear: 0
+  isShrinkOnce: 0
+  isBiggerOnce: 0
+  isFullOfPotions: 0
+  isCloned: 0
+  isStrange: 0
+  isExplodedFromStrange: 0
+  isTable: 0
+  isBox: 0
+  isFalling: 0
+  isReady: 0
+  isReady2: 0
 --- !u!1 &1678710100603332428
 GameObject:
   m_ObjectHideFlags: 0
@@ -10514,7 +10574,7 @@ Transform:
   - {fileID: 4284160788474539656}
   - {fileID: 4284160786982648723}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 159.31}
 --- !u!50 &5808390419146870205
 Rigidbody2D:
@@ -10554,7 +10614,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.3333334, y: 1.3333334}
+    oldSize: {x: 1.4166666, y: 1.4166666}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

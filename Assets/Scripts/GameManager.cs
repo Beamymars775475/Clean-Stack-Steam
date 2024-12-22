@@ -54,10 +54,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
 
     [Header("Checks for win (NEED REWORK !!)")]
-    public bool waitUntilFirstObject;
 
-    public bool isDelivered2;
-    
+    public bool isPhase1Done;
+
     [Header("Strange Potion")]
     public bool activeStrangePotion;
 

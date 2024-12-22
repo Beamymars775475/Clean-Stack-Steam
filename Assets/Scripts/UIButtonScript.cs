@@ -18,12 +18,12 @@ public class UIButtonScript : MonoBehaviour
     void Update()
     {
 
-        if(GameManager.instance.isWon && GameManager.instance.isNeedToStuckUI == false && GameManager.instance.waitUntilFirstObject == false)
+        if(GameManager.instance.isWon && GameManager.instance.isNeedToStuckUI == false)
         {
             feedBacksNextButton.PlayFeedbacks();
             GameManager.instance.isNeedToStuckUI = true;
         }
-        else if(GameManager.instance.isGameOver && GameManager.instance.isNeedToStuckUI == false && GameManager.instance.waitUntilFirstObject == false)
+        else if(GameManager.instance.isGameOver && GameManager.instance.isNeedToStuckUI == false)
         {
             feedBacksRetryButton.PlayFeedbacks();
             GameManager.instance.isNeedToStuckUI = true;

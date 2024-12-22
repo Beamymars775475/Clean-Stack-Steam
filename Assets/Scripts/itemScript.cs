@@ -49,7 +49,17 @@ public class itemScript : MonoBehaviour
     public bool isCloned;
     public bool isStrange;
     public bool isExplodedFromStrange;
+
+    [Header("Personal State")]
+    public bool isTable;
+    public bool isBox;
+
+
+    public bool isFalling;
     public bool isReady;
+
+    public bool isReady2;
+
 
     // Start is called before the first frame update
     void Start()
@@ -76,7 +86,7 @@ public class itemScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isStrange && GameManager.instance.activeStrangePotion)
+        if(isStrange && GameManager.instance.activeStrangePotion && !isExplodedFromStrange)
         {
             Rigidbody2D gameObjectRb = gameObject.GetComponent<Rigidbody2D>();
 
@@ -104,7 +114,26 @@ public class itemScript : MonoBehaviour
             }
         }
 
+        Rigidbody2D itemRb = gameObject.GetComponentInParent<Rigidbody2D>();
 
+
+        // Si il tombe on attend 2.5 sec pour le mettre prêt
+        if(isFalling && !isReady)
+        {
+            StartCoroutine(CountDownUntilReady(2.5f));
+        }
+        // Si il bouge un peu on attend aussi
+        if(isReady && (itemRb.velocity.x > 1f || itemRb.velocity.x < -1f || itemRb.velocity.y > 1f || itemRb.velocity.y < -1f))
+        {
+            isFalling = true;
+            isReady = false;
+        }
+
+
+        if(!isBox)
+        {
+            isReady2 = true;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D _col)
@@ -112,7 +141,7 @@ public class itemScript : MonoBehaviour
         // All variations of states of item
         if(_col.gameObject.tag == "deadArea" && gameObject.tag == "item") 
         {
-            if(bestiaryItemManager == null && gameObject.tag != "itemTable") // Pour les niveaux normaux
+            if(bestiaryItemManager == null && !isTable) // Pour les niveaux normaux
             {
                 GameManager.instance.isGameOver = true;
             }
@@ -129,8 +158,16 @@ public class itemScript : MonoBehaviour
         }
     }
 
-    public void WhenCloningDoneGoCursorParent()
-    {
+    public void CloningAnimation()
+    {   
+        Rigidbody2D rbItem = gameObject.GetComponent<Rigidbody2D>();
+        rbItem.gravityScale = 0;
+
+        MMF_Player feedbacksItem = gameObject.transform.GetChild(10).GetComponent<MMF_Player>(); // Animation item qui flotte
+        MMF_DestinationTransform feedbacksItemMMMF_DestinationTransform = feedbacksItem.GetFeedbackOfType<MMF_DestinationTransform>();
+        feedbacksItemMMMF_DestinationTransform.Destination = cursor.transform;
+        feedbacksItem.PlayFeedbacks();
+
         StartCoroutine(CooldownCloning(1f));
     }
 
@@ -142,16 +179,29 @@ public class itemScript : MonoBehaviour
         GameManager.instance.isInCloningProcess = false;
     }
 
-    public void SwitcherGlowing() // Need to be switched outside of the method
+    public void SwitcherGlowing(Color newShaderColor) // Need to be switched outside of the method
     {
         SpriteRenderer gbShader = gameObject.GetComponent<SpriteRenderer>();
         if(isGlowing == true)
         {
-            gbShader.material.EnableKeyword("OUTBASE_ON");
+            gbShader.material.SetColor("_OutlineColor", newShaderColor);
+            gbShader.material.EnableKeyword("OUTBASE_ON");           
         }
         else
         {
             gbShader.material.DisableKeyword("OUTBASE_ON");
+        }
+        
+    }
+
+    IEnumerator CountDownUntilReady(float cooldown)
+    {
+        yield return new WaitForSeconds(cooldown);
+        Rigidbody2D itemRb = gameObject.GetComponent<Rigidbody2D>();
+        if(itemRb.velocity.x < 1f && itemRb.velocity.x > -1f && itemRb.velocity.y < 1f && itemRb.velocity.y > -1f && isFalling == true)
+        {
+            isReady = true;
+            isFalling = false;
         }
         
     }

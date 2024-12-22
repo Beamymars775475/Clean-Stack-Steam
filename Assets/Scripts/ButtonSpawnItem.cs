@@ -125,32 +125,32 @@ public class ButtonSpawnItem : MonoBehaviour
     {
         if(GameManager.instance.isGameOver == false)
         {
-            bool isGoodForStrangePotionoOrNo = false;
+            bool isGoodForStrangePotionoOrNo = false; // POUR POTION STRANGE    
+            bool isGoodForBiggerAndShrinkPotionoOrNo = false; // POUR POTION PETIT ET GROS
             foreach (Transform child in itemThrowed.transform)
             {
-                if(child.tag == "item") // Oui ya un item sur lequel appliqué
+                itemScript childItemScript = child.GetComponent<itemScript>();
+                if(childItemScript.isClear) // Oui ya un item sur lequel appliqué
                 {
                     isGoodForStrangePotionoOrNo = true;
                 }
-            }
 
-            bool isGoodForBiggerAndShrinkPotionoOrNo = false;
-            foreach (Transform child in itemThrowed.transform)
-            {
-                if(child.tag == "item" || child.tag == "BiggerItem" || child.tag == "ShrinkItem") // Oui ya un item sur lequel appliqué
+                if(childItemScript.isClear|| childItemScript.isBiggerOnce || childItemScript.isShrinkOnce) // Oui ya un item sur lequel appliqué
                 {
                     isGoodForBiggerAndShrinkPotionoOrNo = true;
                 }
             }
 
-            if((itemPrefab.tag == "item" || itemPrefab.tag == "itemTable") && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
+            itemScript itemPrefabScript = itemPrefab.GetComponent<itemScript>();
+
+            if(itemPrefab.tag == "item" && GameManager.instance.isInventoryOpen == true && isDelivered == false && (SceneManager.GetActiveScene().name != "BestiaryScene" || bestiaryItemManager.limitItemsAmount < 25))
             {
                 GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
                 Transform prefabTransform = prefab.GetComponent<Transform>();
                 prefabTransform.SetParent(cursor);
 
                 
-                if(itemPrefab.tag != "itemTable")
+                if(!itemPrefabScript.isTable)
                 {
                     MMF_Player feedbackClone = prefab.transform.GetChild(10).GetComponent<MMF_Player>(); // Need to fill destination
                     MMF_DestinationTransform feedbackCloneDestionationFeedback = feedbackClone.GetFeedbackOfType<MMF_DestinationTransform>();
@@ -253,11 +253,13 @@ public class ButtonSpawnItem : MonoBehaviour
         GameManager.instance.currentTextName = itemscript.txtName;
         GameManager.instance.currentTextDescription = itemscript.txtDescription;
 
-        if(itemPrefab.tag != "itemTable")
+        itemScript itemPrefabScript = itemPrefab.GetComponent<itemScript>();
+
+        if(!itemPrefabScript.isTable)
         {
             GameManager.instance.needImageDark = false;
         }
-        else if(itemPrefab.tag == "itemTable")
+        else if(itemPrefabScript.isTable)
         {
             GameManager.instance.needImageDark = true;
         }

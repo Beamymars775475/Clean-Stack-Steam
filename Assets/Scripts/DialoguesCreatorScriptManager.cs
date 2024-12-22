@@ -14,11 +14,15 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
 
     public GameObject shadow;
 
+    [Header("Feedbacks")]
+
     public MMF_Player moveCreatorToScreenFeedbacks1;
 
     public MMF_Player moveCreatorOutOfScreenFeedbacks1;
 
     public MMF_Player creatorTalkingFeedbacks;
+
+    [Header("Text")]
 
     public TypewriterByCharacter typewriterByCharacterMainText;
 

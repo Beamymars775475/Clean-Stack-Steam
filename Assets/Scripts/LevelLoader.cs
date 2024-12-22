@@ -88,25 +88,22 @@ public class LevelLoader : MonoBehaviour
 
     public void NextScene() // il fait tout le taff
     {
-        if(GameManager.instance.isWon)
+        if(GameManager.instance.isWon) // Reset 
         {
             GameManager.instance.currentLevel++;
             GameManager.instance.goNextFloor = true;
             GameManager.instance.isWon = false;
-            GameManager.instance.isNeedToStuckUI = false;
             GameManager.instance.isInventoryOpen = false;
-            GameManager.instance.waitUntilFirstObject = true;
             GameManager.instance.isCountDownOn = false;
 
+            GameManager.instance.isPhase1Done = false; 
 
             GameManager.instance.activeStrangePotion = false;
         }
         else
         {
             GameManager.instance.isWon = false;
-            GameManager.instance.isNeedToStuckUI = false;
             GameManager.instance.isInventoryOpen = false;
-            GameManager.instance.waitUntilFirstObject = true;
             GameManager.instance.isCountDownOn = false;
 
 
@@ -168,8 +165,6 @@ public class LevelLoader : MonoBehaviour
         SceneManager.LoadScene(levelIndex);
         GameManager.instance.isGameOver = false;
         GameManager.instance.isNeedToStuckUI = false;
-        GameManager.instance.waitUntilFirstObject = true;
-        GameManager.instance.isDelivered2 = false;
 
         GameManager.instance.activeStrangePotion = false;
 

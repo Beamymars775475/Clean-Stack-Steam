@@ -18,7 +18,7 @@ public class MouseMovements : MonoBehaviour
     public Collider2D moveThisCollider; 
     public LayerMask hitLayers;
 
-    public float timeOffSet;
+    private float timeOffSet = 0.05f;
     private Vector3 velocity;
 
     public Transform itemsThrowed;
@@ -30,6 +30,10 @@ public class MouseMovements : MonoBehaviour
     RaycastHit hit_ray;
     public LayerMask hitLayers2;
 
+    [Header("Glowing")]
+
+    public itemScript itemScriptLastObjectSaved;
+
     [Header("Other")]
     
     public MMF_Player feedbacksInventory;
@@ -39,6 +43,7 @@ public class MouseMovements : MonoBehaviour
     public Transform tables; // Pour les tables
 
     public Transform spaceForFullItems; // Pour les clones
+
 
 
 
@@ -53,8 +58,10 @@ public class MouseMovements : MonoBehaviour
         Vector3 mouse = Input.mousePosition;
         Ray castPointmouse = Camera.main.ScreenPointToRay(mouse);
         RaycastHit hitMouse;
+
+
         
-        if (gameObject.transform.childCount != 0 && (gameObject.transform.GetChild(0).tag == "item" || gameObject.transform.GetChild(0).tag == "itemTable" || gameObject.transform.GetChild(0).tag == "ReadyToExplode" || gameObject.transform.GetChild(0).tag == "BiggerItem" || gameObject.transform.GetChild(0).tag == "ShrinkItem")) // ReadyToExplode for clones who have Strange potion effect 
+        if (gameObject.transform.childCount != 0 && gameObject.transform.GetChild(0).tag == "item")
         {
             moveThis = gameObject.transform.GetChild(0);
             moveThisRigidbody = moveThis.GetComponent<Rigidbody2D>();
@@ -63,9 +70,6 @@ public class MouseMovements : MonoBehaviour
             moveThisRigidbody.gravityScale = 0;
             GameManager.instance.canAccessToInventory = false;
             GameManager.instance.isCountDownOn = false; // Ici
-
-
-            GameManager.instance.waitUntilFirstObject = false;
 
             if (Physics.Raycast(castPointmouse, out hitMouse, Mathf.Infinity, hitLayers) && moveThisRigidbody.gravityScale != 1)
             {
@@ -86,7 +90,9 @@ public class MouseMovements : MonoBehaviour
 
             }   
 
-            if(gameObject.transform.GetChild(0).tag != "itemTable")
+            itemScript itemChilditemScript = gameObject.transform.GetChild(0).GetComponent<itemScript>(); // Item in hand
+
+            if(!itemChilditemScript.isTable)
             {
                 moveThis.Rotate(new Vector3(0, 0, Input.mouseScrollDelta.y*Time.deltaTime*800));
             }
@@ -98,22 +104,86 @@ public class MouseMovements : MonoBehaviour
                 moveThisCollider.isTrigger = false;
                 moveThis.SetParent(itemsThrowed);
                 GameManager.instance.canAccessToInventory = true;
-                if(moveThis.tag == "itemTable")
+
+                itemScript itemDropitemScript = moveThis.GetComponent<itemScript>();
+
+
+                if(itemDropitemScript.isTable)
                 {
                     moveThis.SetParent(tables);
                 }
-                else if(moveThis.tag == "ReadyToExplode")
+                else if(itemDropitemScript.isStrange)
                 {
                     moveThis.SetParent(spaceForFullItems);
                 }
+
+                // COMMENCER TIMER
+                itemDropitemScript.isFalling = true;
             }
         }
 
-
-
-        if(inventory.transform.childCount <= 2 && GameManager.instance.isCountDownOn == false && gameObject.transform.childCount == 0 && GameManager.instance.isInCloningProcess == false) // Condition de Win
+        // BOX SYSTEM
+        if (gameObject.transform.childCount == 0)
         {
-            StartCoroutine(CountDownUntilWin(5f));
+            RaycastHit2D hitSomething = Physics2D.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
+            if(hitSomething)
+            {
+                if(hitSomething.collider.gameObject != null && itemScriptLastObjectSaved != null)
+                {
+                    if(hitSomething.collider.gameObject != itemScriptLastObjectSaved.gameObject)
+                    {
+                        itemScriptLastObjectSaved.isGlowing = false;
+                        Color defaultColor = new Color(1f, 1f, 1f, 1f);
+                        itemScriptLastObjectSaved.SwitcherGlowing(defaultColor);
+                    }
+                }
+
+                itemScript itemHitItemScript = hitSomething.collider.gameObject.GetComponent<itemScript>();
+                if(itemHitItemScript == null) return; // SI C PO UN ITEM !!
+
+                Debug.Log(gameObject.transform.childCount);
+                Debug.Log(gameObject.name);
+
+                // Si on touche bien une box
+                if(itemHitItemScript.isBox && GameManager.instance.isPhase1Done && !itemHitItemScript.isReady2)
+                {
+
+                    itemScript itemScriptObjectOnMouse = hitSomething.collider.gameObject.GetComponent<itemScript>();
+
+                    if(itemScriptLastObjectSaved != itemScriptObjectOnMouse)
+                    {
+                        itemScriptLastObjectSaved = itemScriptObjectOnMouse;
+                    }
+                    if(itemScriptLastObjectSaved != null)
+                    {
+                        itemScriptLastObjectSaved.isGlowing = true;
+                        Color defaultColor = new Color(1f, 1f, 1f, 1f);
+                        itemScriptLastObjectSaved.SwitcherGlowing(defaultColor); 
+                    }
+                    
+                }
+                else
+                {
+                    if(itemScriptLastObjectSaved != null)
+                    {
+                        itemScriptLastObjectSaved.isGlowing = false;
+                        Color defaultColor = new Color(1f, 1f, 1f, 1f);
+                        itemScriptLastObjectSaved.SwitcherGlowing(defaultColor);
+                    }
+                        
+                }
+            }
+            // Si la souris ne pointe plus l'object faut le mettre à jour
+            else
+            {
+                if(itemScriptLastObjectSaved != null)
+                {
+                    itemScriptLastObjectSaved.isGlowing = false;
+                    Color defaultColor = new Color(1f, 1f, 1f, 1f);
+                    itemScriptLastObjectSaved.SwitcherGlowing(defaultColor);
+                }
+                    
+            }
         }
 
         if(Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 0) // Pour space
@@ -125,30 +195,6 @@ public class MouseMovements : MonoBehaviour
             }
         }
   
-    }
-
-    IEnumerator CountDownUntilWin(float cooldown)
-    {
-        if(GameManager.instance.isDelivered2 == false) // Sus a check
-        {
-            GameManager.instance.isDelivered2 = true;
-            GameManager.instance.isCountDownOn = true;
-
-            yield return new WaitForSeconds(0.4f);
-            // ça c'est safe
-            GameManager.instance.activeStrangePotion = true;
-            Debug.Log("aaaa");
-            yield return new WaitForSeconds(cooldown-0.4f); // Anim Strange
-
-            GameManager.instance.isCountDownOn = false;
-            GameManager.instance.isWon = true;
-
-
-            GameManager.instance.levelsState[SceneManager.GetActiveScene().buildIndex-2] = 1; // Update de la valeur dans le Level Selector // -2 Car MainScene et Level Selector
-
-
-        } // Mettre ça dans un autre script pour faire plus propre
-
     }
 
 

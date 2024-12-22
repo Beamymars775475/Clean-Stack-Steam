@@ -61,6 +61,7 @@ public class LevelInventoryManager : MonoBehaviour
 
 
 
+
     void InvItemsShuffle(GameObject[] gbs)
     {
         // Knuth shuffle algorithm :: courtesy of Wikipedia :)
@@ -89,13 +90,14 @@ public class LevelInventoryManager : MonoBehaviour
         {
 
             Debug.Log(gbItemPrefab.name + " created"); // Affichage dans la console
+            itemScript gbItemPrefabItemScript = gbItemPrefab.GetComponent<itemScript>();
 
             GameObject newPrefab = null;
             if(GameManager.instance.modeHard && SceneManager.GetActiveScene().name != "BestiaryScene")
             {
                 newPrefab = Instantiate(hardBox);
             }
-            else if(gbItemPrefab.tag == "itemTable")
+            else if(gbItemPrefabItemScript.isTable)
             {
                 newPrefab = Instantiate(blueBox);
             }
@@ -331,6 +333,5 @@ public class LevelInventoryManager : MonoBehaviour
             }
         }
     }
-
 
 }

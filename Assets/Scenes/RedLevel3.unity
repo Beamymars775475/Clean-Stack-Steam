@@ -750,7 +750,6 @@ GameObject:
   - component: {fileID: 316322023}
   - component: {fileID: 316322027}
   - component: {fileID: 316322026}
-  - component: {fileID: 316322024}
   m_Layer: 5
   m_Name: LittleBlueMonsterDialogues
   m_TagString: Untagged
@@ -782,51 +781,6 @@ RectTransform:
   m_AnchoredPosition: {x: 390, y: 220}
   m_SizeDelta: {x: 514, y: 210}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &316322024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316322022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: DescriptionOverButtonScript, Assembly-CSharp
-          m_MethodName: WhenOnUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: DescriptionOverButtonScript, Assembly-CSharp
-          m_MethodName: WhenExitingUI
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &316322026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1643,11 +1597,11 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 64
-  timeOffSet: 0
   itemsThrowed: {fileID: 13035033}
   hitLayers2:
     serializedVersion: 2
     m_Bits: 0
+  itemScriptLastObjectSaved: {fileID: 0}
   feedbacksInventory: {fileID: 1717868596}
   inventory: {fileID: 353457221}
   tables: {fileID: 2133652593}
@@ -1978,7 +1932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typewriterStartsAutomatically: 0
-  animationLoop: 0
+  animationLoop: 1
   timeScale: 0
   _text: 'Tadaaa , I present to you: the world most  generic  pencil !'
   useDynamicScaling: 1
@@ -2913,7 +2867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typewriterStartsAutomatically: 0
-  animationLoop: 0
+  animationLoop: 1
   timeScale: 0
   _text: 'Tadaaa , I present to you: the world most  generic  pencil !'
   useDynamicScaling: 1
@@ -3861,7 +3815,7 @@ MonoBehaviour:
         m_Calls: []
   DebugActive: 0
   FeedbacksList:
-  - rid: 187542863644459014
+  - rid: 676107711926239262
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
@@ -3869,11 +3823,11 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 187542863644459014
+    - rid: 676107711926239262
       type: {class: MMF_RectTransformPivot, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
       data:
         Active: 1
-        UniqueID: -287569648
+        UniqueID: 1209596663
         Label: RectTransform Pivot
         ChannelMode: 0
         Channel: 0
@@ -3884,7 +3838,7 @@ MonoBehaviour:
           TimescaleMode: 0
           ExcludeFromHoldingPauses: 0
           ContributeToTotalDuration: 1
-          InitialDelay: 0
+          InitialDelay: 0.5
           CooldownDuration: 0
           InterruptsOnStop: 1
           NumberOfRepeats: 0
@@ -3938,7 +3892,7 @@ MonoBehaviour:
         Owner: {fileID: 1604147025}
         DebugActive: 0
         Mode: 0
-        Duration: 0.2
+        Duration: 0.35
         StartsOff: 0
         EndsOff: 0
         RelativeValues: 1
@@ -6011,7 +5965,11 @@ MonoBehaviour:
   isCloned: 0
   isStrange: 0
   isExplodedFromStrange: 0
+  isTable: 0
+  isBox: 0
+  isFalling: 0
   isReady: 0
+  isReady2: 0
 --- !u!1 &1666696870366807590
 GameObject:
   m_ObjectHideFlags: 0
@@ -10620,8 +10578,7 @@ MonoBehaviour:
   levelsState: 
   goNextFloor: 0
   FirstLaunch: 0
-  waitUntilFirstObject: 0
-  isDelivered2: 0
+  isPhase1Done: 0
   activeStrangePotion: 0
   isInCloningProcess: 0
   AlreadyUsedItem: 0000000000000000000000000000000000000000000000000000000000000000000000

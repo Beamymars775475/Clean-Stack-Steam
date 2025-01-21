@@ -122,7 +122,7 @@ public class MouseMovements : MonoBehaviour
             }
         }
 
-        // BOX SYSTEM
+        // CLICKABLE SYSTEM
         if (gameObject.transform.childCount == 0)
         {
             RaycastHit2D hitSomething = Physics2D.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction);
@@ -141,11 +141,8 @@ public class MouseMovements : MonoBehaviour
                 itemScript itemHitItemScript = hitSomething.collider.gameObject.GetComponent<itemScript>();
                 if(itemHitItemScript == null) return; // SI C PO UN ITEM !!
 
-                Debug.Log(gameObject.transform.childCount);
-                Debug.Log(gameObject.name);
-
                 // Si on touche bien une box
-                if(itemHitItemScript.isBox && GameManager.instance.isPhase1Done && !itemHitItemScript.isReady2)
+                if(itemHitItemScript.isClickable && !itemHitItemScript.isClicked)
                 {
 
                     itemScript itemScriptObjectOnMouse = hitSomething.collider.gameObject.GetComponent<itemScript>();

@@ -7,6 +7,8 @@ public class BestiaryItemManager : MonoBehaviour
 {
     public bool deleteItemsOnGround;
 
+    public bool spareTablesFromDeath;
+
     public RectTransform hidderPos;
 
     public int limitItemsAmount = 0;
@@ -62,6 +64,11 @@ public class BestiaryItemManager : MonoBehaviour
     public void UpdateLimit()
     {
         limitItemUI.text = "Limit: " + limitItemsAmount.ToString() + "/25";
+    }
+
+    public void UpdateIsNeedToKillTable()
+    {
+        spareTablesFromDeath = !spareTablesFromDeath;
     }
 
     public void KillAllItems()

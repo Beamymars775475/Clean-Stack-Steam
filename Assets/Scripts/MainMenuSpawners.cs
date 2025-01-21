@@ -12,8 +12,6 @@ public class MainMenuSpawners : MonoBehaviour
 
     public bool canSpawn;
 
-    public bool needToRemoveHelps;
-
     
     void Start()
     {
@@ -41,11 +39,6 @@ public class MainMenuSpawners : MonoBehaviour
        {
            StartCoroutine(CooldownToSpawn(0.2f));
            Instantiate(prefabs[Random.Range(0, prefabs.Length)], new Vector3(gameObject.transform.position.x-1f, gameObject.transform.position.y, gameObject.transform.position.z), Quaternion.identity);
-
-           if(!needToRemoveHelps)
-           {
-                needToRemoveHelps = true;
-           }
        }
    }
 

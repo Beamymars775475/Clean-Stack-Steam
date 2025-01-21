@@ -62,21 +62,17 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
 
     void Start()
     {
-        GameManager.LaunchDialogue += OnSoftlockStrangePotion; // Abonnement
+        GameManager.LaunchDialogue += SetupDialogueWithIndex; // Abonnement
 
 
         shadow.SetActive(false);
         DialoguesBubble.SetActive(false);
         continueText.SetActive(false);
 
-        if(SceneManager.GetActiveScene().name == "RedLevel3")
+        if(SceneManager.GetActiveScene().name == "Level2")
         {
-            linesOfCreator = new string[3];
-            linesOfCreator[0] = "The <color=#1b9115>green potion</color> . . . This one is pretty annoying im not gonna lie.";
-            linesOfCreator[1] = "The developer of the game was <size=140%>SO <waitfor=0.3> LAZY</size> that he made it only working on <color=#d68a06><bounce>blank items.</bounce></color>";
-            linesOfCreator[2] = "Eh, At least it has a silly effect, I'll let you find out what it does.";
-
-            StartCoroutine(StartDialogue(true, 0.35f));
+            GameManager.instance.indexDialogues = 998;
+            GameManager.instance.TriggerEvent();
         }
 
 
@@ -225,17 +221,45 @@ public class DialoguesCreatorScriptManager : MonoBehaviour
         }
     }
 
-    void OnSoftlockStrangePotion()
-    {
-        linesOfCreator = new string[5];
-        linesOfCreator[0] = "You... <size=120%>YOU JUST BROKE THE GAME!!!</size>";
-        linesOfCreator[1] = "I just told you that the <color=#1b9115>green potion</color> needs to be used on BLANK items.";
-        linesOfCreator[2] = "<size=70%>Ugh, if im stuck with someone that much dumb its gonna take so long to reach the -</size>";
-        linesOfCreator[3] = "Oops! I was talking about the last guy that played the game <size=80%>not you...</size>";
-        linesOfCreator[4] = "So, I will give you the chance to retry the level once more so don't break everything <size=110%>AGAIN</size>, <waitfor=0.5> please.";
 
-        needToAnnounceLooseAtTheEnd = true;
-        StartCoroutine(StartDialogue(true, 1f));
+    void SetupDialogueWithIndex()
+    {
+        if(this != null)
+        {
+            if(GameManager.instance.indexDialogues == 0)
+            {
+                linesOfCreator = new string[3];
+                linesOfCreator[0] = "El Tiny Foxo del tiny foxo";
+                linesOfCreator[1] = "del tiny foxo";
+                linesOfCreator[2] = "del biggo foxo";
+
+                StartCoroutine(StartDialogue(true, 0.35f));
+            }
+
+            if(GameManager.instance.indexDialogues == 998)
+            {
+                linesOfCreator = new string[3];
+                linesOfCreator[0] = "The <color=#1b9115>green potion</color> . . . This one is pretty annoying im not gonna lie.";
+                linesOfCreator[1] = "The developer of the game was <size=140%>SO <waitfor=0.3> LAZY</size> that he made it only working on <color=#d68a06><bounce>blank items.</bounce></color>";
+                linesOfCreator[2] = "Eh, At least it has a silly effect, I'll let you find out what it does.";
+
+                StartCoroutine(StartDialogue(true, 0.35f));
+            }
+
+            if(GameManager.instance.indexDialogues == 999)
+            {
+                linesOfCreator = new string[5];
+                linesOfCreator[0] = "You... <size=120%>YOU JUST BROKE THE GAME!!!</size>";
+                linesOfCreator[1] = "I just told you that the <color=#1b9115>green potion</color> needs to be used on BLANK items.";
+                linesOfCreator[2] = "<size=70%>Ugh, if im stuck with someone that much dumb its gonna take so long to reach the -</size>";
+                linesOfCreator[3] = "Oops! I was talking about the last guy that played the game <size=80%>not you...</size>";
+                linesOfCreator[4] = "So, I will give you the chance to retry the level once more so don't break everything <size=110%>AGAIN</size>, <waitfor=0.5> please.";
+
+                needToAnnounceLooseAtTheEnd = true;
+                StartCoroutine(StartDialogue(true, 1f));
+            }
+        }
+
     }
 
 }

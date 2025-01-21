@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
-        if(inventory.transform.childCount == 2 && mouse.transform.childCount == 0)
+        if(inventory.transform.childCount == 2 && mouse.transform.childCount == 0&& !GameManager.instance.isInCloningProcess)
         {
             GameManager.instance.isPhase1Done = true;
         }

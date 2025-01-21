@@ -12,6 +12,7 @@ public class MainMenuLever : MonoBehaviour
     public bool leverBool;
 
     public GameObject shelfForButtonsMenu;
+    public GameObject darkness;
 
     public bool needToSpawnButtons;
 
@@ -19,10 +20,14 @@ public class MainMenuLever : MonoBehaviour
 
     public LevelLoader levelLoader;
 
+    public Sprite buttonUp;
+    public Sprite buttonDown;
+
     
     void Start()
     {
         shelfForButtonsMenu.SetActive(false);
+        darkness.SetActive(false);
 
         _mainCamera = Camera.main; 
 
@@ -32,9 +37,19 @@ public class MainMenuLever : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(mainMenuSpawners.isAbleToStartFlood )
+        {
+            darkness.SetActive(false);
+        }
+        else
+        {
+            darkness.SetActive(true);
+        }
+
         if(mainMenuSpawners.placeToPutFlyingItems.childCount == 0)
         {
             shelfForButtonsMenu.SetActive(true);
+
 
             if(needToSpawnButtons)
             {
@@ -58,22 +73,31 @@ public class MainMenuLever : MonoBehaviour
        
         if(rayHit.collider.gameObject.tag == "Lever")
         {
+            SpriteRenderer gameobjectSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             if(leverBool)
             {
                 leverBool = false;
                 mainMenuSpawners.isAbleToStartFlood = false;
                 needToSpawnButtons = true;
+                
+                gameobjectSpriteRenderer.sprite = buttonDown;
             }
             else
             {
                 leverBool = true;
                 mainMenuSpawners.isAbleToStartFlood = true;
+
+                gameobjectSpriteRenderer.sprite = buttonUp;
             }
         }
 
         if(rayHit.collider.gameObject.tag == "ButtonQuit")
         {
-            Application.Quit();
+            if(GameManager.instance.levelsState[GameManager.instance.MONDES[0]] != 0 || GameManager.instance.levelsState[GameManager.instance.MONDES[1]] != 0 || GameManager.instance.levelsState[GameManager.instance.MONDES[2]] != 0)
+            {
+                Debug.Log("I Quit !");
+                Application.Quit();
+            }
         }
 
         if(rayHit.collider.gameObject.tag == "ButtonSettings")

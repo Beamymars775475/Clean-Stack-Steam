@@ -31,6 +31,8 @@ TagManager:
   - Box
   - BoxPotion
   - MicroPotion
+  - PulsePotion
+  - ExpulsePotion
   layers:
   - Default
   - TransparentFX

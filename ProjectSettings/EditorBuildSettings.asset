@@ -12,20 +12,20 @@ EditorBuildSettings:
     path: Assets/Scenes/LevelSelectorScene.unity
     guid: 3d84a0ab71507254da0a769a8046fc21
   - enabled: 1
-    path: Assets/Scenes/RedLevel1.unity
-    guid: dd56b8e39d92507489d5cd83039dddd4
+    path: Assets/Scenes/Level0.unity
+    guid: b78e186ad7b142941be6e562da19e854
   - enabled: 1
-    path: Assets/Scenes/RedLevel2.unity
-    guid: f74c79c8a7fe207448d939a26eaa1793
+    path: Assets/Scenes/Level1.unity
+    guid: 405af5fb8318243469a9f87785e9c8b5
   - enabled: 1
-    path: Assets/Scenes/RedLevel3.unity
-    guid: d0daf945eb1b3ce4c9f45b7aae12ed9f
+    path: Assets/Scenes/Level2.unity
+    guid: dd0344343505f2745ac6c28060dbb9ca
   - enabled: 1
-    path: Assets/Scenes/RedLevel4.unity
-    guid: e993146a0b1e73348b816b067647ff6a
+    path: Assets/Scenes/Level3.unity
+    guid: f4ecc937e9f223d4486632fcdfd2743d
   - enabled: 1
-    path: Assets/Scenes/RedLevel5.unity
-    guid: eb1fbf8f50dfd764a8534bbbd9ab9ca2
+    path: Assets/Scenes/Level4.unity
+    guid: ff8fdd4f45c9bd64c9c224bc8da79915
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729

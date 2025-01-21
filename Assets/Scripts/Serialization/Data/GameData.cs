@@ -31,9 +31,7 @@ public class GameData
 
     public int resolutionToUse;
 
-    [Header("First Time Played Checker")]
 
-    public bool isItFirstTime;
 
 
     // the values defined in this constructor will be the default values
@@ -41,8 +39,8 @@ public class GameData
 
     public GameData() 
     {
-        this.itemDiscovered = new bool[35];
-        this.levelsDone = new int[65];
+        this.itemDiscovered = new bool[40];
+        this.levelsDone = new int[68];
 
         this.isHardMode = false;
         this.controlsChoice = 2;
@@ -55,6 +53,6 @@ public class GameData
         this.resolutionToUse = -1;
         this.isFullScreen = true;
 
-        this.isItFirstTime = true;
+
     }
 }

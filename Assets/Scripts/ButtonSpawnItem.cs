@@ -72,11 +72,10 @@ public class ButtonSpawnItem : MonoBehaviour
 
  
         // Mettre à jour la taille de la preview et save l'image de base
-        if((itemPrefab.tag != "BiggerPotion" || itemPrefab.tag != "ShrinkPotion" || itemPrefab.tag != "StrangePotion" || itemPrefab.tag != "ClonePotion") && gameObject.transform.childCount != 0)
+        if((itemPrefab.tag != "BiggerPotion" || itemPrefab.tag != "ShrinkPotion" || itemPrefab.tag != "StrangePotion" || itemPrefab.tag != "ClonePotion" || itemPrefab.tag != "MicroPotion" || itemPrefab.tag != "PulsePotion") && gameObject.transform.childCount != 0)
         {
             Image itemPrefabActualImage = gbForShowingContent.GetComponent<Image>();
             saveOfContentTexture = itemPrefabActualImage.sprite;
-
 
             imageContentSize.sizeDelta = new Vector2(itemPrefabActualImage.sprite.texture.width*1.35f, itemPrefabActualImage.sprite.texture.height*1.35f); // *1.35 pour aggrandi un peu
         }
@@ -108,7 +107,17 @@ public class ButtonSpawnItem : MonoBehaviour
             itemscript.txtName = "<color=#8100FF><wave>Purple Potion</wave></color>";
             itemscript.txtDescription = "You can't use this potion at the moment.";
         }
-        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion") && itemThrowed.transform.childCount > 0)
+        else if(itemPrefab.tag == "MicroPotion" && itemThrowed.transform.childCount <= 0)
+        {
+            itemscript.txtName = "<color=#BF4591><wave>Pink Potion</wave></color>";
+            itemscript.txtDescription = "You can't use this potion at the moment.";
+        }
+        else if(itemPrefab.tag == "PulsePotion" && itemThrowed.transform.childCount <= 0)
+        {
+            itemscript.txtName = "<color=#D58025><wave>Orange Potion</wave></color>";
+            itemscript.txtDescription = "You can't use this potion at the moment.";
+        }
+        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion" || itemPrefab.tag == "MicroPotion" || itemPrefab.tag == "PulsePotion") && itemThrowed.transform.childCount > 0)
         {
             itemscript.txtDescription = "You can use this potion on a object but <shake a=2>DON'T</shake> drink it.";
         }
@@ -170,6 +179,7 @@ public class ButtonSpawnItem : MonoBehaviour
 
                 itemScript prefabItemScript = prefab.GetComponent<itemScript>();
                 prefabItemScript.cursor = cursor; // Pour le clonning
+                prefabItemScript.isClear = true; // Pour le setup
 
                 if(bestiaryItemManager != null)
                 {
@@ -187,7 +197,7 @@ public class ButtonSpawnItem : MonoBehaviour
             }
 
             // Permet de sortir les potions de l'inventaire
-            else if(((itemPrefab.tag == "BiggerPotion" && isGoodForBiggerAndShrinkPotionoOrNo) || (itemPrefab.tag == "ShrinkPotion" && isGoodForBiggerAndShrinkPotionoOrNo) || itemPrefab.tag == "ClonePotion" || (itemPrefab.tag == "StrangePotion" && isGoodForStrangePotionoOrNo)) && itemThrowed.transform.childCount > 0 && GameManager.instance.isInventoryOpen == true && isDelivered == false)
+            else if(((((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "MicroPotion") && isGoodForBiggerAndShrinkPotionoOrNo) || itemPrefab.tag == "ClonePotion" || (itemPrefab.tag == "StrangePotion" && isGoodForStrangePotionoOrNo)) && itemThrowed.transform.childCount > 0) || itemPrefab.tag == "PulsePotion" || itemPrefab.tag == "ExpulsePotion" && GameManager.instance.isInventoryOpen == true && isDelivered == false) 
             {
 
                 GameObject prefab = Instantiate(itemPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -203,12 +213,13 @@ public class ButtonSpawnItem : MonoBehaviour
                     isDelivered = true; // IsDelivered signifie "La boîte a été ouverte"
                 }
 
+
+                
                 if(bestiaryItemManager != null)
                 {
                     itemScript prefabItemScript = prefab.GetComponent<itemScript>();
                     prefabItemScript.bestiaryItemManager = bestiaryItemManager;
                 }
-
 
                 GameManager.instance.canAccessToInventory = false;
 
@@ -234,8 +245,6 @@ public class ButtonSpawnItem : MonoBehaviour
 
             }
 
-            Debug.Log(gameObject.transform.parent.childCount);
-            Debug.Log(countNumberOfStrangePotion+2);
             if(isGoodForStrangePotionoOrNo == false && gameObject.transform.parent.childCount == countNumberOfStrangePotion+2) // 2 feedbacks et countNumberOfStrangePotion pour le nombre de potion verte
             {
                 GameManager.instance.TriggerEvent();

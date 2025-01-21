@@ -4,26 +4,24 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEditor;
-using UnityEditor.UI;
 using UnityEngine.UI;
 
 public class LevelSelectorBoxScript : MonoBehaviour
 {
+    public int indexSceneOfButton;
+
+    public int worldIndex;
     public Sprite[] normalStarSprites;
     public Sprite[] weirdStarSprites;
     void Start()
     {
-        int sceneOfButton = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + gameObject.name + ".unity");
-
         int chanceToGetWeird = Random.Range(0, 2);
         GameObject star = gameObject.transform.GetChild(0).gameObject;
         Image starSpriteRenderer = star.GetComponent<Image>();
 
-        if(sceneOfButton < 0) return; // LE TEMPS DE TOUT SETUP ONLY
-        
-        if(GameManager.instance.levelsState[sceneOfButton-2] == 0)
+
+        if(GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton] == 0)
         {
-            
             if(chanceToGetWeird == 0)
             {
                 starSpriteRenderer.sprite = normalStarSprites[0];
@@ -33,7 +31,7 @@ public class LevelSelectorBoxScript : MonoBehaviour
                 starSpriteRenderer.sprite = weirdStarSprites[0];
             }
         }
-        else if(GameManager.instance.levelsState[sceneOfButton-2] == 1)
+        else if(GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton] == 1)
         {
             if(chanceToGetWeird == 0)
             {
@@ -44,7 +42,7 @@ public class LevelSelectorBoxScript : MonoBehaviour
                 starSpriteRenderer.sprite = weirdStarSprites[1];
             }
         }
-        else if(GameManager.instance.levelsState[sceneOfButton-2] == 2)
+        else if(GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton] == 2)
         {
             if(chanceToGetWeird == 0)
             {
@@ -55,44 +53,39 @@ public class LevelSelectorBoxScript : MonoBehaviour
                 starSpriteRenderer.sprite = weirdStarSprites[2];
             }
         }
-
-
-        if(GameManager.instance.levelsState[sceneOfButton-2] == 0 && GameManager.instance.levelsState[sceneOfButton-1] == 0) // SI NIVEAU D'APRES COMPLETE OU PO ET BIEN LE DERNIER NIVEAU
+        
+        if(indexSceneOfButton == 0 && GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton + 1] == 0 && GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton] == 0) // + 1 POUR LE PROCHAIN
         {
-            if(sceneOfButton-2 > 0)
-            {
-                if(GameManager.instance.levelsState[sceneOfButton-3] == 1)
-                {
-                    Image gbShader = gameObject.GetComponent<Image>();
+            Image gbShader = gameObject.GetComponent<Image>();
 
-                    Color newShaderColor = new Color(1f, 1f, 1f, 0f);
-                    gbShader.material.SetColor("_OutlineColor", newShaderColor);
-                    gbShader.material.EnableKeyword("OUTBASE_ON");   
-                }
-                else
-                {
-                    // Shadowed
-                    Image imageBox = gameObject.GetComponent<Image>();
-                    imageBox.color -= new Color(0.75f, 0.75f, 0.75f, 0f);
-                }
-            }   
-            else
-            {
-                Image gbShader = gameObject.GetComponent<Image>();
+            Color newShaderColor = new Color(1f, 1f, 1f, 0f);
+            gbShader.material.SetColor("_OutlineColor", newShaderColor);
+            gbShader.material.EnableKeyword("OUTBASE_ON");     
+            // Not interactable
+            Button gbButton = gameObject.GetComponent<Button>();
+            gbButton.transition = Selectable.Transition.ColorTint;
+        }
+        else if(indexSceneOfButton != 0 && GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton - 1] == 1 && GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton + 1] == 0 && GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton + 1] == 0 && GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton] == 0)
+        {
+            Image gbShader = gameObject.GetComponent<Image>();
 
-                Color newShaderColor = new Color(1f, 1f, 1f, 0f);
-                gbShader.material.SetColor("_OutlineColor", newShaderColor);
-                gbShader.material.EnableKeyword("OUTBASE_ON");   
-            }     
+            Color newShaderColor = new Color(1f, 1f, 1f, 0f);
+            gbShader.material.SetColor("_OutlineColor", newShaderColor);
+            gbShader.material.EnableKeyword("OUTBASE_ON");    
+            // Not interactable
+            Button gbButton = gameObject.GetComponent<Button>();
+            gbButton.transition = Selectable.Transition.ColorTint;
+        }
+        else if(indexSceneOfButton != 0 && GameManager.instance.levelsState[GameManager.instance.MONDES[worldIndex] + indexSceneOfButton] == 0) // SI IL EST PAS FINI ET QUE C PAS LE PREMIER
+        {
+            // Shadowed
+            Image imageBox = gameObject.GetComponent<Image>();
+            imageBox.color -= new Color(0.75f, 0.75f, 0.75f, 0f);
+            // Not interactable
+            Button gbButton = gameObject.GetComponent<Button>();
+            gbButton.transition = Selectable.Transition.None;
         }
 
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
 }

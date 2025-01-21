@@ -2,33 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class MainMenuHelps : MonoBehaviour
 {
-    public GameObject otherHelp;
-
-    public MMF_Player help1Feedbacks;
-    public MMF_Player help2Feedbacks;
-
-    public MainMenuSpawners mainMenuSpawners;
-
-
-
+    public SpriteRenderer spawnerSpriteRenderer;
+    public GameObject Mask;
     void Start()
     {
-        GameManager.instance.FirstLaunch = false;
-        mainMenuSpawners.needToRemoveHelps = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(mainMenuSpawners.needToRemoveHelps && GameManager.instance.FirstLaunch == false)
+        if(!GameManager.instance.firstTimeInMainMenuThisLaunch) 
         {
-            help1Feedbacks.PlayFeedbacks();
-            help2Feedbacks.PlayFeedbacks();
-            GameManager.instance.FirstLaunch = true;
+            gameObject.SetActive(false);
+            Mask.SetActive(false);
         }
+
     }
 
 }

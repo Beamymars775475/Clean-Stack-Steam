@@ -36,35 +36,28 @@ public class LevelLoader : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name == "Mainscene")
         {
+            GameManager.instance.firstTimeInMainMenuThisLaunch = false;
             StartCoroutine(LoadLevel("LevelSelectorScene"));
         }
         else if(SceneManager.GetActiveScene().name == "LevelSelectorScene")
         {
-            string nameOfButton = EventSystem.current.currentSelectedGameObject.name;
-            int sceneOfButton = SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/" + nameOfButton + ".unity");
-            Debug.Log((sceneOfButton-2) - GameManager.instance.MONDE1);
-            if((sceneOfButton-2) - GameManager.instance.MONDE1 == 0)
-            {
-                StartCoroutine(LoadLevel("RedLevel1")); 
+            LevelSelectorBoxScript boxLevelSelectorBoxScript = EventSystem.current.currentSelectedGameObject.GetComponent<LevelSelectorBoxScript>();
+
+            // SI C LE PREMIER LEVEL
+            if(boxLevelSelectorBoxScript.indexSceneOfButton == 0) // + 1 POUR LE PROCHAIN
+            { 
+                StartCoroutine(LoadLevel("Level" + (GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton)));
             }
-            else if((sceneOfButton-2) - GameManager.instance.MONDE2 == 0)
-            {
-                StartCoroutine(LoadLevel("BlueLevel1")); 
-            }
-            else if((sceneOfButton-2) - GameManager.instance.MONDE3 == 0)
-            {
-                StartCoroutine(LoadLevel("YellowLevel1")); 
-            }
-        
-            else if(GameManager.instance.levelsState[sceneOfButton-3] != 0) // -3 car on cherche celui d'avant
-            {
-                StartCoroutine(LoadLevel(nameOfButton));
+            // SI LE LEVEL D'AVANT EST BON ET CELUI D'APRES AUSSI
+            else if(GameManager.instance.levelsState[GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton - 1] == 1 && GameManager.instance.levelsState[GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton + 1] == 0)
+            { 
+                StartCoroutine(LoadLevel("Level" + (GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton)));
             }
         } 
 
         else if(SceneManager.GetActiveScene().name != "LevelSelectorScene")
         {
-            StartCoroutine(LoadLevel("RedLevel" + SceneManager.GetActiveScene().buildIndex));  // FAUT CHANGER SA PROCHAIN TRUC
+            StartCoroutine(LoadLevel("Level" + (SceneManager.GetActiveScene().buildIndex-1)));  // -1 pour celui d'apres (2 de offset je rappelle)
         }
 
         else
@@ -106,7 +99,7 @@ public class LevelLoader : MonoBehaviour
             GameManager.instance.isInventoryOpen = false;
             GameManager.instance.isCountDownOn = false;
 
-
+            GameManager.instance.isPhase1Done = false; 
             GameManager.instance.activeStrangePotion = false;        
         }
     }
@@ -166,6 +159,7 @@ public class LevelLoader : MonoBehaviour
         GameManager.instance.isGameOver = false;
         GameManager.instance.isNeedToStuckUI = false;
 
+        GameManager.instance.isPhase1Done = false; 
         GameManager.instance.activeStrangePotion = false;
 
         GameManager.instance.isWon = false;

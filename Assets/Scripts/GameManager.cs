@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     // Faut check
     [Header("Other")]
-    public bool FirstLaunch;
 
 
     [Header("Checks for win (NEED REWORK !!)")]
@@ -64,13 +63,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public bool isInCloningProcess;
 
     [Header("Worlds")]
-    public readonly int MONDE1 = 0; // 0
-    public readonly int MONDE2 = 11; // 12
-    public readonly int MONDE3 = 23; // 24
-    public readonly int MONDE4 = 35; // 36 
-    public readonly int MONDE5 = 43; // 44
-    public readonly int MONDE6 = 51; // 52
-    public readonly int MONDE7 = 59; // 60  
+
+    public int[] MONDES;
 
     // Compter tout les True de complete pour unlock les niveaux 4, 5 et 6 puis 7 quand tout fini
 
@@ -82,7 +76,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
     public bool isInDialogueWithMonster;
 
-
+    public delegate void SetupDialogueWithIndex();
+    public static event SetupDialogueWithIndex LaunchDialogue; // Potion full de strange potion et pas possible de les placer
 
     public MMF_Player feedbacksOpen; // Anim du son
     public MMF_Player feedbacksClose;
@@ -96,13 +91,30 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [Header("Sounds")]
     public AudioMixer scrollBars;
 
-    public delegate void OnSoftlockStrangePotion();
-    public static event OnSoftlockStrangePotion LaunchDialogue; // Potion full de strange potion et pas possible de les placer
+
+    public int indexDialogues; // L'INDEX DU DIALOGUE QU'ON VEUT CHOPPER
+
+    [Header("First Times")]
+
+    public bool firstTimeInMainMenuThisLaunch; // Premiere fois dans le menu uniquement pour le launch donc ON SAVE PAS
 
 
     void Start()
     {
+        MONDES = new int[9];
+        MONDES[0] = 0;
+        MONDES[1] = 12;
+        MONDES[2] = 24;
+        MONDES[3] = 36;
+        MONDES[4] = 44;
+        MONDES[5] = 52;
+        MONDES[6] = 60;
+        MONDES[7] = 65;
+        MONDES[8] = 68; // MONDE FICTIF POUR CALCUL
+
+
         DontDestroyOnLoad(gameObject);
+        firstTimeInMainMenuThisLaunch = true;
         goNextFloor = false;
         currentLevel = 1;
     }

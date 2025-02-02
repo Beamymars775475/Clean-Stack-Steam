@@ -23,6 +23,10 @@ public class MainMenuLever : MonoBehaviour
     public Sprite buttonUp;
     public Sprite buttonDown;
 
+    public bool alreadyTriedToQuit = false; // POUR SCENE
+
+    [Header("For title easter egg")]
+    public GameObject title;
     
     void Start()
     {
@@ -71,7 +75,7 @@ public class MainMenuLever : MonoBehaviour
 
         if (!rayHit.collider) return;
        
-        if(rayHit.collider.gameObject.tag == "Lever")
+        if(rayHit.collider.gameObject.tag == "Lever" && !GameManager.instance.isInDialogueWithMonster)
         {
             SpriteRenderer gameobjectSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             if(leverBool)
@@ -91,29 +95,54 @@ public class MainMenuLever : MonoBehaviour
             }
         }
 
-        if(rayHit.collider.gameObject.tag == "ButtonQuit")
+        if(rayHit.collider.gameObject.tag == "ButtonQuit" && !GameManager.instance.isInDialogueWithMonster)
         {
             if(GameManager.instance.levelsState[GameManager.instance.MONDES[0]] != 0 || GameManager.instance.levelsState[GameManager.instance.MONDES[1]] != 0 || GameManager.instance.levelsState[GameManager.instance.MONDES[2]] != 0)
             {
                 Debug.Log("I Quit !");
                 Application.Quit();
             }
+            else
+            {
+                GameManager.instance.indexDialogues = 0; // RESET
+                GameManager.instance.TriggerEvent();
+                if(!alreadyTriedToQuit)
+                {
+                    GameManager.instance.indexDialogues = 10001;
+                    alreadyTriedToQuit = true;
+                }
+                else
+                {
+                    GameManager.instance.indexDialogues = 10002;
+                }
+                GameManager.instance.TriggerEvent();
+
+                GameManager.instance.indexDialogues = 122774647; // LAUNCH
+                GameManager.instance.TriggerEvent();
+            }
         }
 
-        if(rayHit.collider.gameObject.tag == "ButtonSettings")
+        if(rayHit.collider.gameObject.tag == "ButtonSettings" && !GameManager.instance.isInDialogueWithMonster)
         {
             levelLoader.LoadThisSceneWithAnimation("SettingsScene");
         }
 
-        if(rayHit.collider.gameObject.tag == "ButtonFreeSpace")
+        if(rayHit.collider.gameObject.tag == "ButtonFreeSpace" && !GameManager.instance.isInDialogueWithMonster)
         {
             levelLoader.LoadThisSceneWithAnimation("BestiaryScene");
         }
 
+        if(rayHit.collider.gameObject.name == "Screw")
+        {
+            Destroy(rayHit.collider.transform.parent.gameObject);
+        }
 
+        if(rayHit.collider.gameObject.name == "Aliz")
+        {
+            SteamIntegration steamIntegrationGameManager = GameManager.instance.gameObject.GetComponent<SteamIntegration>();
+            steamIntegrationGameManager.UnlockAchievement("ACH_02");
+        }
 
    }
-
-
 }
 

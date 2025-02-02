@@ -35,7 +35,7 @@ public class MainMenuSpawners : MonoBehaviour
 
        if (!rayHit.collider) return;
 
-       if(rayHit.collider.gameObject.tag == "spawner" && canSpawn)
+       if(rayHit.collider.gameObject.tag == "spawner" && canSpawn && !GameManager.instance.isInDialogueWithMonster)
        {
            StartCoroutine(CooldownToSpawn(0.2f));
            Instantiate(prefabs[Random.Range(0, prefabs.Length)], new Vector3(gameObject.transform.position.x-1f, gameObject.transform.position.y, gameObject.transform.position.z), Quaternion.identity);

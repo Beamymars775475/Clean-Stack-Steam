@@ -60,7 +60,7 @@ public class LevelSelectorBoxScript : MonoBehaviour
 
             Color newShaderColor = new Color(1f, 1f, 1f, 0f);
             gbShader.material.SetColor("_OutlineColor", newShaderColor);
-            gbShader.material.EnableKeyword("OUTBASE_ON");     
+            gbShader.material.SetInt("_OutlineAlpha", 1); 
             // Not interactable
             Button gbButton = gameObject.GetComponent<Button>();
             gbButton.transition = Selectable.Transition.ColorTint;
@@ -71,7 +71,7 @@ public class LevelSelectorBoxScript : MonoBehaviour
 
             Color newShaderColor = new Color(1f, 1f, 1f, 0f);
             gbShader.material.SetColor("_OutlineColor", newShaderColor);
-            gbShader.material.EnableKeyword("OUTBASE_ON");    
+            gbShader.material.SetInt("_OutlineAlpha", 1);  
             // Not interactable
             Button gbButton = gameObject.GetComponent<Button>();
             gbButton.transition = Selectable.Transition.ColorTint;

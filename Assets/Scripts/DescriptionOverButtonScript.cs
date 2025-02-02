@@ -117,7 +117,7 @@ public class DescriptionOverButtonScript : MonoBehaviour
 
             if(gameObjectToGoTo.childCount != 0) // Pour les items
             {
-                m_image.anchoredPosition = new Vector2(gameObjectToGoTo.anchoredPosition.x+300f, gameObjectToGoTo.anchoredPosition.y+115f);
+                m_image.anchoredPosition = new Vector2(gameObjectToGoTo.anchoredPosition.x+315f, gameObjectToGoTo.anchoredPosition.y+120f);
             }
             else // Pour les potions 
             {

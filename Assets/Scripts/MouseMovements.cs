@@ -66,12 +66,43 @@ public class MouseMovements : MonoBehaviour
             moveThis = gameObject.transform.GetChild(0);
             moveThisRigidbody = moveThis.GetComponent<Rigidbody2D>();
             moveThisCollider = moveThis.GetComponent<Collider2D>();
-            moveThisCollider.isTrigger = true;
+
+            if(moveThisRigidbody != null) // NORMAL
+            {
             moveThisRigidbody.gravityScale = 0;
+            }
+            if(moveThisCollider != null) // NORMAL
+            {
+                moveThisCollider.isTrigger = true;
+            }
+            itemScript itemItemScript = moveThis.GetComponent<itemScript>();
+            if(itemItemScript.isSTUCKOnWall)
+            {
+                moveThisRigidbody.bodyType = RigidbodyType2D.Static; // POUR LA CORDE
+            }
+
+
+            foreach(Transform child in moveThis) // POUR LES GOSSES
+            {
+                Rigidbody2D moveThisRigidbodyChild = child.GetComponent<Rigidbody2D>();
+                Collider2D moveThisColliderChild = child.GetComponent<Collider2D>();
+                if(moveThisRigidbodyChild != null)
+                {
+                    moveThisRigidbodyChild.gravityScale = 0;
+                    moveThisRigidbodyChild.bodyType = RigidbodyType2D.Static; // POUR LA CORDE
+                }
+                if(moveThisColliderChild != null)
+                {
+                    moveThisColliderChild.isTrigger = true;
+                }
+            }
+
             GameManager.instance.canAccessToInventory = false;
             GameManager.instance.isCountDownOn = false; // Ici
 
-            if (Physics.Raycast(castPointmouse, out hitMouse, Mathf.Infinity, hitLayers) && moveThisRigidbody.gravityScale != 1)
+
+            itemScript itemChilditemScript = gameObject.transform.GetChild(0).GetComponent<itemScript>(); // Item in hand
+            if (Physics.Raycast(castPointmouse, out hitMouse, Mathf.Infinity, hitLayers)) // && moveThisRigidbody.gravityScale != 1
             {
                 Vector3 targetPos = hitMouse.point;
 
@@ -80,9 +111,15 @@ public class MouseMovements : MonoBehaviour
 
                 ray = new Ray(moveThis.transform.position, dir * rayLength);
 
-                if (!Physics.Raycast(ray, out hit_ray, Mathf.Infinity, hitLayers2))
+                if (!Physics.Raycast(ray, out hit_ray, Mathf.Infinity, hitLayers2) && !itemChilditemScript.isFollowingMouse)
                 {
                     Vector3 ForceToGoToMouse = Vector3.SmoothDamp(moveThis.position, new Vector3(targetPos.x, 3.75f, 0), ref velocity, timeOffSet); 
+
+                    moveThis.transform.position = ForceToGoToMouse; 
+                }
+                else if (!Physics.Raycast(ray, out hit_ray, Mathf.Infinity, hitLayers2) && itemChilditemScript.isFollowingMouse)
+                {
+                    Vector3 ForceToGoToMouse = Vector3.SmoothDamp(moveThis.position, new Vector3(targetPos.x, targetPos.y, 0), ref velocity, timeOffSet); 
 
                     moveThis.transform.position = ForceToGoToMouse; 
                 }
@@ -90,7 +127,7 @@ public class MouseMovements : MonoBehaviour
 
             }   
 
-            itemScript itemChilditemScript = gameObject.transform.GetChild(0).GetComponent<itemScript>(); // Item in hand
+
 
             if(!itemChilditemScript.isTable)
             {
@@ -100,12 +137,36 @@ public class MouseMovements : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                moveThisRigidbody.gravityScale = 1;
-                moveThisCollider.isTrigger = false;
+                itemScript itemDropitemScript = moveThis.GetComponent<itemScript>();
+                if(moveThisRigidbody != null && !itemDropitemScript.isSTUCKOnWall)
+                {
+                    moveThisRigidbody.gravityScale = 1;
+                }
+                if(moveThisCollider != null) // NORMAL
+                {
+                    moveThisCollider.isTrigger = false;
+                }
+
+            foreach(Transform child in moveThis) // POUR LES GOSSES
+            {
+                Rigidbody2D moveThisRigidbodyChild = child.GetComponent<Rigidbody2D>();
+                Collider2D moveThisColliderChild = child.GetComponent<Collider2D>();
+                if(moveThisRigidbodyChild != null)
+                {
+                    moveThisRigidbodyChild.gravityScale = 1;
+                    moveThisRigidbodyChild.bodyType = RigidbodyType2D.Dynamic; // POUR LA CORDE
+                }
+                if(moveThisColliderChild != null)
+                {
+                    moveThisColliderChild.isTrigger = false;
+                }
+            }
+
+
                 moveThis.SetParent(itemsThrowed);
                 GameManager.instance.canAccessToInventory = true;
 
-                itemScript itemDropitemScript = moveThis.GetComponent<itemScript>();
+                
 
 
                 if(itemDropitemScript.isTable)
@@ -185,7 +246,7 @@ public class MouseMovements : MonoBehaviour
 
         if(Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 0) // Pour space
         {
-            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 2 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 3 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
             {
                 GameManager.instance.isInventoryOpen = true;
                 feedbacksInventory.PlayFeedbacks();
@@ -199,13 +260,12 @@ public class MouseMovements : MonoBehaviour
     {
         GameManager.instance.animationInventoryIsDone = true;
     }
-    
 
     public void OnClick() // When preference click on Inventory
    {
        if(GameManager.instance.controlsPreference == 1)
        {
-            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 2 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 3 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
             {
                 GameManager.instance.isInventoryOpen = true;
                 feedbacksInventory.PlayFeedbacks();
@@ -215,10 +275,9 @@ public class MouseMovements : MonoBehaviour
 
    public void OnEnterInventory()
    {
-
         if(GameManager.instance.controlsPreference == 2)
         {
-            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 2 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 3 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
             {
                 GameManager.instance.isInventoryOpen = true;
                 feedbacksInventory.PlayFeedbacks();

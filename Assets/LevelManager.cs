@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
-        if(inventory.transform.childCount == 2 && mouse.transform.childCount == 0&& !GameManager.instance.isInCloningProcess)
+        if(inventory.transform.childCount == 2 && mouse.transform.childCount == 0 && !GameManager.instance.isInCloningProcess)
         {
             GameManager.instance.isPhase1Done = true;
         }
@@ -51,19 +51,24 @@ public class LevelManager : MonoBehaviour
             }
         }    
 
-        if(countItemsReady == 0) // Mettre à jour l'état du niveau + win
+        if(countItemsReady == 0 && !GameManager.instance.isGameOver && !GameManager.instance.isWon) // Mettre à jour l'état du niveau + win
         {
-            GameManager.instance.isWon = true;
-            if(GameManager.instance.modeHard)
-            {
-                GameManager.instance.levelsState[SceneManager.GetActiveScene().buildIndex-2] = 2;
-            }
-            else
-            {
-                GameManager.instance.levelsState[SceneManager.GetActiveScene().buildIndex-2] = 1;
-            }
-            
+            StartCoroutine(lastVerif(0.01f));
         }
     }
 
+
+    IEnumerator lastVerif(float cooldown) // POUR CHECK AU CAS OU OU FIX BUG UTILISATION DERNIERE POTION
+    {
+        yield return new WaitForSeconds(cooldown);
+        GameManager.instance.isWon = true;
+        if(GameManager.instance.modeHard)
+        {
+            GameManager.instance.levelsState[SceneManager.GetActiveScene().buildIndex-2] = 2;
+        }
+        else
+        {
+            GameManager.instance.levelsState[SceneManager.GetActiveScene().buildIndex-2] = 1;
+        }
+    }
 }

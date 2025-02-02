@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.Audio;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour, IDataPersistence
 {
@@ -85,7 +86,6 @@ public class GameManager : MonoBehaviour, IDataPersistence
     [Header("Preferences")]
 
     public int controlsPreference = 2; // 0->Space 1->Click 2->Mouse Over (Default)
-    public bool isTransparencyNeeded;
     public bool modeHard;
 
     [Header("Sounds")]
@@ -93,6 +93,9 @@ public class GameManager : MonoBehaviour, IDataPersistence
 
 
     public int indexDialogues; // L'INDEX DU DIALOGUE QU'ON VEUT CHOPPER
+
+    public List<GameObject> posToLightUp = new List<GameObject>();
+    public List<int> indexToLightUp = new List<int>(); // ORDRE DES TRUCS QUI S'ILLUMINE
 
     [Header("First Times")]
 

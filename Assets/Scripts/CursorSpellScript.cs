@@ -198,6 +198,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isBiggerOnce = true;
            itemHitItemScript.isClear = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
            
@@ -226,6 +228,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isShrinkOnce = true;
            itemHitItemScript.isClear = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
            
@@ -253,8 +257,11 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isStrange = true;
            itemHitItemScript.isClear = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
-           itemHitItemScript.isFalling = true;
+           itemHitItemScript.isFalling = false;
+           // itemHitItemScript.isFalling = true;
 
            
            GameManager.instance.canAccessToInventory = true;
@@ -293,6 +300,8 @@ public class CursorSpellScript : MonoBehaviour
                     // MODIFY STATE
                     babyItemItemScript.isMicro = true; 
                     babyItemItemScript.isClear = false;
+
+                    babyItemItemScript.countNumberOfPotionsUsedOnItem++;
                     babyItemItemScript.isReady = false;
                     babyItemItemScript.isFalling = true;
                 }
@@ -312,6 +321,8 @@ public class CursorSpellScript : MonoBehaviour
                     // MODIFY STATE
                     babyItemItemScript.isFullOfPotions = true; 
                     babyItemItemScript.isBiggerOnce = false; 
+
+                    babyItemItemScript.countNumberOfPotionsUsedOnItem++;
                     babyItemItemScript.isReady = false;
                     babyItemItemScript.isFalling = true;
                 }
@@ -356,6 +367,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isFullOfPotions = true;
            itemHitItemScript.isBiggerOnce = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
 
@@ -385,6 +398,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isFullOfPotions = true;
            itemHitItemScript.isShrinkOnce = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
 
@@ -413,6 +428,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isFullOfPotions = true;
            itemHitItemScript.isBiggerOnce = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
 
@@ -441,6 +458,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isFullOfPotions = true;
            itemHitItemScript.isShrinkOnce = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
            
@@ -468,6 +487,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isFullOfPotions = true;
            itemHitItemScript.isMicro = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
 
@@ -494,6 +515,8 @@ public class CursorSpellScript : MonoBehaviour
            // MODIFY STATE
            itemHitItemScript.isFullOfPotions = true;
            itemHitItemScript.isMicro = false;
+
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isReady = false;
            itemHitItemScript.isFalling = true;
 
@@ -529,6 +552,7 @@ public class CursorSpellScript : MonoBehaviour
            rayHit.collider.gameObject.transform.SetParent(spaceForFullItems);
 
            // MODIFY STATE
+           itemHitItemScript.countNumberOfPotionsUsedOnItem++;
            itemHitItemScript.isCloned = true;
 
            Destroy(gameObject);
@@ -548,6 +572,7 @@ public class CursorSpellScript : MonoBehaviour
                 itemScriptItem.Implosions(hitColliders, rayHit.collider.gameObject.transform.position);
 
                 // MODIFY STATE
+                itemHitItemScript.countNumberOfPotionsUsedOnItem++;
                 itemHitItemScript.isReady = false;
                 itemHitItemScript.isFalling = true;
            }
@@ -580,6 +605,7 @@ public class CursorSpellScript : MonoBehaviour
                 itemScriptItem.Pulsions(hitColliders);
 
                 // MODIFY STATE
+                itemHitItemScript.countNumberOfPotionsUsedOnItem++;
                 itemHitItemScript.isReady = false;
                 itemHitItemScript.isFalling = true;
            }

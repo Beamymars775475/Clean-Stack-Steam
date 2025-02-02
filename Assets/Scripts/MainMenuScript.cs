@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class MainMenuScript : MonoBehaviour
 {
     // Start is called before the first frame update
+    public GameObject title;
+
+    private Camera _mainCamera;
     void Start()
     {
-        
+        _mainCamera = Camera.main; 
     }
 
     // Update is called once per frame
@@ -21,4 +25,6 @@ public class MainMenuScript : MonoBehaviour
     {
         GameManager.instance.goNextFloor = true;
     }
+
+
 }

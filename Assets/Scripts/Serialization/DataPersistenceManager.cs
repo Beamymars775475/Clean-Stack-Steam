@@ -66,6 +66,34 @@ public class DataPersistenceManager : MonoBehaviour
         this.gameData = new GameData();
     }
 
+    public void DefaultParameters() 
+    {
+        this.gameData.controlsChoice = 2;
+    
+        this.gameData.volumeMain = 0;
+        this.gameData.volumeMusic = 0;
+        this.gameData.volumeSound = 0;
+
+        this.gameData.resolutionToUse = -1;
+        this.gameData.isFullScreen = true;
+
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects) 
+        {
+            dataPersistenceObj.LoadData(gameData);
+        }
+    }
+
+    public void ResetDataLevels() 
+    {
+        this.gameData.itemDiscovered = new bool[40];
+        this.gameData.levelsDone = new int[68];
+
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects) 
+        {
+            dataPersistenceObj.LoadData(gameData);
+        }
+    }
+
     public void LoadGame()
     {
         // load any saved data from a file using the data handler

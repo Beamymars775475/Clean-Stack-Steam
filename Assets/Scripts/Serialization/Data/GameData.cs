@@ -15,8 +15,6 @@ public class GameData
 
     public int controlsChoice;
 
-    public bool isInvTransparent;
-
     [Header("Audio")]
 
     public float volumeMain;
@@ -44,7 +42,6 @@ public class GameData
 
         this.isHardMode = false;
         this.controlsChoice = 2;
-        this.isInvTransparent = false;
 
         this.volumeMain = 0;
         this.volumeMusic = 0;

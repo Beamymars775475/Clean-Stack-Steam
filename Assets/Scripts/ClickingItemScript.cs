@@ -49,7 +49,7 @@ public class ClickingItemScript : MonoBehaviour
 
 
             // CLICKABLE (Umbrella)
-            if(itemScript.cursor != null)
+            if(itemScript.cursor != null && !itemScript.isClicked)
             {
                 if(itemScript.cursor.transform.childCount != 0)
                 {
@@ -66,7 +66,6 @@ public class ClickingItemScript : MonoBehaviour
                             delay += 0.009f;
                         }
                         StartCoroutine(WaitForNonSafeSprite(0.009f+delay, additionalSprite1)); // VRAI SPRITE
-                        gameObject.AddComponent<PolygonCollider2D>();
                         
                         
                     }
@@ -85,7 +84,6 @@ public class ClickingItemScript : MonoBehaviour
                         delay += 0.009f;
                     }
                     StartCoroutine(WaitForNonSafeSprite(0.009f+delay, additionalSprite1)); // VRAI SPRITE
-                    gameObject.AddComponent<PolygonCollider2D>();
                         
                         
                 }
@@ -103,7 +101,6 @@ public class ClickingItemScript : MonoBehaviour
                     delay += 0.009f;
                 }
                 StartCoroutine(WaitForNonSafeSprite(0.009f+delay, additionalSprite1)); // VRAI SPRITE
-                gameObject.AddComponent<PolygonCollider2D>();
                     
                     
             }
@@ -135,6 +132,8 @@ public class ClickingItemScript : MonoBehaviour
 
     private IEnumerator CooldownForSecReady2(float cooldown)
     {
+        itemScript.isReady = false;
+        itemScript.isFalling = true;
         yield return new WaitForSeconds(cooldown);
         itemScript.isReady2 = true;
     }

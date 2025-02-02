@@ -59,6 +59,10 @@ public class LevelInventoryManager : MonoBehaviour
 
     public Image inv; // To change Transparency
 
+    [Header("Game End")]
+    public  MMF_Player closeInvGameEnd;
+
+
 
 
 
@@ -76,11 +80,6 @@ public class LevelInventoryManager : MonoBehaviour
 
     void Start()
     {
-        if(GameManager.instance.isTransparencyNeeded)
-        {
-            inv.color = new Color(inv.color.r, inv.color.g, inv.color.b, 0.90f);
-            Debug.Log(inv.color);
-        }
 
         InvItemsShuffle(listOfItemsOfTheLevel);
         InvItemsShuffle(listOfPotionOfTheLevel);
@@ -332,6 +331,125 @@ public class LevelInventoryManager : MonoBehaviour
                 Destroy(newPrefab);
             }
         }
+
+
+
+
+
+        // EVENT INV TUTO GENERAL : LIGHTS -------------------------------------------------------------
+        if(SceneManager.GetActiveScene().name == "Level0") // SETUP DIALOGUE
+        {
+            foreach(Transform item in inventoryParent.transform)
+            {
+
+
+                ButtonSpawnItem buttonSpawnItem = item.GetComponent<ButtonSpawnItem>();
+                if(buttonSpawnItem != null) // SI ITEM OU POTION
+                {
+                    GameManager.instance.posToLightUp.Add(item.gameObject); // OU METTRE LA LUMIERE
+
+                    if(buttonSpawnItem.itemPrefab.tag == "item")
+                    {
+                        GameManager.instance.indexToLightUp.Add(1);// ORDRE DE PASSAGE DEPUIS DIALOGUE (ITEMS)
+                    }
+                    else
+                    {
+                        GameManager.instance.indexToLightUp.Add(2); // ORDRE DE PASSAGE DEPUIS DIALOGUE (POTIONS)
+                    }
+                }
+
+                
+            }
+            GameManager.instance.indexDialogues = 9991;
+            GameManager.instance.TriggerEvent();
+
+        }
+        // EVENT INV TUTO GENERAL : LIGHTS -------------------------------------------------------------
+        if(SceneManager.GetActiveScene().name == "Level7") // SETUP DIALOGUE
+        {
+            foreach(Transform item in inventoryParent.transform)
+            {
+
+
+                ButtonSpawnItem buttonSpawnItem = item.GetComponent<ButtonSpawnItem>();
+                if(buttonSpawnItem != null) // SI ITEM OU POTION
+                {
+                    itemScript itemScriptItem = buttonSpawnItem.itemPrefab.GetComponent<itemScript>();
+                    if(itemScriptItem != null)
+                    {
+                        if(itemScriptItem.isTable)
+                        {
+                            RectTransform itemRTTransform = item.GetComponent<RectTransform>();
+                            GameManager.instance.posToLightUp.Add(item.gameObject); // OU METTRE LA LUMIERE
+                            GameManager.instance.indexToLightUp.Add(4);// ORDRE DE PASSAGE DEPUIS DIALOGUE (ITEMS)
+                        }
+                    }
+
+                }
+
+                
+            }
+            GameManager.instance.indexDialogues = 9992;
+            GameManager.instance.TriggerEvent();
+
+        }
+
+
+        // EVENT INV TUTO POTIONS -------------------------------------------------------------
+        if(!GameManager.instance.AlreadyUsedItem[30])
+        {
+            bool isTutoRedPotionOnce = false; // CHECK SI DEJA ENVOYER UNE FOIS
+            foreach(Transform item in inventoryParent.transform)
+            {
+                ButtonSpawnItem buttonSpawnItem = item.GetComponent<ButtonSpawnItem>();
+                if(buttonSpawnItem != null)
+                {
+                    if(buttonSpawnItem.itemPrefab.tag == "BiggerPotion")
+                    {
+                        RectTransform itemRTTransform = item.GetComponent<RectTransform>();
+                        GameManager.instance.posToLightUp.Add(item.gameObject); // OU METTRE LA LUMIERE
+                        GameManager.instance.indexToLightUp.Add(3); // ORDRE DE PASSAGE DEPUIS DIALOGUE (RED POTIONS)
+                    }
+
+                    if(buttonSpawnItem.itemscript != null)
+                    {
+                        if(GameManager.instance.AlreadyUsedItem[buttonSpawnItem.itemscript.itemID] == false && buttonSpawnItem.itemscript.itemID == 30 && !isTutoRedPotionOnce && SceneManager.GetActiveScene().name != "BestiaryScene") // POTION ROUGE
+                        {
+                            isTutoRedPotionOnce = true;
+                            GameManager.instance.indexDialogues = 6661;
+                            GameManager.instance.TriggerEvent();
+                        }
+                    }
+
+
+
+                }
+
+
+            }
+        }
+
+        // LAUNCH DIALOGUE !!!
+        GameManager.instance.indexDialogues = 122774647;
+        GameManager.instance.TriggerEvent();
+
     }
 
+
+    void Update()
+    {
+        if((GameManager.instance.isWon || GameManager.instance.isGameOver) && GameManager.instance.isInventoryOpen)
+        {
+            closeInvGameEnd.PlayFeedbacks();
+            GameManager.instance.isInventoryOpen = false;
+        }
+    }
+
+    public void OnceIsFullyOpen()
+    {
+        if(GameManager.instance.isGameOver)
+        {
+            closeInvGameEnd.PlayFeedbacks();
+        }
+    }
 }

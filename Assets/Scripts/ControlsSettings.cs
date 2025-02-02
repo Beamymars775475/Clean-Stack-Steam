@@ -26,9 +26,16 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
 
     public int controlsPref;  // 0->Space 1->Click 2->Mouse Over (Default)
 
+    public GameObject SecurityPanel;
+
     
 
+    void Start()
+    {
+        SecurityPanel.SetActive(false);
+    }
 
+    
     public void ClickOnSelectorControls() // Bouton du haut
     {
         if (controlsPref == 0)
@@ -52,26 +59,26 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
         buttonSelectorViewerControlPreferences.transform.position = differentPos1[controlsPref].position;
     }
 
-    public void ClickOnSelectorInvTransparency() // Bouton du bas
+    public void ClickOnDeleteDataButton()
     {
-        if (isNeedToInvisible == true)
-        {
-            isNeedToInvisible = false;
-            textToChangeInv.text = "Off";
-            buttonSelectorViewerInv.transform.position = differentPos2[1].position;
-        }
-        else
-        {
-            isNeedToInvisible = true;
-            textToChangeInv.text = "On";
-            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
-        }
-        GameManager.instance.isTransparencyNeeded = isNeedToInvisible;
+        SecurityPanel.SetActive(true);
     }
 
-    public void ClickOnDeleteData()
+    public void ClickYesDeleteData()
     {
-        DataPersistenceManager.instance.ResetGame();
+        DataPersistenceManager.instance.ResetDataLevels();
+        SecurityPanel.SetActive(false);
+    }
+
+    public void ClickNoDeleteData()
+    {
+        SecurityPanel.SetActive(false);
+    }
+
+
+    public void ClickOnDeleteParameters()
+    {
+        DataPersistenceManager.instance.DefaultParameters();
     }
 
     public void LoadData(GameData data)
@@ -95,20 +102,6 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
             textToChangeControlPreferences.text = "MouseOver";
         }
         buttonSelectorViewerControlPreferences.transform.position = differentPos1[controlsPref].position;
-
-
-        isNeedToInvisible = data.isInvTransparent;
-        GameManager.instance.isTransparencyNeeded = isNeedToInvisible;
-        if (isNeedToInvisible == true)
-        {
-            textToChangeInv.text = "On";
-            buttonSelectorViewerInv.transform.position = differentPos2[0].position;
-        }
-        else
-        {
-            textToChangeInv.text = "Off";
-            buttonSelectorViewerInv.transform.position = differentPos2[1].position;
-        }
     }
 
     public void SaveData(GameData data)
@@ -130,21 +123,6 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
         else
         {
             textToChangeControlPreferences.text = "MouseOver";
-        }
-
-
-
-
-        data.isInvTransparent = isNeedToInvisible;
-        if (isNeedToInvisible == true)
-        {
-            textToChangeInv.text = "On";
-
-        }
-        else
-        {
-            textToChangeInv.text = "Off";
-
         }
     } 
 }

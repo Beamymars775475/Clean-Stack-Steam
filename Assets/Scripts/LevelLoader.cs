@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using MoreMountains.Feedbacks;
+using UnityEngine.AI;
+using TMPro;
 
 
 public class LevelLoader : MonoBehaviour
@@ -14,6 +16,8 @@ public class LevelLoader : MonoBehaviour
 
     public AudioClip musicMain;
     public AudioClip musicLevels;
+    
+    private bool isDoingLoading;
 
 
     public void Start()
@@ -49,7 +53,7 @@ public class LevelLoader : MonoBehaviour
                 StartCoroutine(LoadLevel("Level" + (GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton)));
             }
             // SI LE LEVEL D'AVANT EST BON ET CELUI D'APRES AUSSI
-            else if(GameManager.instance.levelsState[GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton - 1] == 1 && GameManager.instance.levelsState[GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton + 1] == 0)
+            else if(GameManager.instance.levelsState[GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton - 1] == 1)
             { 
                 StartCoroutine(LoadLevel("Level" + (GameManager.instance.MONDES[boxLevelSelectorBoxScript.worldIndex] + boxLevelSelectorBoxScript.indexSceneOfButton)));
             }
@@ -70,13 +74,19 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadMenu()
     {
-        StartCoroutine(LoadLevel("Mainscene"));
-        GameManager.instance.isInventoryOpen = true; // ?
+        if(!isDoingLoading)
+        {
+            StartCoroutine(LoadLevel("LevelSelectorScene"));
+            // GameManager.instance.isInventoryOpen = true; // ?
+        }
     }
 
     public void LoadSameScene()
     {
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().name));
+        if(!isDoingLoading)
+        {
+            StartCoroutine(LoadLevel(SceneManager.GetActiveScene().name));
+        }
     }
 
     public void NextScene() // il fait tout le taff
@@ -102,6 +112,10 @@ public class LevelLoader : MonoBehaviour
             GameManager.instance.isPhase1Done = false; 
             GameManager.instance.activeStrangePotion = false;        
         }
+        
+        Debug.Log("KAZOOKIE !");
+        GameManager.instance.indexDialogues = 0;
+        GameManager.instance.TriggerEvent();
     }
 
     public void LoadThisSceneWithAnimation(string nameOfScene)
@@ -111,6 +125,9 @@ public class LevelLoader : MonoBehaviour
 
     IEnumerator LoadLevel(string levelIndex) // levelIndex c'est le niveau qu'on va lancer
     {
+        isDoingLoading = true;
+
+
         transition.SetTrigger("Start");
         
         GameManager.instance.feedbacksClose.PlayFeedbacks();
@@ -164,12 +181,22 @@ public class LevelLoader : MonoBehaviour
 
         GameManager.instance.isWon = false;
         GameManager.instance.isCountDownOn = false;
+
+
+        GameManager.instance.indexDialogues = 0;
+        GameManager.instance.TriggerEvent();
+
+
+        isDoingLoading = false;
     }
 
 
     public void GoBackToMainsceneFromBestiaryOrSettings()
     {
-        StartCoroutine(LoadLevel("Mainscene"));
+        if(!isDoingLoading)
+        {
+            StartCoroutine(LoadLevel("Mainscene"));
+        }
     }
 
 }

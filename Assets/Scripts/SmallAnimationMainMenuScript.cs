@@ -49,6 +49,20 @@ public class SmallAnimationMainMenuScript : MonoBehaviour
             prefab1.transform.SetParent(placeToPutButtons);
             Rigidbody2D rigidBodyPrefab1 = prefab1.GetComponent<Rigidbody2D>();
             rigidBodyPrefab1.velocity = new Vector2(0f, -5f);
+            // BOUTON QUIT METTRE CHAINE SI C BON
+            if(GameManager.instance.levelsState[GameManager.instance.MONDES[0]] != 0 || GameManager.instance.levelsState[GameManager.instance.MONDES[1]] != 0 || GameManager.instance.levelsState[GameManager.instance.MONDES[2]] != 0)
+            {
+                GameObject chains = prefab1.transform.GetChild(0).gameObject;
+                chains.SetActive(false);
+            }
+            else
+            {
+                GameObject chains = prefab1.transform.GetChild(0).gameObject;
+                chains.SetActive(true);
+            }
+            
+            
+
 
             GameObject prefab2 = Instantiate(prefabsButtons[1], new Vector3(gameObject.transform.position.x+Random.Range(-0.5f, 0.5f), gameObject.transform.position.y+3f, gameObject.transform.position.z), Quaternion.identity);
             prefab2.transform.SetParent(placeToPutButtons);

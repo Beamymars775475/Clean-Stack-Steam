@@ -7,10 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pyramid
+  m_Name: Can_1
   m_Shader: {fileID: 4800000, guid: a36b7719ff0465b42ab1407d67672c5f, type: 3}
   m_ValidKeywords:
-  - HITEFFECT_ON
   - OUTBASE_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -89,8 +88,8 @@ Material:
     - _ClipUvLeft: 0
     - _ClipUvRight: 0
     - _ClipUvUp: 0
-    - _ColorChangeLuminosity: 0
-    - _ColorChangeTolerance: 0.25
+    - _ColorChangeLuminosity: 0.594
+    - _ColorChangeTolerance: 0.57
     - _ColorChangeTolerance2: 0.25
     - _ColorChangeTolerance3: 0.25
     - _ColorRampBlend: 1
@@ -119,7 +118,7 @@ Material:
     - _GhostTransparency: 0
     - _GlitchAmount: 3
     - _GlitchSize: 1
-    - _Glow: 10
+    - _Glow: 0
     - _GlowGlobal: 1
     - _GradBlend: 1
     - _GradBoostX: 1.2
@@ -136,19 +135,19 @@ Material:
     - _HandDrawnAmount: 10
     - _HandDrawnSpeed: 5
     - _HitEffectBlend: 0
-    - _HitEffectGlow: 5
+    - _HitEffectGlow: 7.9
     - _HologramBlend: 1
     - _HologramMaxAlpha: 0.75
     - _HologramMinAlpha: 0.1
     - _HologramStripesAmount: 0.1
     - _HologramStripesSpeed: 4.5
     - _HologramUnmodAmount: 0
-    - _HsvBright: 1
-    - _HsvSaturation: 1
-    - _HsvShift: 180
+    - _HsvBright: 2
+    - _HsvSaturation: 2
+    - _HsvShift: 360
     - _InnerOutlineAlpha: 1
     - _InnerOutlineGlow: 4
-    - _InnerOutlineThickness: 1
+    - _InnerOutlineThickness: 1.58
     - _MaxXUV: 1
     - _MaxYUV: 1
     - _MinXUV: 0
@@ -176,7 +175,7 @@ Material:
     - _OverlayTextureScrollXSpeed: 0.25
     - _OverlayTextureScrollYSpeed: 0.25
     - _PinchUvAmount: 0.35
-    - _PixelateSize: 224
+    - _PixelateSize: 32
     - _PosterizeGamma: 0.75
     - _PosterizeNumColors: 8
     - _PosterizeOutline: 0

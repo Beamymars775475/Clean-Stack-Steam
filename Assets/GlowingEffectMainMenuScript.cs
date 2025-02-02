@@ -12,11 +12,11 @@ public class GlowingEffectMainMenuScript : MonoBehaviour
         if(isGlowing)
         {
             gbShader.material.SetColor("_OutlineColor", newShaderColor);
-            gbShader.material.EnableKeyword("OUTBASE_ON");           
+            gbShader.material.SetInt("_OutlineAlpha", 1);         
         }
         else
         {
-            gbShader.material.DisableKeyword("OUTBASE_ON");
+            gbShader.material.SetInt("_OutlineAlpha", 0);
         }
         
     }

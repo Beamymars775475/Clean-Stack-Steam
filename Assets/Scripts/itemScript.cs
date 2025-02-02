@@ -54,6 +54,9 @@ public class itemScript : MonoBehaviour
 
     [Header("Personal State")]
     public bool isTable;
+    public bool isFollowingMouse;
+
+    public bool isSTUCKOnWall;
     public bool isClickable;
 
     public bool isClicked;
@@ -69,6 +72,10 @@ public class itemScript : MonoBehaviour
 
     public GameObject particuleExplosion; // Implosion 
 
+    private Coroutine coroutineWaitingForSafe;
+
+    public int countNumberOfPotionsUsedOnItem; // POUR ACHIEVEMENT ET VERIF IS READY !!
+
 
 
     // Start is called before the first frame update
@@ -80,8 +87,6 @@ public class itemScript : MonoBehaviour
             bestiaryItemManager.limitItemsAmount++;
             bestiaryItemManager.UpdateLimit();;
         }
-
-
 
         if(SceneManager.GetActiveScene().name != "Mainscene" && SceneManager.GetActiveScene().name != "BestiaryScene" && SceneManager.GetActiveScene().name != "LevelSelectorScene")
         {
@@ -97,6 +102,8 @@ public class itemScript : MonoBehaviour
     {
         if(isStrange && GameManager.instance.isPhase1Done && !isExplodedFromStrange)
         {
+            isReady = false;
+            isFalling = false;
             StartCoroutine(CooldownStrangeAfterPhase1Done(1.5f));
         }
         if(explosionFlickerFeedbacks != null) // Si il existe
@@ -109,44 +116,57 @@ public class itemScript : MonoBehaviour
         }
         if(bestiaryItemManager != null)
         {
-            if(needToDie && bestiaryItemManager.deleteItemsOnGround == true)
+            if(needToDie && bestiaryItemManager.deleteItemsOnGround == true && !isTable)
             {
-                if(!bestiaryItemManager.spareTablesFromDeath)
-                {
-                    Destroy(gameObject); // Meilleur effet ?
-                    bestiaryItemManager.limitItemsAmount--;
-                    bestiaryItemManager.UpdateLimit();
-                }
-                else if(bestiaryItemManager.spareTablesFromDeath && !isTable) // Epargner les tables
-                {
-                    Destroy(gameObject); // Meilleur effet ?
-                    bestiaryItemManager.limitItemsAmount--;
-                    bestiaryItemManager.UpdateLimit();
-                }
+                Destroy(gameObject); // Meilleur effet ?
+                bestiaryItemManager.limitItemsAmount--;
+                bestiaryItemManager.UpdateLimit();
 
             }
         }
 
         Rigidbody2D itemRb = gameObject.GetComponentInParent<Rigidbody2D>();
-
-
-        // Si il tombe on attend 2.5 sec pour le mettre prêt
-        if(isFalling && !isReady)
+        if(itemRb != null)
         {
-            StartCoroutine(CountDownUntilReady(2.5f));
-        }
-        // Si il bouge un peu on attend aussi
-        if(isReady && (itemRb.velocity.x > 1f || itemRb.velocity.x < -1f || itemRb.velocity.y > 1f || itemRb.velocity.y < -1f))
-        {
-            isFalling = true;
-            isReady = false;
-        }
+            if(itemRb.gravityScale != 0)
+            {
+                if(!isTable)
+                {
+                    // Si il tombe on attend 2.5 sec pour le mettre prêt
+                    if(isFalling && !isReady)
+                    {
+                        coroutineWaitingForSafe = StartCoroutine(CountDownUntilReady(2.5f, countNumberOfPotionsUsedOnItem));
+                    }
+                    // Si il bouge un peu on attend aussi
+                    if(!isFollowingMouse)
+                    {
+                        if(isReady && (itemRb.velocity.x > 1f || itemRb.velocity.x < -1f || itemRb.velocity.y > 1f || itemRb.velocity.y < -1f))
+                        {
+                            isFalling = true;
+                            isReady = false;
+                        }
+                    }
+                    else
+                    {
+                        isFalling = true;
+                        isReady = false;
+                    }
+                }
+                else
+                {
+                        isFalling = false;
+                        isReady = true;
+                }
 
 
-        if(!isClickable)
-        {
-            isReady2 = true;
+                if(!isClickable)
+                {
+                    isReady2 = true;
+                }
+            }
+
         }
+
     }
 
     void OnCollisionEnter2D(Collision2D _col)
@@ -197,31 +217,39 @@ public class itemScript : MonoBehaviour
         SpriteRenderer gbShader = gameObject.GetComponent<SpriteRenderer>();
         if(isGlowing == true)
         {
-            gbShader.material.SetColor("_OutlineColor", newShaderColor);
-            gbShader.material.EnableKeyword("OUTBASE_ON");           
+            gbShader.material.SetColor("_OutlineColor", newShaderColor);          
+            gbShader.material.SetInt("_OutlineAlpha", 1);
         }
         else
         {
-            gbShader.material.DisableKeyword("OUTBASE_ON");
+            gbShader.material.SetInt("_OutlineAlpha", 0);
         }
     }
 
-    IEnumerator CountDownUntilReady(float cooldown)
+    IEnumerator CountDownUntilReady(float cooldown, int nbPotionUsedOnItem)
     {
         yield return new WaitForSeconds(cooldown);
         Rigidbody2D itemRb = gameObject.GetComponent<Rigidbody2D>();
-        if(itemRb.velocity.x < 1f && itemRb.velocity.x > -1f && itemRb.velocity.y < 1f && itemRb.velocity.y > -1f && isFalling == true)
+        if(!isFollowingMouse && nbPotionUsedOnItem == countNumberOfPotionsUsedOnItem)
+        {
+            if(itemRb.velocity.x < 1f && itemRb.velocity.x > -1f && itemRb.velocity.y < 1f && itemRb.velocity.y > -1f && isFalling == true)
+            {
+                isReady = true;
+                isFalling = false;
+            }
+        }
+        else if(isFollowingMouse)
         {
             isReady = true;
             isFalling = false;
         }
-        
-    }   
+    }  
 
     IEnumerator CooldownStrangeAfterPhase1Done(float cooldown)
     {
         isExplodedFromStrange = true;
         yield return new WaitForSeconds(cooldown);
+        isFalling = true;
 
         Rigidbody2D gameObjectRb = gameObject.GetComponent<Rigidbody2D>();
 
@@ -235,7 +263,6 @@ public class itemScript : MonoBehaviour
     public void Pulsions(Collider2D[] colliderItems)
     {
         SpriteRenderer gbShader = gameObject.GetComponent<SpriteRenderer>();
-        gbShader.material.EnableKeyword("HITEFFECT_ON"); 
         gbShader.material.SetFloat("_HitEffectBlend", 0);
         for (int i = 0; i < 21; i++) // TURN WHITE
         {
@@ -267,7 +294,7 @@ public class itemScript : MonoBehaviour
         }
         else
         {
-            gbShader.material.DisableKeyword("HITEFFECT_ON"); 
+            gbShader.material.SetFloat("_HitEffectBlend", 0); 
         }
     
     
@@ -339,7 +366,7 @@ public class itemScript : MonoBehaviour
                     {
                         if(collider != colliderItem)
                         {
-                            rbItem.AddForce(new Vector2(mainItem.transform.position.x - collider.transform.position.x, mainItem.transform.position.y - collider.transform.position.y).normalized*7.5f*(waitTime+0.7f), ForceMode2D.Impulse);
+                            rbItem.AddForce(new Vector2(mainItem.transform.position.x - collider.transform.position.x, mainItem.transform.position.y - collider.transform.position.y).normalized*7.5f*(waitTime+0.7f)*gameObject.transform.lossyScale.x, ForceMode2D.Impulse);
                         }
                     }
                 }

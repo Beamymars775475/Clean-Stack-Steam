@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class BestiaryItemManager : MonoBehaviour
 {
     public bool deleteItemsOnGround;
-
-    public bool spareTablesFromDeath;
 
     public RectTransform hidderPos;
 
@@ -27,9 +26,11 @@ public class BestiaryItemManager : MonoBehaviour
 
     public bool isAbleToToggleDetonation;
 
+    [Header("Furniture Skins")] // Potions only
 
-
-
+    public GameObject[] whiteFurnitures;
+    public GameObject[] blackFurnitures;
+    public GameObject inventory;
 
     void Start()
     {
@@ -66,9 +67,20 @@ public class BestiaryItemManager : MonoBehaviour
         limitItemUI.text = "Limit: " + limitItemsAmount.ToString() + "/25";
     }
 
-    public void UpdateIsNeedToKillTable()
+    public void KillTable()
     {
-        spareTablesFromDeath = !spareTablesFromDeath;
+        foreach(Transform items in stockItems.transform)
+        {
+            itemScript itemItemScript = items.GetComponent<itemScript>();
+            if(itemItemScript != null)
+            {
+                if(itemItemScript.isTable)
+                {
+                    Destroy(items.gameObject);
+                }
+            }
+
+        }
     }
 
     public void KillAllItems()
@@ -105,5 +117,54 @@ public class BestiaryItemManager : MonoBehaviour
         }
     }
 
+    public void SetFurnitureSkin(int skinIndex)
+    {
+        for (int i = 0; i < inventory.transform.childCount-3; i++) // -3 A CAUSE DES TRUCS DANS INV
+        {
+            ButtonSpawnItem buttonSpawnItem = inventory.transform.GetChild(i).GetComponent<ButtonSpawnItem>();
+            itemScript itemScriptItem = buttonSpawnItem.itemPrefab.GetComponent<itemScript>();
+            
+            if(itemScriptItem.isTable)
+            {
+                if(skinIndex == 0) // WHITE
+                {
+                    if(itemScriptItem.itemID == 20) // TABLE
+                    {
+                        buttonSpawnItem.itemPrefab = whiteFurnitures[0];
+                    }
+                    else if(itemScriptItem.itemID == 21) // TABLE
+                    {
+                        buttonSpawnItem.itemPrefab = whiteFurnitures[1];
+                    }
+                    else if(itemScriptItem.itemID == 22) // TABLE
+                    {
+                        buttonSpawnItem.itemPrefab = whiteFurnitures[2];
+                    }
+                }
 
+                else if(skinIndex == 1) // BLACK
+                {
+                    if(itemScriptItem.itemID == 20) // TABLE
+                    {
+                        buttonSpawnItem.itemPrefab = blackFurnitures[0];
+                    }
+                    else if(itemScriptItem.itemID == 21) // TABLE
+                    {
+                        buttonSpawnItem.itemPrefab = blackFurnitures[1];
+                    }
+                    else if(itemScriptItem.itemID == 22) // TABLE
+                    {
+                        buttonSpawnItem.itemPrefab = blackFurnitures[2];
+                    }
+                }
+
+
+                if(buttonSpawnItem.transform.childCount > 0)
+                {
+                    SpriteRenderer prefabTexture = buttonSpawnItem.itemPrefab.GetComponent<SpriteRenderer>();
+                    buttonSpawnItem.saveOfContentTexture = prefabTexture.sprite;
+                }
+            }
+        }
+    }
 }

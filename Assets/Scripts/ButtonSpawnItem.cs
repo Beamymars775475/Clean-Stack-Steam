@@ -58,8 +58,6 @@ public class ButtonSpawnItem : MonoBehaviour
     public GameObject placeWhereItemsStocked;
 
 
-    
-
     void Start()
     {
 
@@ -117,7 +115,12 @@ public class ButtonSpawnItem : MonoBehaviour
             itemscript.txtName = "<color=#D58025><wave>Orange Potion</wave></color>";
             itemscript.txtDescription = "You can't use this potion at the moment.";
         }
-        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion" || itemPrefab.tag == "MicroPotion" || itemPrefab.tag == "PulsePotion") && itemThrowed.transform.childCount > 0)
+        else if(itemPrefab.tag == "ExpulsePotion" && itemThrowed.transform.childCount <= 0)
+        {
+            itemscript.txtName = "<color=#D58025><wave>Orange Potion</wave></color>";
+            itemscript.txtDescription = "You can't use this potion at the moment.";
+        }
+        else if((itemPrefab.tag == "BiggerPotion" || itemPrefab.tag == "ShrinkPotion" || itemPrefab.tag == "StrangePotion" || itemPrefab.tag == "ClonePotion" || itemPrefab.tag == "MicroPotion" || itemPrefab.tag == "PulsePotion" || itemPrefab.tag == "ExpulsePotion") && itemThrowed.transform.childCount > 0)
         {
             itemscript.txtDescription = "You can use this potion on a object but <shake a=2>DON'T</shake> drink it.";
         }
@@ -144,7 +147,7 @@ public class ButtonSpawnItem : MonoBehaviour
                     isGoodForStrangePotionoOrNo = true;
                 }
 
-                if(childItemScript.isClear|| childItemScript.isBiggerOnce || childItemScript.isShrinkOnce) // Oui ya un item sur lequel appliqué
+                if(childItemScript.isClear || childItemScript.isBiggerOnce || childItemScript.isShrinkOnce) // Oui ya un item sur lequel appliqué
                 {
                     isGoodForBiggerAndShrinkPotionoOrNo = true;
                 }

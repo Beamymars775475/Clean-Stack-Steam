@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControlsSettings : MonoBehaviour, IDataPersistence
 {
@@ -13,16 +14,6 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
     public TextMeshProUGUI textToChangeControlPreferences;
 
     [Header("Inventory Apparence")]
-
-    public GameObject buttonSelectorViewerInv;
-
-    public Transform[] differentPos2;
-
-    public TextMeshProUGUI textToChangeInv;
-
-    public bool isNeedToInvisible;
-
-    public bool modeHard;
 
     public int controlsPref;  // 0->Space 1->Click 2->Mouse Over (Default)
 
@@ -83,12 +74,7 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        modeHard = data.isHardMode;
-        // need to work on it
-
-
         controlsPref = data.controlsChoice;
-        GameManager.instance.controlsPreference = data.controlsChoice;
         if (controlsPref == 0)
         {
             textToChangeControlPreferences.text = "Space";
@@ -106,10 +92,6 @@ public class ControlsSettings : MonoBehaviour, IDataPersistence
 
     public void SaveData(GameData data)
     {
-        data.isHardMode = modeHard;
-
-
-
 
         data.controlsChoice = controlsPref;
         if (controlsPref == 0)

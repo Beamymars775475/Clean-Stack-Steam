@@ -17,8 +17,7 @@ public class LevelSelectorScript : MonoBehaviour
 
    public MMF_Player feedbacksScreenUpper; // Si on clique sur le bouton du monde vert depuis le monde Hardcore
 
-
-
+   public MMF_Player feedbacksScreenDowner; // Si on met le code pour la zone de tout en bas depuis tout en haut
 
 
     private int stateOfLevelSelector; 
@@ -99,10 +98,21 @@ public class LevelSelectorScript : MonoBehaviour
             feedbacksScreen2.PlayFeedbacks();
             stateOfLevelSelector = 3;
         }
+        else if(stateOfLevelSelector == 1)
+        {
+            feedbacksScreenDowner.PlayFeedbacks();
+            stateOfLevelSelector = 3;
+        }
+
         else if(stateOfLevelSelector == 3)
         {
             feedbacksScreen2Up.PlayFeedbacks();
             stateOfLevelSelector = 2;
         }
+    }
+
+    public int GetStateOfLevel()
+    {
+        return stateOfLevelSelector;
     }
 }

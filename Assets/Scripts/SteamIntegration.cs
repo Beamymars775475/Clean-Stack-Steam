@@ -30,7 +30,7 @@ public class SteamIntegration : MonoBehaviour
     }
 
 
-    void Start()
+    void Awake()
     {
         try
         {

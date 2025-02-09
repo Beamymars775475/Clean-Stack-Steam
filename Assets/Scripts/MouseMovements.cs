@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using MoreMountains.Feedbacks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-
 public class MouseMovements : MonoBehaviour
 {
 
@@ -127,13 +124,11 @@ public class MouseMovements : MonoBehaviour
 
             }   
 
-
-
             if(!itemChilditemScript.isTable)
             {
-                moveThis.Rotate(new Vector3(0, 0, Input.mouseScrollDelta.y*Time.deltaTime*800));
+                Vector3 rot = transform.rotation.eulerAngles;
+                moveThis.Rotate(Vector3.Lerp(rot, new Vector3(rot.x, rot.y, Input.mouseScrollDelta.y*45), 0.5f));
             }
-        
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -180,6 +175,16 @@ public class MouseMovements : MonoBehaviour
 
                 // COMMENCER TIMER
                 itemDropitemScript.isFalling = true;
+            }
+        }
+
+        if(Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 0) // Pour space
+        {
+            Debug.Log("WOUAAAAA PAIN PAIN");
+            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 3 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
+            {
+                GameManager.instance.isInventoryOpen = true;
+                feedbacksInventory.PlayFeedbacks();
             }
         }
 
@@ -243,18 +248,8 @@ public class MouseMovements : MonoBehaviour
                     
             }
         }
-
-        if(Input.GetKeyDown("space") && GameManager.instance.controlsPreference == 0) // Pour space
-        {
-            if(GameManager.instance.isInventoryOpen == false && GameManager.instance.canAccessToInventory && inventory.transform.childCount > 3 && GameManager.instance.isWon == false && GameManager.instance.isGameOver == false && GameManager.instance.animationInventoryIsDone == true)
-            {
-                GameManager.instance.isInventoryOpen = true;
-                feedbacksInventory.PlayFeedbacks();
-            }
-        }
   
     }
-
 
     public void OnceAnimationFinishYouCanOpenInventory()
     {

@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using MoreMountains.Feedbacks;
-using Unity.VisualScripting;
 using UnityEngine.Events;
 using UnityEngine.Audio;
 using System.Linq;
@@ -80,6 +79,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     public delegate void SetupDialogueWithIndex();
     public static event SetupDialogueWithIndex LaunchDialogue; // Potion full de strange potion et pas possible de les placer
 
+    public bool isFromSameScene; // EVITER DE REFAIRE LE DIALOGUE
+
     public MMF_Player feedbacksOpen; // Anim du son
     public MMF_Player feedbacksClose;
 
@@ -149,6 +150,8 @@ public class GameManager : MonoBehaviour, IDataPersistence
     {
         AlreadyUsedItem = data.itemDiscovered;
         levelsState = data.levelsDone;
+        modeHard = data.isHardMode;
+        controlsPreference = data.controlsChoice;
 
         if(scrollBars != null)
         {

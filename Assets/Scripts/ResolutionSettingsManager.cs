@@ -37,7 +37,6 @@ public class ResolutionSettingsManager : MonoBehaviour, IDataPersistence
 
 
         Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, data.isFullScreen);
-        Debug.Log(data.isFullScreen);
         toggleFullScreen.isOn = data.isFullScreen;
 
 

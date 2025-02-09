@@ -337,7 +337,7 @@ public class LevelInventoryManager : MonoBehaviour
 
 
         // EVENT INV TUTO GENERAL : LIGHTS -------------------------------------------------------------
-        if(SceneManager.GetActiveScene().name == "Level0") // SETUP DIALOGUE
+        if(SceneManager.GetActiveScene().name == "Level0" && !GameManager.instance.isFromSameScene) // SETUP DIALOGUE
         {
             foreach(Transform item in inventoryParent.transform)
             {
@@ -365,7 +365,7 @@ public class LevelInventoryManager : MonoBehaviour
 
         }
         // EVENT INV TUTO GENERAL : LIGHTS -------------------------------------------------------------
-        if(SceneManager.GetActiveScene().name == "Level7") // SETUP DIALOGUE
+        if(SceneManager.GetActiveScene().name == "Level7" && !GameManager.instance.isFromSameScene) // SETUP DIALOGUE
         {
             foreach(Transform item in inventoryParent.transform)
             {

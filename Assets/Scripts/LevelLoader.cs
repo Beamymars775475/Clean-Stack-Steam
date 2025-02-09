@@ -113,7 +113,6 @@ public class LevelLoader : MonoBehaviour
             GameManager.instance.activeStrangePotion = false;        
         }
         
-        Debug.Log("KAZOOKIE !");
         GameManager.instance.indexDialogues = 0;
         GameManager.instance.TriggerEvent();
     }
@@ -125,6 +124,17 @@ public class LevelLoader : MonoBehaviour
 
     IEnumerator LoadLevel(string levelIndex) // levelIndex c'est le niveau qu'on va lancer
     {
+
+        if(SceneManager.GetActiveScene().name == levelIndex)
+        {
+            GameManager.instance.isFromSameScene = true;
+        }
+        else
+        {
+            GameManager.instance.isFromSameScene = false;
+        }
+
+
         isDoingLoading = true;
 
 
